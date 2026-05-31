@@ -1215,45 +1215,40 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
           
           {/* Result Overlay Modal */}
           {isCompleted && (
-            <div className="absolute inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center animate-fadeIn">
-              <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full mx-4 text-center space-y-6 transform hover:scale-105 transition-all">
-                <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                  <Sparkles size={28} />
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-[60] flex flex-col items-center justify-center p-2 sm:p-4 animate-fadeIn">
+              <div className="bg-white p-3 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl max-w-xs sm:max-w-sm md:max-w-md w-full text-center space-y-2 sm:space-y-4 md:space-y-6 transform animate-bounceIn relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1.5 sm:h-2 bg-gradient-to-r from-emerald-400 to-sky-400"></div>
+                <div className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                  <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 text-emerald-500 animate-pulse" />
                 </div>
-                <div>
-                  <h4 className="font-sans font-black text-slate-900 text-2xl">Penyelesaian Berhasil!</h4>
-                  <p className="text-slate-500 text-xs mt-1">Sisa elemen di papan adalah hasil akhirnya:</p>
-                </div>
+                <h3 className="text-base sm:text-xl md:text-3xl font-black text-slate-800 font-sans tracking-tight">Eksplorasi Selesai!</h3>
                 
-                <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 font-mono text-slate-800 text-2xl tracking-wide flex flex-col items-center justify-center gap-3 shadow-inner">
-                  <InlineMath math={activeEquation?.expression || ''} />
-                  {activeEquation?.op === '-' && (
-                     <div className="text-slate-500 text-lg">
-                       <InlineMath math={`= ${activeEquation.a} + ${activeEquation.b < 0 ? Math.abs(activeEquation.b) : `(-${activeEquation.b})`}`} />
-                     </div>
-                  )}
-                  <div className="text-indigo-600 font-bold text-3xl mt-1">
-                    <InlineMath math={`= ${netValue}`} />
+                      <div className="text-slate-500 text-sm sm:text-lg">
+                        <InlineMath math={`= ${activeEquation.a} + ${activeEquation.b < 0 ? Math.abs(activeEquation.b) : `(-${activeEquation.b})`}`} />
+                      </div>
+                    )}
+                    <div className="text-indigo-600 font-bold text-xl sm:text-3xl mt-0.5 sm:mt-1">
+                      <InlineMath math={`= ${netValue}`} />
+                    </div>
                   </div>
-                </div>
 
-                <div className="pt-5 border-t border-slate-100 w-full text-left space-y-5">
+                  <div className="pt-2 sm:pt-5 border-t border-slate-100 w-full text-left space-y-2 sm:space-y-5">
                   <div>
-                    <p className="text-3xs font-bold text-slate-500 uppercase tracking-wide mb-2 text-center">Buat Soal Sendiri:</p>
-                    <div className="flex gap-2 justify-center">
+                    <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1 sm:mb-2 text-center">Buat Soal Sendiri:</p>
+                    <div className="flex gap-1.5 sm:gap-2 justify-center">
                       <input 
                         type="number" 
                         value={customA}
                         onChange={(e) => { setCustomA(e.target.value); setCustomError(null); }}
                         min="-20"
                         max="20"
-                        className="w-16 text-center border-2 border-slate-200 focus:border-indigo-500 rounded-xl py-2 px-1 text-sm font-mono font-bold outline-none transition-colors"
+                        className="w-12 sm:w-16 text-center border sm:border-2 border-slate-200 focus:border-indigo-500 rounded-lg sm:rounded-xl py-1 sm:py-2 px-1 text-[10px] sm:text-sm font-mono font-bold outline-none transition-colors"
                         placeholder="A"
                       />
                       <select 
                         value={customOp}
                         onChange={(e) => setCustomOp(e.target.value as '+' | '-')}
-                        className="w-14 text-center border-2 border-slate-200 focus:border-indigo-500 rounded-xl py-2 text-sm font-mono font-bold outline-none cursor-pointer bg-white transition-colors"
+                        className="w-10 sm:w-14 text-center border sm:border-2 border-slate-200 focus:border-indigo-500 rounded-lg sm:rounded-xl py-1 sm:py-2 text-[10px] sm:text-sm font-mono font-bold outline-none cursor-pointer bg-white transition-colors"
                       >
                         <option value="+">+</option>
                         <option value="-">-</option>
@@ -1264,7 +1259,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                         onChange={(e) => { setCustomB(e.target.value); setCustomError(null); }}
                         min="-20"
                         max="20"
-                        className="w-16 text-center border-2 border-slate-200 focus:border-indigo-500 rounded-xl py-2 px-1 text-sm font-mono font-bold outline-none transition-colors"
+                        className="w-12 sm:w-16 text-center border sm:border-2 border-slate-200 focus:border-indigo-500 rounded-lg sm:rounded-xl py-1 sm:py-2 px-1 text-[10px] sm:text-sm font-mono font-bold outline-none transition-colors"
                         placeholder="B"
                       />
                       <button 
@@ -1286,7 +1281,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                             });
                           }
                         }}
-                        className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:text-indigo-800 px-4 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm"
+                        className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:text-indigo-800 px-3 py-1 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl text-[9px] sm:text-xs font-bold transition-colors shadow-sm"
                       >
                         Coba
                       </button>
@@ -1299,22 +1294,22 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                   </div>
 
                   <div>
-                    <p className="text-3xs font-bold text-slate-500 uppercase tracking-wide mb-2 text-center">Atau Coba Kasus Tersulit:</p>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <button onClick={() => setActiveEquation({expression: "4 - (-3)", a: 4, b: -3, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-3 px-3 rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="4 - (-3)" /></button>
-                      <button onClick={() => setActiveEquation({expression: "-3 - 5", a: -3, b: 5, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-3 px-3 rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-3 - 5" /></button>
-                      <button onClick={() => setActiveEquation({expression: "-6 - (-2)", a: -6, b: -2, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-3 px-3 rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-6 - (-2)" /></button>
-                      <button onClick={() => setActiveEquation({expression: "-2 + 7", a: -2, b: 7, op: "+", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-3 px-3 rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-2 + 7" /></button>
-                      <button onClick={() => setActiveEquation({expression: "3 + (-8)", a: 3, b: -8, op: "+", detectedMisconceptionCode: null})} className="col-span-2 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-3 px-3 rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="3 + (-8)" /></button>
+                    <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1 sm:mb-2 text-center">Atau Coba Kasus Tersulit:</p>
+                    <div className="grid grid-cols-2 gap-1 sm:gap-2 text-[10px] sm:text-sm">
+                      <button onClick={() => setActiveEquation({expression: "4 - (-3)", a: 4, b: -3, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-1.5 sm:py-3 px-2 sm:px-3 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="4 - (-3)" /></button>
+                      <button onClick={() => setActiveEquation({expression: "-3 - 5", a: -3, b: 5, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-1.5 sm:py-3 px-2 sm:px-3 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-3 - 5" /></button>
+                      <button onClick={() => setActiveEquation({expression: "-6 - (-2)", a: -6, b: -2, op: "-", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-1.5 sm:py-3 px-2 sm:px-3 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-6 - (-2)" /></button>
+                      <button onClick={() => setActiveEquation({expression: "-2 + 7", a: -2, b: 7, op: "+", detectedMisconceptionCode: null})} className="bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-1.5 sm:py-3 px-2 sm:px-3 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="-2 + 7" /></button>
+                      <button onClick={() => setActiveEquation({expression: "3 + (-8)", a: 3, b: -8, op: "+", detectedMisconceptionCode: null})} className="col-span-2 bg-slate-100 hover:bg-indigo-50 hover:border-indigo-200 text-slate-700 py-1.5 sm:py-3 px-2 sm:px-3 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm transition-all text-center"><InlineMath math="3 + (-8)" /></button>
                     </div>
                   </div>
                   
                   {onProceedToDrill && (
                     <button 
                       onClick={onProceedToDrill}
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:translate-y-0.5"
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] sm:text-xs py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer active:translate-y-0.5"
                     >
-                      Lanjut ke Latihan Mandiri <ArrowRight size={14} />
+                      Lanjut ke Latihan Mandiri <ArrowRight size={12} className="sm:w-[14px] sm:h-[14px]" />
                     </button>
                   )}
                 </div>

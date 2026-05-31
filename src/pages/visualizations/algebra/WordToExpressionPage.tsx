@@ -97,30 +97,30 @@ export default function WordToExpressionPage() {
               <div className="flex flex-col items-center flex-1">
                  
                  {/* Word Blocks */}
-                 <div className="flex flex-wrap justify-center gap-3 mb-12">
+                 <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 md:mb-8">
                     {scenarios[activeScenario].text.map((word, idx) => (
-                       <div key={idx} className="bg-slate-800 text-white font-bold text-xl px-6 py-4 rounded-xl shadow-sm border border-slate-700">
+                       <div key={idx} className="bg-slate-800 text-white font-bold text-lg md:text-xl px-4 md:px-6 py-3 rounded-xl shadow-sm border border-slate-700">
                           {word}
                        </div>
                     ))}
                  </div>
 
                  {/* Translate Action */}
-                 <div className="relative w-full flex justify-center h-32">
+                 <div className="relative w-full flex justify-center min-h-[180px]">
                     {!showResult ? (
                        <button
                           onClick={() => setShowResult(true)}
-                          className="px-8 py-4 rounded-xl font-bold bg-indigo-500 text-white hover:bg-indigo-600 transition-colors shadow-lg active:scale-95 h-fit mt-4"
+                          className="px-6 py-3 md:px-8 md:py-4 rounded-xl font-bold bg-indigo-500 text-white hover:bg-indigo-600 transition-colors shadow-lg active:scale-95 h-fit mt-2 md:mt-4 text-sm md:text-base"
                        >
                           Terjemahkan ke Simbol
                        </button>
                     ) : (
                        <div className="flex flex-col items-center animate-fadeInUp">
-                          <div className="text-5xl font-mono font-black text-indigo-600 bg-indigo-50 px-8 py-4 rounded-2xl border-4 border-indigo-100 shadow-inner">
+                          <div className="text-4xl md:text-5xl font-mono font-black text-indigo-600 bg-indigo-50 px-6 py-3 rounded-2xl border-4 border-indigo-100 shadow-inner">
                              <InlineMath math={scenarios[activeScenario].math} />
                           </div>
                           
-                          <div className="mt-8 bg-amber-50 border border-amber-200 p-4 rounded-xl w-full max-w-sm flex gap-3 text-sm text-amber-800">
+                          <div className="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl w-full max-w-sm flex gap-3 text-sm text-amber-800">
                              <Info className="shrink-0 mt-0.5 text-amber-500" size={18} />
                              <span className="font-medium leading-relaxed">{scenarios[activeScenario].tip}</span>
                           </div>
@@ -130,7 +130,7 @@ export default function WordToExpressionPage() {
 
               </div>
 
-              <div className="flex justify-between mt-8 pt-6 border-t border-slate-100">
+              <div className="flex justify-between mt-4 md:mt-8 pt-4 md:pt-6 border-t border-slate-100">
                  <button
                     onClick={() => { setActiveScenario(prev => Math.max(0, prev - 1)); setShowResult(false); }}
                     disabled={activeScenario === 0}

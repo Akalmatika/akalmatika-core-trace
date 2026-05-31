@@ -8,6 +8,7 @@ import FractionVisualizationPage from "./pages/FractionVisualizationPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
 import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
+import NumberLineVisualizationPage from "./pages/NumberLineVisualizationPage";
 import PlaceholderVisualizationPage from "./pages/PlaceholderVisualizationPage";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="student/visualizations" element={<VisualizationCatalogPage />} />
           <Route path="student/visualizations/integer" element={<IntegerVisualizationPage />} />
           <Route path="student/visualizations/integer/zero-pair" element={<ZeroPairVisualizationPage />} />
+          <Route path="student/visualizations/integer/number-line" element={<NumberLineVisualizationPage />} />
           <Route path="student/visualizations/fractions" element={<FractionVisualizationPage />} />
           <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />

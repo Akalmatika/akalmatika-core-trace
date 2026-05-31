@@ -40,7 +40,7 @@ export default function AddSameDenominatorPage() {
               <div className="w-full h-1 bg-slate-800 my-1 rounded-full"></div>
               <div>{den}</div>
             </div>
-            <div className={`transition-all duration-300 flex items-center gap-4 ${step === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+            <div className={`transition-all duration-[1500ms] ease-in-out flex items-center gap-4 ${step === 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
               <div className="text-2xl font-bold text-slate-400">=</div>
               <div className="flex flex-col items-center text-4xl font-black font-mono text-emerald-600">
                 <div>{n1 + n2}</div>
@@ -63,25 +63,25 @@ export default function AddSameDenominatorPage() {
                   return (
                     <div 
                       key={idx}
-                      className={`h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 transition-colors duration-500 ${bgColor}`}
+                      className={`h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 transition-colors duration-[1500ms] ease-in-out ${bgColor}`}
                     />
                   );
                 })}
              </div>
 
              {/* Box 2 (Only visible in step 0) */}
-             <div className={`w-full h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner transition-all duration-500 transform origin-top ${step === 1 ? 'opacity-0 scale-y-0 h-0 border-0' : 'opacity-100 scale-y-100'}`}>
+             <div className={`w-full h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner transition-all duration-[1500ms] ease-in-out transform origin-top ${step === 1 ? 'opacity-0 scale-y-0 h-0 border-0' : 'opacity-100 scale-y-100'}`}>
                 {Array.from({ length: den }).map((_, idx) => (
                   <div 
                     key={idx}
-                    className={`h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 transition-colors duration-500 ${idx < n2 ? 'bg-sky-400' : 'bg-transparent'}`}
+                    className={`h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 transition-colors duration-[1500ms] ease-in-out ${idx < n2 ? 'bg-sky-400' : 'bg-transparent'}`}
                   />
                 ))}
              </div>
 
           </div>
 
-          <div className={`mt-12 text-center text-slate-500 font-medium bg-white/80 px-4 py-2 rounded-xl border border-slate-100 shadow-sm transition-all duration-500 ${step === 1 ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`mt-12 text-center text-slate-500 font-medium bg-white/80 px-4 py-2 rounded-xl border border-slate-100 shadow-sm transition-all duration-[1500ms] ease-in-out ${step === 1 ? 'opacity-100' : 'opacity-0'}`}>
             Ukuran wadah potongan <strong>(Penyebut: {den})</strong> tetap sama, hanya isinya <strong>(Pembilang)</strong> yang digabung.
           </div>
 

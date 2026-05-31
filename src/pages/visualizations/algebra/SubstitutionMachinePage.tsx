@@ -156,10 +156,10 @@ export default function SubstitutionMachinePage() {
                        {/* Flying Clone for step 2 */}
                        <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step >= 2 ? 'translate-y-[98px] md:translate-y-[110px]' : 'translate-y-0'} ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
                           <div className="relative w-full h-full flex justify-center items-center">
-                             <div className={`absolute transition-opacity duration-500 ${step === 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">2</span><span className="text-emerald-400">({xVal})</span>
                              </div>
-                             <div className={`absolute transition-opacity duration-500 ${step === 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
+                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
                                 <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
@@ -207,7 +207,7 @@ export default function SubstitutionMachinePage() {
 
                           {/* Flying Clone for step 4 (Left operand) */}
                           <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step >= 4 ? 'translate-y-[100px] md:translate-y-[128px] translate-x-[70px] md:translate-x-[90px]' : 'translate-y-0 translate-x-0'} ${step === 4 ? 'opacity-100' : 'opacity-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step === 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
@@ -230,7 +230,7 @@ export default function SubstitutionMachinePage() {
 
                           {/* Flying Clone for step 4 (Right operand) */}
                           <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step >= 4 ? 'translate-y-[100px] md:translate-y-[128px] -translate-x-[70px] md:-translate-x-[90px]' : 'translate-y-0 translate-x-0'} ${step === 4 ? 'opacity-100' : 'opacity-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step === 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-amber-400">5</span>
                              </div>
                           </div>

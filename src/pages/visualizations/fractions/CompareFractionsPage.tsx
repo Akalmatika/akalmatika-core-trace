@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { InlineMath } from 'react-katex';
 import { ArrowLeft, CheckCircle2, XCircle, Info } from "lucide-react";
+import { QuizContainer } from "../../../components/visualizations/QuizContainer";
 
 const SCENARIOS = [
   { n1: 2, d1: 5, n2: 4, d2: 5, label: "Penyebut Sama", tip: "Jika penyebutnya sama (ukuran potongan sama), lihat saja pembilangnya (jumlah potongannya)." },
@@ -15,7 +16,12 @@ export default function CompareFractionsPage() {
   const [n2, setN2] = useState(4);
   const [d2, setD2] = useState(5);
 
+  const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
   const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
+  const [quizStep, setQuizStep] = useState(0);
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+
   const [selectedOp, setSelectedOp] = useState<'<' | '>' | '=' | null>(null);
   const [isSameDenominator, setIsSameDenominator] = useState(false);
 
@@ -32,12 +38,47 @@ export default function CompareFractionsPage() {
 
   const handleGuess = (op: '<' | '>' | '=') => {
     setSelectedOp(op);
-    if (op === correct) {
-      setEvalResult('correct');
+    
+    if (mode === 'evaluate') {
+      const isCorrect = 
+        (quizStep === 0 && op === '<') || 
+        (quizStep === 1 && op === '>') || 
+        (quizStep === 2 && op === '>');
+        
+      if (evalResult !== 'none') return;
+      
+      if (isCorrect) {
+        setEvalResult('correct');
+        setScore(s => s + 1);
+      } else {
+        setEvalResult('wrong');
+      }
     } else {
-      setEvalResult('wrong');
-      setTimeout(() => setEvalResult('none'), 2000);
+      if (op === correct) {
+        setEvalResult('correct');
+      } else {
+        setEvalResult('wrong');
+        setTimeout(() => setEvalResult('none'), 2000);
+      }
     }
+  };
+
+  const handleNextQuiz = () => {
+    setEvalResult('none');
+    setSelectedOp(null);
+    if (quizStep < 2) {
+      setQuizStep(s => s + 1);
+    } else {
+      setIsFinished(true);
+    }
+  };
+
+  const handleRetryQuiz = () => {
+    setQuizStep(0);
+    setScore(0);
+    setIsFinished(false);
+    setEvalResult('none');
+    setSelectedOp(null);
   };
 
   const renderFractionBar = (baseNum: number, baseDen: number, multiplier: number, color: string) => {
@@ -93,12 +134,30 @@ export default function CompareFractionsPage() {
             Bandingkan ukuran dua buah pecahan secara visual.
           </p>
         </div>
+        
+        {/* Mode Switcher */}
+        <div className="flex bg-slate-100 p-1 rounded-xl self-start">
+          <button 
+            onClick={() => { setMode('explore'); setEvalResult('none'); setSelectedOp(null); }}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Eksplorasi
+          </button>
+          <button 
+            onClick={() => { setMode('evaluate'); handleRetryQuiz(); }}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Evaluasi
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Main Canvas */}
-        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center relative overflow-hidden">
+        <div className="lg:col-span-8">
+          {mode === 'explore' && (
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center relative overflow-hidden">
           
           {evalResult === 'correct' && (
             <div className="absolute top-6 right-6 z-20 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl flex items-center gap-3 animate-bounce shadow-sm border border-emerald-200">
@@ -158,12 +217,71 @@ export default function CompareFractionsPage() {
               </div>
             )}
           </div>
-
         </div>
+        )}
+
+        {mode === 'evaluate' && (
+          <QuizContainer
+            title={quizStep === 0 ? "Penyebut Sama" : quizStep === 1 ? "Pembilang Sama" : "Beda Keduanya"}
+            questionText={
+              quizStep === 0 
+                ? <span>Bandingkan pecahan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{3}{5}" /></span> dan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{4}{5}" /></span>.</span>
+                : quizStep === 1
+                ? <span>Bandingkan pecahan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{2}{3}" /></span> dan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{2}{5}" /></span>.</span>
+                : <span>Bandingkan pecahan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{3}{4}" /></span> dan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{4}{6}" /></span>.</span>
+            }
+            evalResult={evalResult}
+            onNext={handleNextQuiz}
+            isLastQuestion={quizStep === 2}
+            nextPath="/student/visualizations/fractions/same-denominator"
+            nextLabel="Lanjut: Penjumlahan Pecahan"
+            isFinished={isFinished}
+            score={score}
+            totalQuestions={3}
+            onRetry={handleRetryQuiz}
+          >
+            <div className="flex justify-center mt-8 gap-6">
+              {['<', '=', '>'].map((op) => (
+                <button 
+                  key={op}
+                  onClick={() => handleGuess(op as '<'|'>'|'=')}
+                  className={`
+                    w-16 h-16 rounded-2xl font-bold text-3xl font-mono shadow-sm transition-all hover:scale-105 active:scale-95
+                    ${evalResult !== 'none' ? 'pointer-events-none' : ''}
+                    ${selectedOp === op 
+                        ? (evalResult === 'correct' ? 'bg-emerald-500 border-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-rose-500 border-rose-600 text-white')
+                        : 'bg-white border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-indigo-400 hover:text-indigo-600'
+                    }
+                  `}
+                >
+                  {op}
+                </button>
+              ))}
+            </div>
+            
+            {evalResult !== 'none' && quizStep === 0 && (
+              <p className={`mt-8 text-sm font-bold ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                Penjelasan: Penyebutnya sama, jadi potongan yang lebih banyak (4) nilainya lebih besar.
+              </p>
+            )}
+            {evalResult !== 'none' && quizStep === 1 && (
+              <p className={`mt-8 text-sm font-bold ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                Penjelasan: Pembilangnya sama, tapi pembagian 3 lebih besar potongannya daripada pembagian 5.
+              </p>
+            )}
+            {evalResult !== 'none' && quizStep === 2 && (
+              <p className={`mt-8 text-sm font-bold ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                Penjelasan: <InlineMath math="\frac{3}{4}" /> senilai dengan <InlineMath math="\frac{9}{12}" />, sedangkan <InlineMath math="\frac{4}{6}" /> senilai dengan <InlineMath math="\frac{8}{12}" />. Jadi <InlineMath math="\frac{3}{4}" /> lebih besar.
+              </p>
+            )}
+          </QuizContainer>
+        )}
+      </div>
 
         {/* Controls */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
+        <div className={`lg:col-span-4 flex flex-col gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
+          
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">0</div>
               Tentukan Pecahan

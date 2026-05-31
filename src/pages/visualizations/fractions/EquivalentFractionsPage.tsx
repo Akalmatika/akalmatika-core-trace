@@ -2,14 +2,47 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { InlineMath } from 'react-katex';
 import { ArrowLeft, Info } from "lucide-react";
+import { QuizContainer } from "../../../components/visualizations/QuizContainer";
 
 export default function EquivalentFractionsPage() {
   const [baseNumerator, setBaseNumerator] = useState(1);
   const [baseDenominator, setBaseDenominator] = useState(2);
   const [multiplier, setMultiplier] = useState(1);
+  
+  const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
+  const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
+  const [quizStep, setQuizStep] = useState(0);
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
 
   const currentNumerator = baseNumerator * multiplier;
   const currentDenominator = baseDenominator * multiplier;
+
+  const handleEvaluate = (isCorrect: boolean) => {
+    if (evalResult !== 'none') return;
+    if (isCorrect) {
+      setEvalResult('correct');
+      setScore(s => s + 1);
+    } else {
+      setEvalResult('wrong');
+    }
+  };
+
+  const handleNextQuiz = () => {
+    setEvalResult('none');
+    if (quizStep < 2) {
+      setQuizStep(s => s + 1);
+    } else {
+      setIsFinished(true);
+    }
+  };
+
+  const handleRetryQuiz = () => {
+    setQuizStep(0);
+    setScore(0);
+    setIsFinished(false);
+    setEvalResult('none');
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
@@ -23,13 +56,31 @@ export default function EquivalentFractionsPage() {
             Lihat bagaimana bentuk pecahan bisa berubah, tetapi nilainya (luas areanya) tetap sama.
           </p>
         </div>
+        
+        {/* Mode Switcher */}
+        <div className="flex bg-slate-100 p-1 rounded-xl self-start">
+          <button 
+            onClick={() => setMode('explore')}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Eksplorasi
+          </button>
+          <button 
+            onClick={() => { setMode('evaluate'); handleRetryQuiz(); }}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Evaluasi
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Main Canvas */}
-        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-50/50 to-transparent pointer-events-none" />
+        <div className="lg:col-span-8">
+          {mode === 'explore' && (
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-50/50 to-transparent pointer-events-none" />
           
           <div className="flex items-center gap-8 md:gap-16 mb-12 relative z-10 w-full justify-center">
             {/* Original Fraction */}
@@ -104,10 +155,77 @@ export default function EquivalentFractionsPage() {
             Luas area yang diarsir <strong className="text-indigo-600">tidak berubah</strong>.
           </div>
         </div>
+          )}
+
+          {mode === 'evaluate' && (
+            <QuizContainer
+              title={quizStep === 0 ? "Identifikasi Pecahan Senilai" : quizStep === 1 ? "Apakah Pecahan Ini Senilai?" : "Mengubah Pecahan"}
+              questionText={
+                quizStep === 0 
+                  ? <span>Manakah dari pecahan di bawah ini yang senilai dengan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{1}{2}" /></span>?</span>
+                  : quizStep === 1
+                  ? <span>Apakah <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{3}{4}" /></span> senilai dengan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{6}{8}" /></span>?</span>
+                  : <span>Jika pembilang dan penyebut pada pecahan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{2}{3}" /></span> sama-sama dikalikan 3, maka pecahannya menjadi:</span>
+              }
+              evalResult={evalResult}
+              onNext={handleNextQuiz}
+              isLastQuestion={quizStep === 2}
+              nextPath="/student/visualizations/fractions/simplify"
+              nextLabel="Lanjut: Menyederhanakan Pecahan"
+              isFinished={isFinished}
+              score={score}
+              totalQuestions={3}
+              onRetry={handleRetryQuiz}
+            >
+              {quizStep === 0 && (
+                <div className="flex gap-6">
+                  {[[2,5], [2,4], [3,5]].map(([n, d], idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => handleEvaluate(n === 2 && d === 4)} 
+                      className={`w-24 h-24 rounded-2xl border-2 font-bold text-2xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && n === 2 && d === 4 ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && (n !== 2 || d !== 4) && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                    >
+                      <InlineMath math={`\\frac{${n}}{${d}}`} />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {quizStep === 1 && (
+                <div className="flex gap-6">
+                  {['Ya', 'Tidak'].map((ans, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => handleEvaluate(ans === 'Ya')} 
+                      className={`px-8 py-4 rounded-2xl border-2 font-bold text-xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === 'Ya' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== 'Ya' && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                    >
+                      {ans}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {quizStep === 2 && (
+                <div className="flex gap-6">
+                  {[[5,6], [6,9], [2,9]].map(([n, d], idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => handleEvaluate(n === 6 && d === 9)} 
+                      className={`w-24 h-24 rounded-2xl border-2 font-bold text-2xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && n === 6 && d === 9 ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && (n !== 6 || d !== 9) && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                    >
+                      <InlineMath math={`\\frac{${n}}{${d}}`} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </QuizContainer>
+          )}
+        </div>
 
         {/* Controls */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
+        <div className={`lg:col-span-4 flex flex-col gap-6 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
+          
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</div>
               Tentukan Pecahan Dasar

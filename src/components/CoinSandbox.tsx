@@ -130,7 +130,12 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
   }, [presentationState, isAutoSolvePending]);
 
   const handleAutoSolve = async () => {
-    if (isAutoSolvingRef.current || presentationState !== 'DONE' || isCompleted || hasNoZeroPairs) return;
+    if (isAutoSolvingRef.current || presentationState !== 'DONE' || isCompleted) return;
+    
+    if (hasNoZeroPairs) {
+      setIsCompleted(true);
+      return;
+    }
     
     setIsAutoSolving(true);
     isAutoSolvingRef.current = true;
@@ -501,7 +506,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
 
   const handleSelectEquivalent = (a: number, b: number, op: '+' | '-') => {
     const expression = `${a} ${op} ${b < 0 ? `(${b})` : b}`;
-    const newEq = { expression, a, b, op };
+    const newEq = { expression, a, b, op, detectedMisconceptionCode: null };
     setActiveEquation(newEq);
     if (onEquationChange) onEquationChange(newEq);
     addLog('INFO', `Selected equivalent equation: ${expression}`);
@@ -803,7 +808,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                     {hasNoZeroPairs && (
                       <p className="flex items-start gap-2 bg-amber-50 text-amber-700 p-2 sm:p-2.5 rounded-md sm:rounded-lg border border-amber-100 mt-1 sm:mt-2">
                         <AlertCircle size={14} className="mt-0.5 shrink-0 sm:w-4 sm:h-4" />
-                        <span className="leading-tight font-medium">Elemen memiliki muatan yang sama. Kamu tidak bisa menetralkannya (membentuk pasangan nol). Silakan Lakukan Otomatis untuk mengevaluasi!</span>
+                        <span className="leading-tight font-medium">Elemen memiliki muatan yang sama. Kamu tidak bisa menetralkannya (membentuk pasangan nol). Silakan klik <strong>Selesai</strong> untuk mengevaluasi!</span>
                       </p>
                     )}
                   </div>
@@ -1130,15 +1135,15 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             </div>
           )}
 
-          {/* Floating Lakukan Otomatis Button */}
-          {presentationState === 'DONE' && !isCompleted && !isGathering && !isAutoSolving && positiveCount > 0 && negativeCount > 0 && (
+          {/* Floating Lakukan Otomatis / Selesai Button */}
+          {presentationState === 'DONE' && !isCompleted && !isGathering && !isAutoSolving && (activeEquation || (positiveCount > 0 && negativeCount > 0)) && (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
               <button
                 onClick={handleAutoSolve}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold px-3 py-1.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] flex items-center gap-1.5 sm:gap-2 animate-bounce cursor-pointer border-2 border-indigo-400 transition-all hover:scale-105 text-xs sm:text-base"
               >
-                <Wand2 size={14} className="sm:w-[18px] sm:h-[18px]" />
-                <span>Lakukan Otomatis</span>
+                {hasNoZeroPairs ? <CheckCircle2 size={14} className="sm:w-[18px] sm:h-[18px]" /> : <Wand2 size={14} className="sm:w-[18px] sm:h-[18px]" />}
+                <span>{hasNoZeroPairs ? "Selesai" : "Lakukan Otomatis"}</span>
               </button>
             </div>
           )}

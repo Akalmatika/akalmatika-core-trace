@@ -258,6 +258,7 @@ export default function SubstitutionMachinePage() {
               <Info className="text-indigo-400 shrink-0 mt-0.5" size={16} />
               <p className="text-xs font-bold text-slate-400">
                 Gunakan kurung ( ) saat mengganti huruf menjadi angka agar perkaliannya tidak keliru dibaca.
+                Contoh: 2x dengan x = {xVal} menjadi 2({xVal}), bukan 2{Math.abs(xVal)}.
               </p>
             </div>
           </div>

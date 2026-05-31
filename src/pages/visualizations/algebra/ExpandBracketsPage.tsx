@@ -111,7 +111,7 @@ export default function ExpandBracketsPage() {
                  <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" viewBox="0 0 500 150">
                     {/* Arch to bx */}
                     <path 
-                       d="M 185,85 Q 220,40 255,85" 
+                       d={`M ${175 - (a.toString().length - 1) * 15},85 Q 220,40 255,85`}
                        fill="none" 
                        stroke="#f43f5e" 
                        strokeWidth="4"
@@ -122,7 +122,7 @@ export default function ExpandBracketsPage() {
                     />
                     {/* Arch to c */}
                     <path 
-                       d="M 185,85 Q 250,20 315,85" 
+                       d={`M ${175 - (a.toString().length - 1) * 15},85 Q 250,20 ${315 + (b.toString().length - 1) * 10},85`}
                        fill="none" 
                        stroke="#f43f5e" 
                        strokeWidth="4"
@@ -312,7 +312,7 @@ export default function ExpandBracketsPage() {
             <div className="flex items-start gap-2 pt-4 border-t border-rose-200/50">
               <Info className="text-rose-600 shrink-0 mt-0.5" size={16} />
               <p className="text-xs text-rose-800/80 font-bold">
-                Miskonsepsi: Hanya mengalikan suku yang paling depan saja (misal 3(x+2) jadi 3x+2). Itu keliru!
+                Miskonsepsi: Hanya mengalikan suku yang paling depan saja (misal {a}({b}x {c >= 0 ? '+' : '-'} {Math.abs(c)}) jadi {a*b}x {c >= 0 ? '+' : '-'} {Math.abs(c)}). Itu keliru!
               </p>
             </div>
           </div>

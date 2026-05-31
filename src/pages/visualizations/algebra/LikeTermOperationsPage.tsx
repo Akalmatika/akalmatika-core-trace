@@ -222,8 +222,23 @@ export default function LikeTermOperationsPage() {
                   />
                </div>
             </div>
-            
           </div>
+
+          <div className="bg-rose-50 border border-rose-200 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-rose-800 font-bold mb-2 text-sm flex items-center gap-2">
+               Miskonsepsi Kuadrat
+            </h3>
+            <p className="text-sm text-rose-700 leading-relaxed mb-4">
+               Pangkat variabel tidak berubah saat dijumlahkan atau dikurangkan.
+            </p>
+            <div className="flex items-start gap-2 pt-4 border-t border-rose-200/50">
+              <Info className="text-rose-600 shrink-0 mt-0.5" size={16} />
+              <p className="text-xs text-rose-800/80 font-bold">
+                Miskonsepsi: {coef1}x {coef2 >= 0 ? '+' : '-'} {Math.abs(coef2)}x bukan menjadi {coef1+coef2}x²!
+              </p>
+            </div>
+          </div>
+
         </div>
 
       </div>

@@ -7,6 +7,8 @@ import IntegerVisualizationPage from "./pages/IntegerVisualizationPage";
 import FractionVisualizationPage from "./pages/FractionVisualizationPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
+import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
+import PlaceholderVisualizationPage from "./pages/PlaceholderVisualizationPage";
 
 export default function App() {
   return (
@@ -23,13 +25,16 @@ export default function App() {
           
           {/* Diagnostic Flow */}
           <Route path="student/diagnostic" element={<DiagnosticCatalogPage />} />
+          <Route path="student/diagnostic/*" element={<PlaceholderVisualizationPage />} />
           
           {/* Visualizations Flow */}
           <Route path="student/visualizations" element={<VisualizationCatalogPage />} />
           <Route path="student/visualizations/integer" element={<IntegerVisualizationPage />} />
+          <Route path="student/visualizations/integer/zero-pair" element={<ZeroPairVisualizationPage />} />
           <Route path="student/visualizations/fractions" element={<FractionVisualizationPage />} />
           <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
+          <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />
           
           {/* Fallback route - could be a 404 page */}
           <Route path="*" element={

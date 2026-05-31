@@ -73,19 +73,11 @@ export default function App() {
       <header id="app-header" className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
-          className="flex items-center gap-3 cursor-pointer group" 
+          className="flex items-center cursor-pointer group" 
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <div className="p-2.5 bg-indigo-600 group-hover:bg-indigo-500 text-white rounded-xl shadow-xs transition-colors">
-            <Activity size={22} className="animate-pulse" />
-          </div>
-          <div>
-            <h1 className="font-sans font-black text-lg md:text-xl text-slate-900 tracking-tight leading-none group-hover:text-indigo-600 transition-colors">
-              Akalmatika <span className="text-indigo-600 font-normal">core-trace</span>
-            </h1>
-            <span className="text-3xs font-mono text-slate-450 mt-1 block uppercase tracking-widest font-bold">Google JuaraVibeCode 2026</span>
-          </div>
+          <img src="/logo.png" alt="Akalmatika Logo" className="h-8 md:h-10 object-contain transition-transform group-hover:scale-105" />
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">

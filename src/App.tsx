@@ -70,14 +70,14 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-900 font-sans antialiased">
       
       {/* Top Navigation Bar */}
-      <header id="app-header" className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
+      <header id="app-header" className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-3 md:px-6 md:py-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
           className="flex items-center cursor-pointer group" 
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-28 md:h-32 w-auto object-contain transition-transform group-hover:scale-105" />
+          <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-105" />
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">

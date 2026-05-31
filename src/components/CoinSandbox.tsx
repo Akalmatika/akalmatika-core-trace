@@ -1223,16 +1223,19 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                 </div>
                 <h3 className="text-base sm:text-xl md:text-3xl font-black text-slate-800 font-sans tracking-tight">Eksplorasi Selesai!</h3>
                 
-                      <div className="text-slate-500 text-sm sm:text-lg">
-                        <InlineMath math={`= ${activeEquation.a} + ${activeEquation.b < 0 ? Math.abs(activeEquation.b) : `(-${activeEquation.b})`}`} />
-                      </div>
-                    )}
-                    <div className="text-indigo-600 font-bold text-xl sm:text-3xl mt-0.5 sm:mt-1">
-                      <InlineMath math={`= ${netValue}`} />
+                <div className="bg-slate-50 border border-slate-100 rounded-lg sm:rounded-xl p-2 sm:p-4 font-mono text-slate-800 text-lg sm:text-2xl tracking-wide flex flex-col items-center justify-center gap-1.5 sm:gap-3 shadow-inner">
+                  <InlineMath math={activeEquation?.expression || ''} />
+                  {activeEquation?.op === '-' && (
+                    <div className="text-slate-500 text-sm sm:text-lg">
+                      <InlineMath math={`= ${activeEquation.a} + ${activeEquation.b < 0 ? Math.abs(activeEquation.b) : `(-${activeEquation.b})`}`} />
                     </div>
+                  )}
+                  <div className="text-indigo-600 font-bold text-xl sm:text-3xl mt-0.5 sm:mt-1">
+                    <InlineMath math={`= ${netValue}`} />
                   </div>
+                </div>
 
-                  <div className="pt-2 sm:pt-5 border-t border-slate-100 w-full text-left space-y-2 sm:space-y-5">
+                <div className="pt-2 sm:pt-5 border-t border-slate-100 w-full text-left space-y-2 sm:space-y-5">
                   <div>
                     <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1 sm:mb-2 text-center">Buat Soal Sendiri:</p>
                     <div className="flex gap-1.5 sm:gap-2 justify-center">

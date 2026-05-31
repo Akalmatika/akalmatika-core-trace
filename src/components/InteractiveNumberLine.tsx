@@ -146,8 +146,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
 
   // SVG Coordinates setup
   const viewBoxWidth = 800;
-  const viewBoxHeight = 240;
-  const axisY = 160;
+  const viewBoxHeight = 320;
+  const axisY = 220;
   const marginX = 50;
   const scaleWidth = viewBoxWidth - marginX * 2;
   
@@ -167,12 +167,12 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
   const startX = getX(a);
   const endX = getX(correctAnswer);
   
-  // Arrow from 0 to A (Straight line at Y = axisY - 30)
-  const arrow1Y = axisY - 30;
+  // Arrow from 0 to A (Straight line at Y = axisY - 45)
+  const arrow1Y = axisY - 45;
   const arrow1D = `M ${getX(0)} ${arrow1Y} L ${startX} ${arrow1Y}`;
   
-  // Arrow from A to Result (Straight line at Y = axisY - 60)
-  const arrow2Y = axisY - 60;
+  // Arrow from A to Result (Straight line at Y = axisY - 100)
+  const arrow2Y = axisY - 100;
   const arrow2D = `M ${startX} ${arrow2Y} L ${endX} ${arrow2Y}`;
 
   const renderExplanation = () => {
@@ -205,9 +205,9 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
   const isTransformed = (passed('TRANSFORM_TO_ADDITION') || passed('MOVE_BY_B') || passed('SHOW_RESULT')) && op === '-';
 
   return (
-    <div id="interactive-number-line" className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-8 animate-fadeIn">
+    <div id="interactive-number-line" className="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4 sm:space-y-6 md:space-y-8 animate-fadeIn">
       
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
         <div>
           <h3 className="font-sans font-black text-slate-900 tracking-tight text-lg md:text-xl flex items-center gap-2">
             <HelpCircle size={22} className="text-indigo-600 animate-pulse" />
@@ -302,26 +302,19 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       </div>
 
       {/* Main Equation Display with Highlights */}
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl py-6 px-4 flex flex-col items-center justify-center space-y-4 relative">
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl py-4 sm:py-6 px-2 sm:px-4 flex flex-col items-center justify-center space-y-3 sm:space-y-4 relative">
         
-        {/* Pause Button (Statis) */}
-        <button 
-          onClick={() => setIsPaused(!isPaused)}
-          className={`absolute top-4 right-4 p-2.5 rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center ${isPaused ? 'bg-amber-500 text-white hover:bg-amber-600' : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50'}`}
-          title={isPaused ? "Lanjutkan Animasi" : "Jeda Animasi"}
-        >
-          {isPaused ? <PlayCircle size={22} /> : <PauseCircle size={22} />}
-        </button>
+        {/* Pause Button moved to SVG area */}
 
         {/* Dynamic Text Explanation (Top) */}
         <div className="h-10 flex items-center justify-center px-4 w-full">
-          <span className="text-sm md:text-base font-bold text-slate-700 tracking-wide animate-fadeIn font-sans bg-amber-100 text-amber-800 px-5 py-2 rounded-xl border border-amber-200 text-center shadow-xs">
+          <span className="text-xs sm:text-sm md:text-base font-bold text-slate-700 tracking-wide animate-fadeIn font-sans bg-amber-100 text-amber-800 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-200 text-center shadow-xs">
             {renderExplanation()}
           </span>
         </div>
 
         {/* The Equation */}
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 max-w-full text-4xl md:text-6xl font-black font-mono tracking-tighter">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 max-w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter">
           
           {/* Term A */}
           <div className="relative h-16 flex items-center justify-center">
@@ -400,22 +393,34 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
 
         {/* Kesimpulan Pop-up */}
         {passed('SHOW_RESULT') && op === '-' && (
-          <div className="mt-6 bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-500">
+          <div className="mt-3 sm:mt-6 bg-indigo-600 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-500">
             Kesimpulan: {a} - {b < 0 ? `(${b})` : b} = {a} + {-b < 0 ? `(${-b})` : -b} = {correctAnswer}
           </div>
         )}
       </div>
 
       {/* SVG Number Line Canvas */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6 relative overflow-hidden select-none shadow-2xl mt-4">
+      <div className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl mt-2 sm:mt-4">
         
-        {/* Floating Ulangi Animasi Button */}
-        <div className="absolute top-4 right-4 z-50">
+        {/* Animation Controls (Restart & Pause) */}
+        <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-50 flex items-center gap-2">
+          <button 
+            onClick={() => setIsPaused(!isPaused)}
+            className={`p-2 sm:p-2.5 rounded-xl shadow-md transition-colors cursor-pointer flex items-center justify-center border backdrop-blur-sm ${
+              isPaused 
+                ? 'bg-amber-500/90 hover:bg-amber-500 text-white border-amber-600' 
+                : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border-slate-700'
+            }`}
+            title={isPaused ? "Lanjutkan Animasi" : "Jeda Animasi"}
+          >
+            {isPaused ? <PlayCircle size={16} className="sm:w-5 sm:h-5" /> : <PauseCircle size={16} className="sm:w-5 sm:h-5" />}
+          </button>
+          
           <button
             onClick={handleRestart}
-            className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
+            className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={14} className="sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Ulangi Animasi</span>
           </button>
         </div>
@@ -426,9 +431,9 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Main Axis Line */}
-          <line x1={marginX - 20} y1={axisY} x2={viewBoxWidth - marginX + 20} y2={axisY} stroke="#475569" strokeWidth="4" strokeLinecap="round"/>
-          <path d={`M ${marginX - 30} ${axisY} L ${marginX - 15} ${axisY - 8} L ${marginX - 15} ${axisY + 8} Z`} fill="#475569" />
-          <path d={`M ${viewBoxWidth - marginX + 30} ${axisY} L ${viewBoxWidth - marginX + 15} ${axisY - 8} L ${viewBoxWidth - marginX + 15} ${axisY + 8} Z`} fill="#475569" />
+          <line x1={marginX - 20} y1={axisY} x2={viewBoxWidth - marginX + 20} y2={axisY} stroke="#475569" strokeWidth="6" strokeLinecap="round"/>
+          <path d={`M ${marginX - 30} ${axisY} L ${marginX - 15} ${axisY - 12} L ${marginX - 15} ${axisY + 12} Z`} fill="#475569" />
+          <path d={`M ${viewBoxWidth - marginX + 30} ${axisY} L ${viewBoxWidth - marginX + 15} ${axisY - 12} L ${viewBoxWidth - marginX + 15} ${axisY + 12} Z`} fill="#475569" />
 
           {/* Ticks */}
           {ticks.map((val) => {
@@ -438,12 +443,12 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
             const isRes = passed('SHOW_RESULT') && val === correctAnswer;
             return (
               <g key={`tick-${val}`} className="transition-all duration-500">
-                <line x1={tx} y1={axisY - 6} x2={tx} y2={axisY + 6} stroke={isZero ? "#cbd5e1" : "#64748b"} strokeWidth={isZero ? "3" : "2"} />
+                <line x1={tx} y1={axisY - 10} x2={tx} y2={axisY + 10} stroke={isZero ? "#cbd5e1" : "#64748b"} strokeWidth={isZero ? "5" : "3"} />
                 <text 
-                  x={tx} y={axisY + 30} 
+                  x={tx} y={axisY + 40} 
                   textAnchor="middle" 
                   fill={isZero ? "#f8fafc" : isA ? "#fcd34d" : isRes ? "#34d399" : "#94a3b8"} 
-                  fontSize={isA || isRes ? "18" : "14"} 
+                  fontSize={isA || isRes ? "32" : "24"} 
                   fontFamily="monospace"
                   fontWeight={isZero || isA || isRes ? "bold" : "normal"}
                   className="select-none"
@@ -472,7 +477,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
                 y={arrow1Y - 8} 
                 textAnchor="middle" 
                 fill={a > 0 ? "#38bdf8" : "#fb7185"} 
-                fontSize="16" 
+                fontSize="24" 
                 fontFamily="monospace"
                 fontWeight="bold"
                 className="animate-fadeIn select-none drop-shadow-md"
@@ -500,7 +505,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
                 y={arrow2Y - 8} 
                 textAnchor="middle" 
                 fill={movement > 0 ? "#38bdf8" : "#fb7185"} 
-                fontSize="18" 
+                fontSize="26" 
                 fontFamily="monospace"
                 fontWeight="bold"
                 className="animate-fadeIn select-none drop-shadow-md"
@@ -513,16 +518,16 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           {/* Start Point Marker (A) */}
           {(passed('MOVE_ZERO_TO_A') && !passed('SHOW_RESULT')) && (
             <>
-              <line x1={startX} y1={axisY} x2={startX} y2={arrow1Y} stroke="#94a3b8" strokeWidth="2" strokeDasharray="4" />
-              <circle cx={startX} cy={axisY} r="6" fill="#fcd34d" className="animate-ping-slow origin-center" />
+              <line x1={startX} y1={axisY} x2={startX} y2={arrow1Y} stroke="#94a3b8" strokeWidth="3" strokeDasharray="4" />
+              <circle cx={startX} cy={axisY} r="12" fill="#fcd34d" className="animate-ping-slow origin-center" />
             </>
           )}
 
           {/* End Point Marker (Result) */}
           {passed('SHOW_RESULT') && (
             <>
-              <line x1={endX} y1={axisY} x2={endX} y2={arrow2Y} stroke="#94a3b8" strokeWidth="2" strokeDasharray="4" />
-              <circle cx={endX} cy={axisY} r="8" fill="#34d399" className="animate-ping-slow origin-center" />
+              <line x1={endX} y1={axisY} x2={endX} y2={arrow2Y} stroke="#94a3b8" strokeWidth="3" strokeDasharray="4" />
+              <circle cx={endX} cy={axisY} r="14" fill="#34d399" className="animate-ping-slow origin-center" />
             </>
           )}
 

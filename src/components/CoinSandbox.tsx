@@ -752,10 +752,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
   })();
 
   return (
-    <div id="coin-sandbox" className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm h-full min-h-[450px] md:min-h-[600px] lg:min-h-[800px] items-stretch">
+    <div id="coin-sandbox" className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 bg-white p-3 md:p-6 rounded-2xl border border-slate-100 shadow-sm h-full min-h-[400px] lg:min-h-[600px] items-stretch">
       
       {/* Sandbox control parameters (left col) */}
-      <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
+      <div className="lg:col-span-4 flex flex-col justify-between space-y-3 sm:space-y-6">
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between">
@@ -1084,29 +1084,29 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             }
           }}
           onTouchEnd={handleEndDrag}
-          className={`lg:col-span-8 relative w-full h-full min-h-[450px] md:min-h-[600px] lg:min-h-[800px] bg-slate-900 border border-slate-950 rounded-2xl overflow-hidden shadow-inner select-none cursor-grab active:cursor-grabbing touch-none ${isShaking ? 'animate-shake' : ''}`}
+          className={`lg:col-span-8 relative w-full h-full min-h-[350px] md:min-h-[500px] lg:min-h-[600px] bg-slate-900 border border-slate-950 rounded-2xl overflow-hidden shadow-inner select-none cursor-grab active:cursor-grabbing touch-none ${isShaking ? 'animate-shake' : ''}`}
         >
 
           {/* Floating Legend */}
-          <div className="absolute top-4 left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-3 py-2 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl border border-slate-700 shadow-lg scale-90 md:scale-100 origin-top-left">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-md flex items-center justify-center">
+          <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-1 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-2 py-1.5 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl border border-slate-700 shadow-lg scale-75 sm:scale-100 origin-top-left">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <IceSvg />
               </div>
-              <span className="text-slate-200 font-mono text-xs font-bold">+1 (Es)</span>
+              <span className="text-slate-200 font-mono text-[10px] sm:text-xs font-bold">+1 (Es)</span>
             </div>
-            <div className="w-px h-5 bg-slate-600"></div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-md flex items-center justify-center">
+            <div className="w-px h-4 sm:h-5 bg-slate-600"></div>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <FireSvg />
               </div>
-              <span className="text-slate-200 font-mono text-xs font-bold">-1 (Api)</span>
+              <span className="text-slate-200 font-mono text-[10px] sm:text-xs font-bold">-1 (Api)</span>
             </div>
           </div>
 
           {/* Floating Ulangi Animasi Button */}
           {activeEquation && (
-            <div className="absolute top-4 right-4 z-50 scale-90 md:scale-100 origin-top-right">
+            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-50 scale-75 sm:scale-100 origin-top-right">
               <button
                 onClick={() => { setPresentationState('IDLE'); setCoins([]); setIsCompleted(false); setIsGathering(false); setIsTransformed(false); setIsAutoSolving(false); isAutoSolvingRef.current = false; setIsAutoSolvePending(false); }}
                 className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 p-2 md:px-4 md:py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
@@ -1119,10 +1119,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
 
           {/* Lock Equation Button (Freeplay Mode Only) */}
           {!activeEquation && coins.length > 0 && presentationState === 'DONE' && !isCompleted && !isGathering && (
-            <div className="absolute top-4 right-4 z-40 scale-90 md:scale-100 origin-top-right">
+            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-40 scale-75 sm:scale-100 origin-top-right">
               <button
                 onClick={handleLockFreeplayEquation}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold px-4 py-2 rounded-xl shadow-md flex items-center gap-2 animate-bounce cursor-pointer border border-emerald-400 transition-all hover:scale-105"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl shadow-md flex items-center gap-1.5 sm:gap-2 animate-bounce cursor-pointer border border-emerald-400 transition-all hover:scale-105 text-xs sm:text-base"
               >
                 <Sparkles size={16} />
                 <span>Kunci Soal & Selesaikan</span>
@@ -1135,7 +1135,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
               <button
                 onClick={handleAutoSolve}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold px-6 py-3 rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] flex items-center gap-2 animate-bounce cursor-pointer border-2 border-indigo-400 transition-all hover:scale-105"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] flex items-center gap-2 animate-bounce cursor-pointer border-2 border-indigo-400 transition-all hover:scale-105 text-sm sm:text-base"
               >
                 <Wand2 size={18} />
                 <span>Lakukan Otomatis</span>
@@ -1153,12 +1153,12 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                   const displayOp = isTransformed && activeEquation.op === '-' ? '+' : activeEquation.op;
                   return (
                     <>
-                      <div className="flex items-center justify-center gap-1.5 md:gap-4 text-white text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter drop-shadow-lg">
+                      <div className="flex items-center justify-center gap-1.5 md:gap-4 text-white text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black font-mono tracking-tighter drop-shadow-lg">
                       <div className={`transition-all duration-700 ${presentationState === 'STEP_A' ? (activeEquation.a < 0 ? 'scale-110 md:scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-110 md:scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
                         <InlineMath math={activeEquation.a < 0 ? `(${activeEquation.a})` : `${activeEquation.a}`} />
                       </div>
                       <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_OP' || isTransformed ? 'scale-110 md:scale-125 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'text-slate-500 opacity-60'}`}>
-                        <div className="relative w-12 h-16 flex items-center justify-center">
+                        <div className="relative w-8 h-12 md:w-12 md:h-16 flex items-center justify-center">
                           <span className={`transition-all duration-500 absolute ${isTransformed ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`}>
                             <InlineMath math={activeEquation.op} />
                           </span>
@@ -1168,7 +1168,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                         </div>
                       </div>
                       <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_B' ? (activeEquation.b < 0 ? 'scale-110 md:scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-110 md:scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
-                        <div className="relative w-28 md:w-32 h-16 flex items-center justify-center">
+                        <div className="relative w-20 md:w-28 h-12 md:h-16 flex items-center justify-center">
                           <span className={`transition-all duration-500 absolute ${isTransformed ? 'opacity-0 scale-50 blur-sm' : 'opacity-100 scale-100 blur-0'}`}>
                             <InlineMath math={activeEquation.b < 0 ? `(${activeEquation.b})` : `${activeEquation.b}`} />
                           </span>
@@ -1181,17 +1181,17 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                     {/* Independent Explanation Text Container Below Equation */}
                     <div className="mt-4 md:mt-8 min-h-[48px] flex flex-col items-center justify-center relative w-full z-50 px-4">
                       {presentationState === 'STEP_OP' && activeEquation.op === '-' && (
-                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
+                        <span className="relative block text-xs sm:text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-3 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
                           Kurang sama artinya menambahkan lawannya
                         </span>
                       )}
                       {presentationState === 'STEP_B' && activeEquation.op === '-' && (
-                        <span className={`relative block text-sm md:text-base font-sans tracking-wide font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md ${(-activeEquation.b) < 0 ? 'text-rose-300' : 'text-sky-300'}`}>
+                        <span className={`relative block text-xs sm:text-sm md:text-base font-sans tracking-wide font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-3 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md ${(-activeEquation.b) < 0 ? 'text-rose-300' : 'text-sky-300'}`}>
                           Lawan dari {activeEquation.b < 0 ? `(${activeEquation.b})` : activeEquation.b} adalah {-activeEquation.b}
                         </span>
                       )}
                       {(presentationState === 'STEP_OP' || presentationState === 'STEP_B') && activeEquation.op === '+' && (
-                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
+                        <span className="relative block text-xs sm:text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-3 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
                           Tambahkan / Masukkan
                         </span>
                       )}
@@ -1203,7 +1203,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
               {presentationState === 'IDLE' && (
                 <button
                   onClick={() => setPresentationState('STEP_A')}
-                  className="mt-6 md:mt-12 w-full max-w-xs mx-auto md:w-auto bg-emerald-500 hover:bg-emerald-400 text-white font-bold font-sans px-4 py-3 md:px-8 md:py-4 rounded-full shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex justify-center items-center gap-2 md:gap-3 text-sm md:text-lg animate-pulse cursor-pointer pointer-events-auto"
+                  className="mt-4 md:mt-8 w-[90%] mx-auto md:w-auto bg-emerald-500 hover:bg-emerald-400 text-white font-bold font-sans px-4 py-2.5 md:px-8 md:py-4 rounded-full shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex justify-center items-center gap-2 md:gap-3 text-sm md:text-lg animate-pulse cursor-pointer pointer-events-auto"
                 >
                   <PlayCircle size={20} className="md:w-6 md:h-6" />
                   Tampilkan Visualisasi
@@ -1427,7 +1427,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
         </div>
 
         {/* Small tips context */}
-        <div className="mt-4 bg-slate-50 border border-slate-150 p-4 rounded-xl flex items-start gap-2.5 text-slate-650 text-xs">
+        <div className="mt-2 md:mt-4 bg-slate-50 border border-slate-150 p-3 md:p-4 rounded-xl flex items-start gap-2.5 text-slate-650 text-[10px] sm:text-xs">
           <Info size={14} className="text-slate-400 shrink-0 mt-0.5" />
           <div className="flex-1">
             <strong>Panduan Kognitif:</strong> {

@@ -752,10 +752,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
   })();
 
   return (
-    <div id="coin-sandbox" className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 bg-white p-3 md:p-6 rounded-2xl border border-slate-100 shadow-sm h-full min-h-[400px] lg:min-h-[600px] items-stretch">
+    <div id="coin-sandbox" className="grid grid-cols-1 lg:grid-cols-12 gap-1.5 sm:gap-6 bg-white p-1.5 sm:p-3 md:p-6 rounded-xl sm:rounded-2xl border border-slate-100 shadow-sm h-full min-h-[350px] lg:min-h-[600px] items-stretch">
       
       {/* Sandbox control parameters (left col) */}
-      <div className="lg:col-span-4 flex flex-col justify-between space-y-3 sm:space-y-6">
+      <div className="lg:col-span-4 flex flex-col justify-between space-y-1.5 sm:space-y-6">
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between">
@@ -788,10 +788,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                 )}
               </div>
             </div>
-            <h3 className="font-sans font-bold text-slate-900 text-lg mt-2 tracking-tight">
+            <h3 className="font-sans font-bold text-slate-900 text-sm sm:text-lg mt-1 sm:mt-2 tracking-tight">
               {activeEquation ? `Modeling: ${activeEquation.expression}` : "Zero-Pair Element Sandbox"}
             </h3>
-            <div className="text-xs text-slate-500 font-sans leading-relaxed space-y-1 mt-1">
+            <div className="text-[10px] sm:text-xs text-slate-500 font-sans leading-relaxed space-y-0.5 sm:space-y-1 mt-0.5 sm:mt-1">
               {activeEquation ? (
                 <span>
                   Mari ubah persamaan <strong className="text-indigo-600 font-mono font-bold select-all">{activeEquation.expression}</strong> ke bentuk es dan api!
@@ -825,60 +825,60 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                 onClick={() => spawnCoin(1)}
                 className="flex items-center justify-center gap-1 sm:gap-1.5 bg-sky-50 border border-sky-200 hover:bg-sky-100/80 active:translate-y-0.5 text-sky-700 font-semibold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-all cursor-pointer font-sans"
               >
-                <Plus size={12} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
-                <span>Positive (+1)</span>
+                <Plus size={10} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
+                <span className="text-[9px] sm:text-xs">Positive (+1)</span>
               </button>
               <button
                 id="btn-spawn-negative"
                 onClick={() => spawnCoin(-1)}
-                className="flex items-center justify-center gap-1 sm:gap-1.5 bg-rose-50 border border-rose-200 hover:bg-rose-100/90 active:translate-y-0.5 text-rose-700 font-semibold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-all cursor-pointer font-sans"
+                className="flex items-center justify-center gap-1 sm:gap-1.5 bg-rose-50 border border-rose-200 hover:bg-rose-100/90 active:translate-y-0.5 text-rose-700 font-semibold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl transition-all cursor-pointer font-sans"
               >
-                <Minus size={12} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
-                <span>Negative (-1)</span>
+                <Minus size={10} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
+                <span className="text-[9px] sm:text-xs">Negative (-1)</span>
               </button>
             </div>
           </div>
 
           {/* Real-time Math Ledger Card */}
-          <div className="bg-slate-50 border border-slate-150 p-2 sm:p-4 rounded-xl space-y-1.5 sm:space-y-3">
-            <div className="flex items-center justify-between pb-0.5 sm:pb-1 border-b border-slate-200/60 mb-1 sm:mb-2">
-              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-slate-405 block uppercase tracking-wider">WORKSPACE MATH LEDGER</span>
+          <div className="bg-slate-50 border border-slate-150 p-1.5 sm:p-4 rounded-lg sm:rounded-xl space-y-1 sm:space-y-3">
+            <div className="flex items-center justify-between pb-0.5 sm:pb-1 border-b border-slate-200/60 mb-0.5 sm:mb-2">
+              <span className="text-[8px] sm:text-[10px] font-mono font-bold text-slate-405 block uppercase tracking-wider">WORKSPACE MATH LEDGER</span>
               <button 
                 onClick={handleClear} 
-                className="text-[9px] sm:text-xs flex items-center gap-1 text-rose-600 hover:bg-rose-100/80 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded transition-colors font-semibold"
+                className="text-[8px] sm:text-xs flex items-center gap-1 text-rose-600 hover:bg-rose-100/80 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded transition-colors font-semibold"
               >
                 <RotateCcw size={10} /> Reset
               </button>
             </div>
             
-            <div className="grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-mono">
-              <div className="bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
-                <span className="text-sky-600 font-bold text-sm sm:text-base block">{positiveCount}</span>
-                <span className="text-[8px] sm:text-[9px] text-slate-400">ES (+1)</span>
+            <div className="grid grid-cols-3 gap-0.5 sm:gap-2 text-center font-mono">
+              <div className="bg-white p-0.5 sm:p-2 rounded-md sm:rounded-lg border border-slate-100">
+                <span className="text-sky-600 font-bold text-xs sm:text-base block">{positiveCount}</span>
+                <span className="text-[7px] sm:text-[9px] text-slate-400">ES (+1)</span>
               </div>
-              <div className="flex flex-col items-center justify-center bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
-                <span className="text-rose-600 font-bold text-sm sm:text-base block">{negativeCount}</span>
-                <span className="text-[8px] sm:text-[9px] text-slate-400">API (-1)</span>
+              <div className="flex flex-col items-center justify-center bg-white p-0.5 sm:p-2 rounded-md sm:rounded-lg border border-slate-100">
+                <span className="text-rose-600 font-bold text-xs sm:text-base block">{negativeCount}</span>
+                <span className="text-[7px] sm:text-[9px] text-slate-400">API (-1)</span>
               </div>
-              <div className="bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
-                <span className={`font-extrabold text-sm sm:text-base block ${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-500"}`}>
+              <div className="bg-white p-0.5 sm:p-2 rounded-md sm:rounded-lg border border-slate-100">
+                <span className={`font-extrabold text-xs sm:text-base block ${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-500"}`}>
                   {netValue > 0 ? `+${netValue}` : netValue}
                 </span>
-                <span className="text-[8px] sm:text-[9px] text-slate-400">NET VALUE</span>
+                <span className="text-[7px] sm:text-[9px] text-slate-400">NET VALUE</span>
               </div>
             </div>
 
             {/* Algebraic Representation Expression */}
-            <div className="bg-white py-1.5 px-2 sm:p-3 rounded-lg sm:rounded-xl border border-slate-100 text-center select-all">
-              <span tabIndex={0} className="text-[8px] sm:text-[9px] font-mono text-slate-400 flex items-center justify-center gap-1 mb-0 sm:mb-0.5 relative group outline-hidden">
+            <div className="bg-white py-1 px-1.5 sm:p-3 rounded-md sm:rounded-xl border border-slate-100 text-center select-all">
+              <span tabIndex={0} className="text-[7px] sm:text-[9px] font-mono text-slate-400 flex items-center justify-center gap-1 mb-0 sm:mb-0.5 relative group outline-hidden">
                 ALGEBRAIC REPRESENTATION
-                <HelpCircle size={10} className="cursor-help" />
+                <HelpCircle size={8} className="cursor-help sm:w-2.5 sm:h-2.5" />
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-48 p-2 bg-slate-800 text-white text-[10px] rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 transition-opacity z-50 text-center shadow-lg font-sans normal-case">
                   Tahukah kamu? Bilangan positif seperti <span className="font-bold text-sky-300">+2</span> biasanya ditulis tanpa tanda plus menjadi <span className="font-bold text-sky-300">2</span> saja.
                   <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
                 </div>
               </span>
-              <span className="font-mono text-[11px] sm:text-sm font-extrabold text-slate-800 leading-tight">
+              <span className="font-mono text-[9px] sm:text-sm font-extrabold text-slate-800 leading-tight block truncate whitespace-normal">
                 {positiveCount === 0 && negativeCount === 0 ? "0" : (
                   <>
                     {Array(positiveCount).fill("(+1)").join(" + ") || ""}
@@ -894,28 +894,28 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             </div>
 
             {/* Kemungkinan Soal Representation */}
-            <div className="bg-white py-1.5 px-2 sm:p-3 rounded-lg sm:rounded-xl border border-slate-100 text-center">
-              <span className="text-[8px] sm:text-[9px] font-mono text-slate-400 block mb-0.5 sm:mb-1">KEMUNGKINAN SOAL EKUIVALEN</span>
-              <div className="font-mono text-[10px] sm:text-xs font-extrabold text-slate-700 flex flex-col gap-0.5 sm:gap-1 select-all">
+            <div className="bg-white py-1 px-1.5 sm:p-3 rounded-md sm:rounded-xl border border-slate-100 text-center">
+              <span className="text-[7px] sm:text-[9px] font-mono text-slate-400 block mb-0.5 sm:mb-1">KEMUNGKINAN SOAL EKUIVALEN</span>
+              <div className="font-mono text-[9px] sm:text-xs font-extrabold text-slate-700 flex flex-col gap-0 sm:gap-1 select-all">
                 {positiveCount === 0 && negativeCount === 0 ? (
                   <span className="text-slate-400 italic font-normal text-[10px]">Belum ada elemen</span>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} - {negativeCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} + {positiveCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} + {negativeCount === 0 ? 0 : `(-${negativeCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} - {positiveCount === 0 ? 0 : `(-${positiveCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
                   </>
                 )}
@@ -1048,11 +1048,11 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
       <div className="lg:col-span-8 flex flex-col justify-between">
         
         {/* Post-Presentation Instructions */}
-        <div className="min-h-[48px] flex items-center justify-center mb-2 gap-4">
+        <div className="min-h-[32px] sm:min-h-[48px] flex items-center justify-center mb-1 sm:mb-2 gap-2 sm:gap-4">
           {presentationState === 'DONE' && !isGathering && !isCompleted && (
-            <div className="bg-indigo-950/80 backdrop-blur-md border border-indigo-500/50 text-indigo-100 px-6 py-2.5 rounded-full text-sm font-sans shadow-lg flex items-center gap-3 animate-fadeIn">
-              <Sparkles size={18} className="text-amber-400 animate-pulse shrink-0" />
-              <span className="font-semibold tracking-wide text-center">
+            <div className="bg-indigo-950/80 backdrop-blur-md border border-indigo-500/50 text-indigo-100 px-3 py-1.5 sm:px-6 sm:py-2.5 rounded-lg sm:rounded-full text-[10px] sm:text-sm font-sans shadow-lg flex items-center gap-1.5 sm:gap-3 animate-fadeIn">
+              <Sparkles size={14} className="text-amber-400 animate-pulse shrink-0 sm:w-[18px] sm:h-[18px]" />
+              <span className="font-medium sm:font-semibold tracking-wide text-center">
                 {hasNoZeroPairs 
                   ? "Semua elemen memiliki warna sama. Elemen-elemen ini tidak bisa dinetralkan!" 
                   : "Seret dan benturkan Es biru (+) ke Api merah (-) untuk menetralkannya (pasangan nol)!"}
@@ -1063,10 +1063,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             <button
               id="btn-proceed-to-drill-from-sandbox"
               onClick={onProceedToDrill}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-full text-sm font-sans font-bold shadow-lg flex items-center gap-2 animate-fadeIn transition-colors cursor-pointer border border-indigo-500"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-lg sm:rounded-full text-[10px] sm:text-sm font-sans font-bold shadow-lg flex items-center gap-1 sm:gap-2 animate-fadeIn transition-colors cursor-pointer border border-indigo-500 shrink-0"
             >
-              <span>Lanjut Latihan</span>
-              <ArrowRight size={16} />
+              <span className="whitespace-nowrap">Lanjut Latihan</span>
+              <ArrowRight size={12} className="sm:w-4 sm:h-4" />
             </button>
           )}
         </div>
@@ -1084,29 +1084,29 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             }
           }}
           onTouchEnd={handleEndDrag}
-          className={`lg:col-span-8 relative w-full h-full min-h-[350px] md:min-h-[500px] lg:min-h-[600px] bg-slate-900 border border-slate-950 rounded-2xl overflow-hidden shadow-inner select-none cursor-grab active:cursor-grabbing touch-none ${isShaking ? 'animate-shake' : ''}`}
+          className={`lg:col-span-8 relative w-full h-full min-h-[300px] md:min-h-[500px] lg:min-h-[600px] bg-slate-900 border border-slate-950 rounded-2xl overflow-hidden shadow-inner select-none cursor-grab active:cursor-grabbing touch-none ${isShaking ? 'animate-shake' : ''}`}
         >
 
           {/* Floating Legend */}
-          <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-1 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-2 py-1.5 md:px-4 md:py-2.5 rounded-xl md:rounded-2xl border border-slate-700 shadow-lg scale-75 sm:scale-100 origin-top-left">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
+          <div className="absolute top-1 sm:top-4 left-1 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-0.5 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-1.5 py-1 md:px-4 md:py-2.5 rounded-lg md:rounded-2xl border border-slate-700 shadow-lg scale-65 sm:scale-100 origin-top-left">
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="w-4 h-4 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <IceSvg />
               </div>
-              <span className="text-slate-200 font-mono text-[10px] sm:text-xs font-bold">+1 (Es)</span>
+              <span className="text-slate-200 font-mono text-[9px] sm:text-xs font-bold">+1 (Es)</span>
             </div>
-            <div className="w-px h-4 sm:h-5 bg-slate-600"></div>
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
+            <div className="w-px h-3 sm:h-5 bg-slate-600"></div>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="w-4 h-4 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <FireSvg />
               </div>
-              <span className="text-slate-200 font-mono text-[10px] sm:text-xs font-bold">-1 (Api)</span>
+              <span className="text-slate-200 font-mono text-[9px] sm:text-xs font-bold">-1 (Api)</span>
             </div>
           </div>
 
           {/* Floating Ulangi Animasi Button */}
           {activeEquation && (
-            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-50 scale-75 sm:scale-100 origin-top-right">
+            <div className="absolute top-1 sm:top-4 right-1 sm:right-4 z-50 scale-65 sm:scale-100 origin-top-right">
               <button
                 onClick={() => { setPresentationState('IDLE'); setCoins([]); setIsCompleted(false); setIsGathering(false); setIsTransformed(false); setIsAutoSolving(false); isAutoSolvingRef.current = false; setIsAutoSolvePending(false); }}
                 className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 p-2 md:px-4 md:py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
@@ -1427,9 +1427,9 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
         </div>
 
         {/* Small tips context */}
-        <div className="mt-2 md:mt-4 bg-slate-50 border border-slate-150 p-3 md:p-4 rounded-xl flex items-start gap-2.5 text-slate-650 text-[10px] sm:text-xs">
-          <Info size={14} className="text-slate-400 shrink-0 mt-0.5" />
-          <div className="flex-1">
+        <div className="mt-1.5 md:mt-4 bg-slate-50 border border-slate-150 p-2 md:p-4 rounded-lg md:rounded-xl flex items-start gap-1.5 sm:gap-2.5 text-slate-650 text-[9px] sm:text-xs">
+          <Info size={12} className="text-slate-400 shrink-0 mt-0.5 sm:w-[14px] sm:h-[14px]" />
+          <div className="flex-1 leading-tight sm:leading-relaxed">
             <strong>Panduan Kognitif:</strong> {
               tipIndex === 0 
                 ? "Penjumlahan dua angka dengan tanda berlawanan dapat diselesaikan dengan memvisualisasikan pasangan (zero-pair) saling menetralisir. Sisa elemen adalah jawaban akhir. Pengurangan bilangan negatif sama dengan menjumlahkan bilangan positif (lawannya)."

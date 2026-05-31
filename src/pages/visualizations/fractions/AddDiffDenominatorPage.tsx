@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, CheckCircle2, XCircle, Info } from "lucide-react";
 
 export default function AddDiffDenominatorPage() {
@@ -129,7 +130,7 @@ export default function AddDiffDenominatorPage() {
                     onClick={() => { setN1(a); setDen1(b); setN2(c); setDen2(d); setStep(0); }}
                     className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
                   >
-                    {a}/{b} + {c}/{d}
+                    <InlineMath math={`\\frac{${a}}{${b}}`} /> + <InlineMath math={`\\frac{${c}}{${d}}`} />
                   </button>
                 ))}
               </div>
@@ -220,7 +221,7 @@ export default function AddDiffDenominatorPage() {
             <div className="flex items-start gap-3">
               <Info className="text-indigo-600 shrink-0 mt-0.5" />
               <p className="text-xs text-indigo-800 leading-relaxed">
-                Sebelum digabung, kita tidak tahu akan menamai potongannya apa (berbeda ukuran). Kita mengubah pecahan {n1}/{den1} menjadi bentuk <strong>Pecahan Senilai</strong> ({eqN1}/{den2}) agar ukurannya seragam.
+                Sebelum digabung, kita tidak tahu akan menamai potongannya apa (berbeda ukuran). Kita mengubah pecahan <InlineMath math={`\\frac{${n1}}{${den1}}`} /> menjadi bentuk <strong>Pecahan Senilai</strong> (<InlineMath math={`\\frac{${eqN1}}{${den2}}`} />) agar ukurannya seragam.
               </p>
             </div>
           </div>

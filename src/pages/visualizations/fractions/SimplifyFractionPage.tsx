@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, Info } from "lucide-react";
 
 export default function SimplifyFractionPage() {
@@ -114,7 +115,7 @@ export default function SimplifyFractionPage() {
                     onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setDivisor(1); }}
                     className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
                   >
-                    {n}/{d}
+                    <InlineMath math={`\\frac{${n}}{${d}}`} />
                   </button>
                 ))}
               </div>
@@ -172,7 +173,7 @@ export default function SimplifyFractionPage() {
             </div>
             
             <p className="text-xs text-slate-500 leading-relaxed">
-              Membagi pembilang dan penyebut dengan faktor yang sama tidak mengubah nilai pecahan. {baseNumerator}/{baseDenominator} senilai dengan {currentNumerator}/{currentDenominator}.
+              Membagi pembilang dan penyebut dengan faktor yang sama tidak mengubah nilai pecahan. <InlineMath math={`\\frac{${baseNumerator}}{${baseDenominator}}`} /> senilai dengan <InlineMath math={`\\frac{${currentNumerator}}{${currentDenominator}}`} />.
             </p>
           </div>
 

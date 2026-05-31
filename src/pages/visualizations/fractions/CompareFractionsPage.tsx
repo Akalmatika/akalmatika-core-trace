@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, CheckCircle2, XCircle, Info } from "lucide-react";
 
 const SCENARIOS = [
@@ -133,7 +134,7 @@ export default function CompareFractionsPage() {
                     ${matchingScenario?.label === s.label ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100'}
                   `}
                 >
-                  {s.label} ({s.n1}/{s.d1} vs {s.n2}/{s.d2})
+                  {s.label} (<InlineMath math={`\\frac{${s.n1}}{${s.d1}}`} /> vs <InlineMath math={`\\frac{${s.n2}}{${s.d2}}`} />)
                 </button>
               ))}
             </div>

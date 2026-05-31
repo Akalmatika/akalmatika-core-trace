@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, Box, Info } from "lucide-react";
 
 export default function AddSameDenominatorPage() {
@@ -82,7 +83,7 @@ export default function AddSameDenominatorPage() {
           </div>
 
           <div className={`mt-12 text-center text-slate-500 font-medium bg-white/80 px-4 py-2 rounded-xl border border-slate-100 shadow-sm transition-all duration-[1500ms] ease-in-out ${step === 1 ? 'opacity-100' : 'opacity-0'}`}>
-            Ukuran wadah potongan <strong>(Penyebut: {den})</strong> tetap sama, hanya isinya <strong>(Pembilang)</strong> yang digabung.
+            Miskonsepsi umum adalah ikut menjumlahkan penyebutnya (menjadi <InlineMath math={`\\frac{${n1 + n2}}{${den + den}}`} />). Padahal, penyebut hanya menunjukkan <strong>ukuran potongan</strong>, bukan jumlah barangnya.
           </div>
 
         </div>
@@ -98,13 +99,13 @@ export default function AddSameDenominatorPage() {
             <div className="mb-4">
               <p className="text-xs font-bold text-slate-400 mb-2">Pilihan Cepat:</p>
               <div className="flex gap-2 flex-wrap">
-                {[[1,2,4], [2,3,6], [3,4,8], [2,2,5], [3,1,5]].map(([a, b, d]) => (
+                {[[1,2,4], [2,3,6], [3,4,8], [2,2,5], [3,1,5]].map(([num1, num2, d]) => (
                   <button
-                    key={`${a}-${b}-${d}`}
-                    onClick={() => { setN1(a); setN2(b); setDen(d); setStep(0); }}
+                    key={`${num1}-${num2}-${d}`}
+                    onClick={() => { setN1(num1); setN2(num2); setDen(d); setStep(0); }}
                     className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
                   >
-                    {a}/{d} + {b}/{d}
+                    <InlineMath math={`\\frac{${num1}}{${d}}`} /> + <InlineMath math={`\\frac{${num2}}{${d}}`} />
                   </button>
                 ))}
               </div>
@@ -180,8 +181,8 @@ export default function AddSameDenominatorPage() {
             <div className="flex items-start gap-3">
               <Info className="text-rose-600 shrink-0 mt-0.5" />
               <p className="text-xs text-rose-800 leading-relaxed">
-                <strong>Miskonsepsi:</strong> Siswa sering kali menjumlahkan penyebut menjadi {den + den}. 
-                Visualisasi ini membuktikan bahwa menggabungkan {n1}/{den} dan {n2}/{den} tidak mengubah ukuran wadah pemotongannya.
+                <strong>Miskonsepsi:</strong> Siswa sering kali menjumlahkan penyebut (menjadi <InlineMath math={`\\frac{${n1 + n2}}{${den + den}}`} />). 
+                Visualisasi ini membuktikan bahwa menggabungkan <InlineMath math={`\\frac{${n1}}{${den}}`} /> dan <InlineMath math={`\\frac{${n2}}{${den}}`} /> tidak mengubah ukuran wadah pemotongannya.
               </p>
             </div>
           </div>

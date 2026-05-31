@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, Info } from "lucide-react";
 
 export default function EquivalentFractionsPage() {
@@ -121,7 +122,7 @@ export default function EquivalentFractionsPage() {
                     onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setMultiplier(1); }}
                     className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
                   >
-                    {n}/{d}
+                    <InlineMath math={`\\frac{${n}}{${d}}`} />
                   </button>
                 ))}
               </div>
@@ -187,7 +188,7 @@ export default function EquivalentFractionsPage() {
             <div className="flex items-start gap-3">
               <Info className="text-indigo-600 shrink-0 mt-0.5" />
               <p className="text-xs text-indigo-800 leading-relaxed">
-                Miskonsepsi umum adalah mengira {currentNumerator}/{currentDenominator} lebih besar dari {baseNumerator}/{baseDenominator} karena angkanya lebih besar. Padahal, keduanya melambangkan <strong>kuantitas yang persis sama</strong>.
+                Miskonsepsi umum adalah mengira <InlineMath math={`\\frac{${currentNumerator}}{${currentDenominator}}`} /> lebih besar dari <InlineMath math={`\\frac{${baseNumerator}}{${baseDenominator}}`} /> karena angkanya lebih besar. Padahal, keduanya melambangkan <strong>kuantitas yang persis sama</strong>.
               </p>
             </div>
           </div>

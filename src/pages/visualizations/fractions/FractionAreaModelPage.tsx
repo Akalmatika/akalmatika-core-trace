@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
 import { ArrowLeft, Minus, Plus, Box, Info, CheckCircle2, XCircle } from "lucide-react";
 
 export default function FractionAreaModelPage() {
@@ -148,7 +149,7 @@ export default function FractionAreaModelPage() {
                       }}
                       className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
                     >
-                      {n}/{d}
+                      <InlineMath math={`\\frac{${n}}{${d}}`} />
                     </button>
                   ))}
                 </div>
@@ -244,7 +245,7 @@ export default function FractionAreaModelPage() {
           <div className="text-center max-w-xl mb-12">
             <h3 className="text-2xl font-black text-slate-900 mb-3">Miskonsepsi Check!</h3>
             <p className="text-slate-600 leading-relaxed text-sm md:text-base">
-              Hanya blok yang dipotong dengan <strong>ukuran yang benar-benar sama besar</strong> yang bisa disebut pecahan biasa. Yang manakah dari gambar di bawah ini yang mewakili bentuk pecahan <span className="font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">1/3</span> yang sah?
+              Hanya blok yang dipotong dengan <strong>ukuran yang benar-benar sama besar</strong> yang bisa disebut pecahan biasa. Yang manakah dari gambar di bawah ini yang mewakili bentuk pecahan <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="\frac{1}{3}" /></span> yang sah?
             </p>
           </div>
 
@@ -308,7 +309,7 @@ export default function FractionAreaModelPage() {
             <Info className="text-slate-400 shrink-0 mt-0.5" />
             <p className="text-xs text-slate-500 leading-relaxed">
               Miskonsepsi umum adalah siswa membaca jumlah potongan dan jumlah arsiran tanpa memperhatikan ukurannya. 
-              <strong> Padahal, pecahan 1/3 berarti 1 bagian dari 3 potongan yang SAMA BESAR.</strong>
+              <strong> Padahal, pecahan <InlineMath math="\frac{1}{3}" /> berarti 1 bagian dari 3 potongan yang SAMA BESAR.</strong>
             </p>
           </div>
         </div>

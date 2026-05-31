@@ -245,7 +245,7 @@ export default function StudentPortal() {
       if (detectedCode === "MC-ADD-SIGN-CONF") {
         feedbackText = "Perhatikan tanda negatif! Es dan Api akan saling menetralkan, bukan sekadar dijumlahkan nominalnya.";
       } else if (detectedCode === "MC-SUB-NEG-ADD") {
-        feedbackText = "Awas! Mengurangkan bilangan negatif itu seperti menghapus utang, yang artinya justru membuat nilai naik. Mari buktikan!";
+        feedbackText = "Awas! Mengurangkan bilangan sama artinya dengan menambahkan lawannya. Mari buktikan!";
       } else if (detectedCode === "MC-SIGN-FIRST-NUM") {
         feedbackText = "Tanda hasil akhir ditentukan oleh elemen mana (positif/negatif) yang paling banyak sisanya, bukan selalu ikut bilangan pertama.";
       } else if (detectedCode !== "DRILL-MISTAKE") {
@@ -264,13 +264,13 @@ export default function StudentPortal() {
   const getIndonesianScaffold = (code: string | null) => {
     switch (code) {
       case "MC-ADD-SIGN-CONF":
-        return "Kamu merasa bahwa jika utang (-) bertemu dengan uang tunai (+), utangmu justru bertambah banyak? Ingat, jika kamu punya utang 2 elemen negatif, lalu dibayar dengan 3 elemen positif, utangmu terbayar lunas dan kamu masih punya sisa 1 elemen positif! Mari kita coba buktikan secara visual menggunakan elemen di bawah.";
+        return "Kamu merasa bahwa elemen negatif bertemu dengan elemen positif jumlahnya akan bertambah banyak? Ingat, pasangan elemen positif dan negatif akan saling menetralkan menjadi nol! Mari kita coba buktikan secara visual menggunakan elemen di bawah.";
       case "MC-SIGN-FIRST-NUM":
-        return "Apakah kamu bingung menentukan tanda minus atau plus hasil akhir? Tips sederhana: manakah yang jumlahnya lebih banyak, utangmu (Api) atau uangmu (Es)? Karena uang tunaimu lebih banyak, hasil akhirnya pasti positif! Coba buktikan dengan menyeimbangkan elemen.";
+        return "Apakah kamu bingung menentukan tanda minus atau plus hasil akhir? Tips sederhana: manakah yang jumlahnya lebih banyak, elemen negatif (Api) atau positif (Es)? Karena elemen positifmu lebih banyak, hasil akhirnya pasti positif! Coba buktikan dengan menyeimbangkan elemen.";
       case "MC-ADD-ABS-SUM":
-        return "Tanda minus (-) dan plus (+) di depan angka memiliki peran yang sangat penting, bukan hiasan. Minus melambangkan utang (Api (merah)) dan plus melambangkan uang (Es (biru)). Mari kita kelompokkan dan netralkan elemennya agar kamu bisa melihat hasilnya secara nyata.";
+        return "Tanda minus (-) dan plus (+) di depan angka memiliki peran yang sangat penting, bukan hiasan. Minus melambangkan elemen negatif (Api (merah)) dan plus melambangkan elemen positif (Es (biru)). Mari kita kelompokkan dan netralkan elemennya agar kamu bisa melihat hasilnya secara nyata.";
       case "MC-SUB-IGNORE-NEG":
-        return "Saat mengurangkan bilangan negatif, bayangkan seseorang mencoret utangmu. Jika utang dihapus, posisimu di garis bilangan justru maju ke arah positif!";
+        return "Saat mengurangkan suatu bilangan, ingatlah konsep ini: mengurangkan sama dengan menambahkan lawannya. Jadi, mengurangkan bilangan negatif sama dengan menambahkan bilangan positif!";
       default:
         return "Ada sedikit kekeliruan dalam perhitunganmu. Jangan khawatir, itu hal yang wajar! Mari kita gunakan papan manipulatif zero-pair di bawah ini untuk melihat bagaimana bilangan negatif dan positif saling menetralkan.";
     }
@@ -279,7 +279,7 @@ export default function StudentPortal() {
   const getMisconceptionTitle = (code: string | null) => {
     switch (code) {
       case "MC-ADD-SIGN-CONF":
-        return "Tantangan Konsep: Akumulasi Utang";
+        return "Tantangan Konsep: Penjumlahan Berbeda Tanda";
       case "MC-SIGN-FIRST-NUM":
         return "Tantangan Konsep: Penentuan Tanda Akhir";
       case "MC-ADD-ABS-SUM":

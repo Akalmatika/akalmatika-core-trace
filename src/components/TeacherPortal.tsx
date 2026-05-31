@@ -87,11 +87,11 @@ export default function TeacherPortal() {
   const getIndonesianStrategy = (code: string) => {
     switch (code) {
       case "MC-SUB-NEG-ADD":
-        return "Gunakan analogi 'Membatalkan Langkah Mundur'. Jelaskan bahwa mengurangkan bilangan negatif bagaikan menghapus langkah mundur seseorang di masa lalu, yang membuat posisinya relatif bergerak maju ke depan. Mintalah siswa memperagakannya langsung di depan kelas.";
+        return "Fokuskan perhatian siswa pada fakta bahwa mengurangkan suatu nilai sama dengan menambahkan lawannya. Pengurangan elemen negatif ekuivalen dengan penambahan elemen positif.";
       case "MC-ADD-SIGN-CONF":
-        return "Terapkan analogi keuangan 'Utang & Saldo Kas'. Tanyakan kepada siswa: 'Jika kamu memiliki utang 2 koin merah, lalu kamu menyetor uang tunai 3 koin biru, apakah utangmu bertambah menjadi 5?' Biarkan mereka merasakan keseimbangan neraca yang menetralkan koin.";
+        return "Terapkan konsep Pasangan Nol (Zero-Pair). Tanyakan kepada siswa: 'Jika kamu memiliki 2 elemen negatif (merah), lalu ditambahkan 3 elemen positif (biru), apakah jumlah negatifnya bertambah?' Biarkan mereka membuktikan bahwa elemen yang berlawanan akan saling menetralkan.";
       case "MC-MUL-SIGN-DOM":
-        return "Bantu siswa memisahkan logika perkalian dengan penjumlahan. Jelaskan: 'Aturan perkalian (minus kali minus = plus) hanya berlaku untuk pelipatan skala faktor. Sedangkan menjumlahkan utang koin merah justru menambah utangmu menjadi lebih miskin, bukan kaya!'";
+        return "Bantu siswa memisahkan logika perkalian dengan penjumlahan. Jelaskan: 'Aturan perkalian (minus kali minus = plus) tidak berlaku pada penjumlahan atau pengurangan dasar. Menjumlahkan dua kelompok elemen negatif hanya akan mengumpulkan lebih banyak elemen negatif!'";
       case "MC-SUB-ORDER-INV":
         return "Gunakan termometer merkuri digital di papan tulis. Tunjukkan bahwa jika suhu awal adalah 3 derajat, lalu diturunkan sebesar 8 derajat, posisi suhu harus menembus angka di bawah nol derajat (-5 derajat), bukan berputar balik ke angka 5 derajat.";
       default:

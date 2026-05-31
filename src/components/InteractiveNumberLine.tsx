@@ -301,14 +301,12 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
         </div>
       </div>
 
-      {/* Main Equation Display with Highlights */}
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl py-4 sm:py-6 px-2 sm:px-4 flex flex-col items-center justify-center space-y-3 sm:space-y-4 relative">
+      {/* Combined Container: Equation + SVG Number Line */}
+      <div className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
         
-        {/* Pause Button moved to SVG area */}
-
         {/* Dynamic Text Explanation (Top) */}
-        <div className="h-10 flex items-center justify-center px-4 w-full">
-          <span className="text-xs sm:text-sm md:text-base font-bold text-slate-700 tracking-wide animate-fadeIn font-sans bg-amber-100 text-amber-800 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-200 text-center shadow-xs">
+        <div className="h-10 flex items-center justify-center px-4 w-full z-10 mt-2 mb-2">
+          <span className="text-xs sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs">
             {renderExplanation()}
           </span>
         </div>
@@ -321,8 +319,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
             <span className="invisible px-1">{a < 0 ? `(${a})` : a}</span>
             <span className={`transition-all duration-300 absolute ${
               state === 'HIGHLIGHT_A' || state === 'MOVE_ZERO_TO_A'
-                ? 'text-amber-500 scale-110' 
-                : 'text-slate-700'
+                ? 'text-amber-400 scale-110' 
+                : 'text-slate-200'
             }`}>
               {a < 0 ? `(${a})` : a}
             </span>
@@ -342,8 +340,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
              <span className={`absolute transition-all duration-300 ${
                 isTransformed ? 'animate-fusion-out-right' : 
                 state === 'HIGHLIGHT_OPERATOR' || state === 'EXPLAIN_OPERATOR'
-                  ? 'text-amber-500 scale-110 opacity-100'
-                  : 'text-slate-700 opacity-100 scale-100'
+                  ? 'text-amber-400 scale-110 opacity-100'
+                  : 'text-slate-200 opacity-100 scale-100'
              }`}>
                {op}
              </span>
@@ -363,8 +361,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
              <span className={`absolute transition-all duration-300 ${
                 isTransformed ? 'animate-fusion-out-left' :
                 state === 'HIGHLIGHT_B' || state === 'SHOW_OPPOSITE_OF_B'
-                  ? 'text-amber-500 scale-110 opacity-100'
-                  : 'text-slate-700 opacity-100 scale-100'
+                  ? 'text-amber-400 scale-110 opacity-100'
+                  : 'text-slate-200 opacity-100 scale-100'
              }`}>
                {b < 0 ? `(${b})` : b}
              </span>
@@ -373,7 +371,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           {/* Equals & Result */}
           {passed('SHOW_RESULT') && (
             <>
-              <span className="text-slate-700 animate-fadeIn ml-2">=</span>
+              <span className="text-slate-300 animate-fadeIn ml-2">=</span>
               <span tabIndex={0} className="text-emerald-600 animate-fadeIn drop-shadow-md scale-110 ml-4 flex items-center relative group outline-hidden">
                 {correctAnswer > 0 ? (
                   <>
@@ -392,16 +390,14 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
         </div>
 
         {/* Kesimpulan Pop-up */}
-        {passed('SHOW_RESULT') && op === '-' && (
-          <div className="mt-3 sm:mt-6 bg-indigo-600 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-500">
-            Kesimpulan: {a} - {b < 0 ? `(${b})` : b} = {a} + {-b < 0 ? `(${-b})` : -b} = {correctAnswer}
-          </div>
-        )}
-      </div>
+        <div className="h-12 flex items-center justify-center mt-2 z-10">
+          {passed('SHOW_RESULT') && op === '-' && (
+            <div className="bg-indigo-500/80 text-indigo-50 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-400/50">
+              Kesimpulan: {a} - {b < 0 ? `(${b})` : b} = {a} + {-b < 0 ? `(${-b})` : -b} = {correctAnswer}
+            </div>
+          )}
+        </div>
 
-      {/* SVG Number Line Canvas */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl mt-2 sm:mt-4">
-        
         {/* Animation Controls (Restart & Pause) */}
         <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-50 flex items-center gap-2">
           <button 
@@ -425,9 +421,10 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </button>
         </div>
 
-        <svg 
-          viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} 
-          className="w-full h-auto"
+        <div className="w-full relative mt-4">
+          <svg 
+            viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} 
+            className="w-full h-auto"
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Main Axis Line */}
@@ -585,7 +582,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
             </style>
           </defs>
 
-        </svg>
+          </svg>
+        </div>
       </div>
 
       {/* Keterangan Arah Perpindahan */}

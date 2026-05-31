@@ -1,0 +1,6 @@
+{
+  "name": "Alamatika Core-Trace",
+  "description": "A diagnostic tool designed to detect and trace student misconceptions in integer operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

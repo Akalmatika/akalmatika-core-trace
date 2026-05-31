@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeSlideUp 0.4s ease-out forwards;
+  }
+  
+  .animate-shake {
+    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+  }
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes shootRight {
+  0% {
+    transform: translate(0, -50%) scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(min(20vw, 150px), -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(min(20vw, 150px), -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes shootLeft {
+  0% {
+    transform: translate(0, -50%) scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(max(-20vw, -150px), -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(max(-20vw, -150px), -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-shootRight {
+  animation: shootRight 0.4s linear forwards;
+}
+
+.animate-shootLeft {
+  animation: shootLeft 0.4s linear forwards;
+}

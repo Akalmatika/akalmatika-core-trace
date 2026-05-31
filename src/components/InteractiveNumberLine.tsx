@@ -319,15 +319,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       {/* Combined Container: Equation + SVG Number Line */}
       <div ref={containerRef} className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
         
-        {/* Dynamic Text Explanation (Top) */}
-        <div className="min-h-[2.5rem] flex items-center justify-center px-4 w-full z-10 mt-6 sm:mt-2 mb-0 sm:mb-2 max-w-[85%] sm:max-w-[70%]">
-          <span className="text-xs sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs">
-            {renderExplanation()}
-          </span>
-        </div>
-
         {/* The Equation */}
-        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 max-w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 max-w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter mt-12 sm:mt-6 mb-4 sm:mb-6 z-10">
           
           {/* Term A */}
           <div className="relative h-16 flex items-center justify-center">
@@ -402,6 +395,13 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
             </>
           )}
 
+        </div>
+
+        {/* Dynamic Text Explanation (Bottom) */}
+        <div className="h-[4rem] sm:h-[3.5rem] flex items-center justify-center px-4 w-full z-10 mb-2 sm:mb-4 max-w-[95%] sm:max-w-[80%]">
+          <span className="text-xs sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs">
+            {renderExplanation()}
+          </span>
         </div>
 
         {/* Kesimpulan Pop-up */}

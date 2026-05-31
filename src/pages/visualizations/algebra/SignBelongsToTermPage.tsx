@@ -130,9 +130,9 @@ export default function SignBelongsToTermPage() {
               {quizStep === 0 && (
                 <div className="flex flex-col gap-4 w-full">
                   {[
-                    { label: '3a dan 7b', correct: false },
-                    { label: '3a dan -7b', correct: true },
-                    { label: '-3a dan -7b', correct: false },
+                    { label: '3a \\text{ dan } 7b', correct: false },
+                    { label: '3a \\text{ dan } -7b', correct: true },
+                    { label: '-3a \\text{ dan } -7b', correct: false },
                   ].map((ans, idx) => (
                     <button 
                       key={idx}

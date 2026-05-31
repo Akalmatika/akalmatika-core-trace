@@ -151,7 +151,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Kartu/label visual.",
     modes: ["Tandai suku", "Tandai variabel", "Tandai koefisien", "Tandai konstanta"],
     href: "/student/visualizations/algebra/term-cards",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-term-sign",
@@ -164,7 +164,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Chip/kartu bertanda.",
     modes: ["Pisahkan suku", "Bawa tanda", "Cek tanda positif implisit", "Kelompokkan dengan tanda"],
     href: "/student/visualizations/algebra/sign-belongs-to-term",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-like-term-sorter",
@@ -177,7 +177,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Sorting bins.",
     modes: ["Sortir suku x", "Sortir suku x²", "Sortir konstanta", "Sortir campuran", "Cek tidak sejenis"],
     href: "/student/visualizations/algebra/like-term-sorter",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-group-like-terms",
@@ -190,7 +190,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Grouping bins + highlight pairing.",
     modes: ["Kelompok x", "Kelompok konstanta", "Kelompok multi variabel", "Cek tanda"],
     href: "/student/visualizations/algebra/group-like-terms",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-like-term-operations",
@@ -203,7 +203,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Langkah simbolik + grouping visual.",
     modes: ["Tambah koefisien positif", "Tambah koefisien negatif", "Pengurangan", "Hasil nol", "Suku tunggal"],
     href: "/student/visualizations/algebra/like-term-operations",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-expand-brackets",
@@ -216,7 +216,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Distribusi visual.",
     modes: ["Kurung positif", "Kurung negatif", "Dua blok kurung", "Cek tanda tiap suku"],
     href: "/student/visualizations/algebra/expand-brackets",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-substitution",
@@ -229,7 +229,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Slot input → ekspresi → hasil.",
     modes: ["Substitusi positif", "Substitusi negatif", "Operasi campuran", "Dua variabel"],
     href: "/student/visualizations/algebra/substitution-machine",
-    status: "development"
+    status: "ready"
   },
   {
     id: "alg-word-to-expression",
@@ -242,7 +242,7 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Word blocks → symbolic expression.",
     modes: ["Jumlah", "Selisih", "Dua kali", "Lebih dari", "Kurang dari", "Campuran"],
     href: "/student/visualizations/algebra/word-to-expression",
-    status: "development"
+    status: "ready"
   }
 ];
 

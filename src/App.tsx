@@ -15,6 +15,14 @@ import Grid100Page from "./pages/visualizations/percent/Grid100Page";
 import FractionToPercentPage from "./pages/visualizations/percent/FractionToPercentPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
+import TermCardsPage from "./pages/visualizations/algebra/TermCardsPage";
+import SignBelongsToTermPage from "./pages/visualizations/algebra/SignBelongsToTermPage";
+import LikeTermSorterPage from "./pages/visualizations/algebra/LikeTermSorterPage";
+import GroupLikeTermsPage from "./pages/visualizations/algebra/GroupLikeTermsPage";
+import LikeTermOperationsPage from "./pages/visualizations/algebra/LikeTermOperationsPage";
+import ExpandBracketsPage from "./pages/visualizations/algebra/ExpandBracketsPage";
+import SubstitutionMachinePage from "./pages/visualizations/algebra/SubstitutionMachinePage";
+import WordToExpressionPage from "./pages/visualizations/algebra/WordToExpressionPage";
 import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
 import NumberLineVisualizationPage from "./pages/NumberLineVisualizationPage";
 import PlaceholderVisualizationPage from "./pages/PlaceholderVisualizationPage";
@@ -52,6 +60,14 @@ export default function App() {
           <Route path="student/visualizations/percent/grid-100" element={<Grid100Page />} />
           <Route path="student/visualizations/percent/fraction-to-percent" element={<FractionToPercentPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
+          <Route path="student/visualizations/algebra/term-cards" element={<TermCardsPage />} />
+          <Route path="student/visualizations/algebra/sign-belongs-to-term" element={<SignBelongsToTermPage />} />
+          <Route path="student/visualizations/algebra/like-term-sorter" element={<LikeTermSorterPage />} />
+          <Route path="student/visualizations/algebra/group-like-terms" element={<GroupLikeTermsPage />} />
+          <Route path="student/visualizations/algebra/like-term-operations" element={<LikeTermOperationsPage />} />
+          <Route path="student/visualizations/algebra/expand-brackets" element={<ExpandBracketsPage />} />
+          <Route path="student/visualizations/algebra/substitution-machine" element={<SubstitutionMachinePage />} />
+          <Route path="student/visualizations/algebra/word-to-expression" element={<WordToExpressionPage />} />
           <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />
           
           {/* Fallback route - could be a 404 page */}

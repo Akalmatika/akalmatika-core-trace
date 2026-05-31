@@ -1,0 +1,270 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { InlineMath } from 'react-katex';
+import { ArrowLeft, Info, Settings2 } from "lucide-react";
+import { QuizContainer } from "../../../components/visualizations/QuizContainer";
+
+export default function SubstitutionMachinePage() {
+  const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
+  
+  // y = 2x + 5
+  const [xVal, setXVal] = useState<number>(3);
+  const [step, setStep] = useState(0); 
+  // 0: input x
+  // 1: replace x with (val)
+  // 2: multiply
+  // 3: add
+  
+  // Re-run steps animation on x change
+  useEffect(() => {
+    setStep(0);
+  }, [xVal]);
+
+  // Evaluate Mode State
+  const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
+  const [quizStep, setQuizStep] = useState(0);
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+
+  const handleEvaluate = (isCorrect: boolean) => {
+    if (evalResult !== 'none') return;
+    if (isCorrect) {
+      setEvalResult('correct');
+      setScore(s => s + 1);
+    } else {
+      setEvalResult('wrong');
+    }
+  };
+
+  const handleNextQuiz = () => {
+    setEvalResult('none');
+    if (quizStep < 2) {
+      setQuizStep(s => s + 1);
+    } else {
+      setIsFinished(true);
+    }
+  };
+
+  const handleRetryQuiz = () => {
+    setQuizStep(0);
+    setScore(0);
+    setIsFinished(false);
+    setEvalResult('none');
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div>
+          <Link to="/student/visualizations" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold text-sm mb-3 transition-colors">
+            <ArrowLeft size={16} /> Kembali ke Galeri
+          </Link>
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Substitution Machine</h2>
+          <p className="text-slate-500 text-sm mt-1">
+            Ganti huruf (variabel) dengan angka dan hitung nilainya langkah demi langkah.
+          </p>
+        </div>
+        
+        {/* Mode Switcher */}
+        <div className="flex bg-slate-100 p-1 rounded-xl self-start">
+          <button 
+            onClick={() => setMode('explore')}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Eksplorasi
+          </button>
+          <button 
+            onClick={() => { setMode('evaluate'); handleRetryQuiz(); }}
+            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Evaluasi
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* Main Canvas */}
+        <div className="lg:col-span-8">
+          {mode === 'explore' && (
+            <div className="bg-slate-800 rounded-3xl p-6 md:p-12 shadow-inner min-h-[450px] flex flex-col items-center justify-center relative overflow-hidden text-white">
+              
+              <div className="absolute top-4 left-6 text-slate-400 font-mono text-sm uppercase tracking-widest flex items-center gap-2">
+                 <Settings2 size={16} /> Mesin Fungsi
+              </div>
+
+              <div className="flex flex-col gap-12 w-full max-w-sm mt-8">
+                 {/* Step 0: Input */}
+                 <div className="flex items-center gap-4 text-3xl font-mono font-black">
+                    <span className="text-slate-400">f(x) =</span>
+                    <span className="text-white">2</span>
+                    <span className={`text-indigo-400 ${step >= 1 ? 'hidden' : 'block'}`}>x</span>
+                    {step >= 1 && (
+                       <span className="text-emerald-400 bg-emerald-900/30 px-2 rounded-lg border border-emerald-500/50 animate-pulse">
+                          ({xVal})
+                       </span>
+                    )}
+                    <span className="text-slate-400 mx-2">+</span>
+                    <span className="text-amber-400">5</span>
+                 </div>
+
+                 {/* Step 2: Multiply */}
+                 <div className={`flex items-center gap-4 text-3xl font-mono font-black transition-all duration-500 ${step >= 2 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8 pointer-events-none'}`}>
+                    <span className="text-slate-400">=&gt;</span>
+                    <span className="text-white bg-slate-700 px-3 py-1 rounded-lg border border-slate-600">{2 * xVal}</span>
+                    <span className="text-slate-400 mx-2">+</span>
+                    <span className="text-amber-400">5</span>
+                 </div>
+
+                 {/* Step 3: Result */}
+                 <div className={`flex items-center gap-4 text-5xl font-mono font-black transition-all duration-500 delay-300 ${step >= 3 ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-8 scale-90 pointer-events-none'}`}>
+                    <span className="text-slate-400">=&gt;</span>
+                    <span className="text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                       {2 * xVal + 5}
+                    </span>
+                 </div>
+              </div>
+
+              <div className="mt-16 w-full flex justify-center">
+                 {step < 3 ? (
+                    <button
+                       onClick={() => setStep(s => s + 1)}
+                       className="px-8 py-3 rounded-xl font-bold bg-indigo-500 text-white hover:bg-indigo-400 transition-colors shadow-lg shadow-indigo-500/25"
+                    >
+                       Proses Langkah {step + 1}
+                    </button>
+                 ) : (
+                    <button
+                       onClick={() => setStep(0)}
+                       className="px-8 py-3 rounded-xl font-bold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+                    >
+                       Reset Mesin
+                    </button>
+                 )}
+              </div>
+
+            </div>
+          )}
+
+          {mode === 'evaluate' && (
+            <QuizContainer
+              title={quizStep === 0 ? "Substitusi Dasar" : quizStep === 1 ? "Hati-hati Kuadrat" : "Substitusi Negatif"}
+              questionText={
+                quizStep === 0 
+                  ? <span>Jika <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="x = 4" /></span>, berapakah nilai dari <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="3x - 2" /></span>?</span>
+                  : quizStep === 1
+                  ? <span>Jika <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="a = 3" /></span>, berapakah nilai dari <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="a^2 + 1" /></span>?</span>
+                  : <span>Ini agak menjebak! Jika <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="y = -2" /></span>, berapakah nilai dari <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"><InlineMath math="5y" /></span>?</span>
+              }
+              evalResult={evalResult}
+              onNext={handleNextQuiz}
+              isLastQuestion={quizStep === 2}
+              nextPath="/student/visualizations/algebra/word-to-expression"
+              nextLabel="Lanjut: Kalimat ke Bentuk Aljabar"
+              isFinished={isFinished}
+              score={score}
+              totalQuestions={3}
+              onRetry={handleRetryQuiz}
+            >
+              {quizStep === 0 && (
+                <div className="flex gap-4 w-full">
+                  {['10', '14', '7'].map((ans, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => handleEvaluate(ans === '10')} 
+                      className={`w-full py-4 px-6 rounded-xl border-2 font-bold text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '10' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '10' && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                    >
+                      <InlineMath math={ans} />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {quizStep === 1 && (
+                <div className="flex flex-col gap-4 w-full items-center">
+                   <div className="flex gap-4 w-full">
+                     {['7', '10', '6'].map((ans, idx) => (
+                       <button 
+                         key={idx}
+                         onClick={() => handleEvaluate(ans === '10')} 
+                         className={`w-full py-4 px-6 rounded-xl border-2 font-bold text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '10' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '10' && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                       >
+                         <InlineMath math={ans} />
+                       </button>
+                     ))}
+                   </div>
+                   {evalResult !== 'none' && (
+                    <p className={`text-sm font-bold mt-2 text-center ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      Penjelasan: <InlineMath math="3^2 = 9" />, lalu ditambah 1 menjadi 10. (Bukan 3x2=6!).
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {quizStep === 2 && (
+                <div className="flex flex-col gap-4 items-center w-full">
+                   <div className="flex gap-4 w-full">
+                     {['-10', '10', '-7'].map((ans, idx) => (
+                       <button 
+                         key={idx}
+                         onClick={() => handleEvaluate(ans === '-10')} 
+                         className={`w-full py-4 px-6 rounded-xl border-2 font-bold text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '-10' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '-10' && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                       >
+                         <InlineMath math={ans} />
+                       </button>
+                     ))}
+                   </div>
+                   {evalResult !== 'none' && (
+                    <p className={`text-sm font-bold mt-2 text-center ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      Penjelasan: 5 dikali -2 hasilnya -10. Ingat positif kali negatif hasilnya negatif.
+                    </p>
+                  )}
+                </div>
+              )}
+            </QuizContainer>
+          )}
+
+        </div>
+
+        {/* Controls */}
+        <div className={`lg:col-span-4 flex flex-col gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
+          
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-slate-800 font-bold mb-4 text-sm">Input Nilai x</h3>
+            
+            <div className="space-y-6">
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-xs font-bold text-indigo-500">Nilai x</span>
+                     <span className="text-xs font-bold text-slate-500">{xVal}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={xVal} onChange={(e) => setXVal(parseInt(e.target.value))}
+                     className="w-full accent-indigo-500"
+                  />
+               </div>
+            </div>
+          </div>
+
+          <div className="bg-slate-800 text-slate-300 border border-slate-700 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-white font-bold mb-2 text-sm flex items-center gap-2">
+               Substitusi (Penggantian)
+            </h3>
+            <p className="text-sm leading-relaxed mb-4">
+               Variabel seperti <InlineMath math="x" /> hanyalah "wadah" kosong yang mewakili sebuah angka rahasia. Ketika kita melakukan substitusi, kita membongkar "wadah" tersebut dan menggantinya dengan angka asli, lalu menghitungnya.
+            </p>
+            <div className="flex items-start gap-2 pt-4 border-t border-slate-700">
+              <Info className="text-indigo-400 shrink-0 mt-0.5" size={16} />
+              <p className="text-xs font-bold text-slate-400">
+                Gunakan kurung ( ) saat mengganti huruf menjadi angka agar perkaliannya tidak keliru dibaca.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+}

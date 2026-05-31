@@ -146,8 +146,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
 
   // SVG Coordinates setup
   const viewBoxWidth = 800;
-  const viewBoxHeight = 320;
-  const axisY = 220;
+  const viewBoxHeight = 220;
+  const axisY = 130;
   const marginX = 50;
   const scaleWidth = viewBoxWidth - marginX * 2;
   
@@ -305,7 +305,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       <div className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
         
         {/* Dynamic Text Explanation (Top) */}
-        <div className="h-10 flex items-center justify-center px-4 w-full z-10 mt-2 mb-2">
+        <div className="min-h-[2.5rem] flex items-center justify-center px-4 w-full z-10 mt-6 sm:mt-2 mb-0 sm:mb-2 max-w-[85%] sm:max-w-[70%]">
           <span className="text-xs sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs">
             {renderExplanation()}
           </span>
@@ -390,9 +390,9 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
         </div>
 
         {/* Kesimpulan Pop-up */}
-        <div className="h-12 flex items-center justify-center mt-2 z-10">
+        <div className="min-h-[3rem] flex items-center justify-center mt-0 mb-2 z-10">
           {passed('SHOW_RESULT') && op === '-' && (
-            <div className="bg-indigo-500/80 text-indigo-50 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-400/50">
+            <div className="bg-indigo-500/80 text-indigo-50 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-400/50 text-center mx-4">
               Kesimpulan: {a} - {b < 0 ? `(${b})` : b} = {a} + {-b < 0 ? `(${-b})` : -b} = {correctAnswer}
             </div>
           )}
@@ -421,7 +421,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </button>
         </div>
 
-        <div className="w-full relative mt-4">
+        <div className="w-full relative mt-0">
           <svg 
             viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} 
             className="w-full h-auto"

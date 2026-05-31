@@ -101,8 +101,16 @@ export default function CompareFractionsPage() {
         <div className="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center relative overflow-hidden">
           
           {evalResult === 'correct' && (
-            <div className="absolute top-6 right-6 z-20 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 animate-bounce">
-              <CheckCircle2 size={20} /> Benar!
+            <div className="absolute top-6 right-6 z-20 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl flex items-center gap-3 animate-bounce shadow-sm border border-emerald-200">
+              <div className="flex items-center gap-1.5 font-bold">
+                <CheckCircle2 size={20} /> Benar!
+              </div>
+              <div className="w-px h-6 bg-emerald-300"></div>
+              <div className="flex items-center gap-2 text-base font-bold text-emerald-800">
+                <InlineMath math={`\\frac{${n1}}{${d1}}`} /> 
+                <span className="font-mono mt-1">{selectedOp}</span> 
+                <InlineMath math={`\\frac{${n2}}{${d2}}`} />
+              </div>
             </div>
           )}
           {evalResult === 'wrong' && (

@@ -7,11 +7,12 @@ import { QuizContainer } from "../../../components/visualizations/QuizContainer"
 export default function ExpandBracketsPage() {
   const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
   
-  // State for 3(2x - 5)
+  // State for a(bx + c)
+  const [a, setA] = useState(3);
+  const [b, setB] = useState(2);
+  const [c, setC] = useState(-5);
+
   const [step, setStep] = useState(0); 
-  // 0: Initial
-  // 1: Rainbow 1 (3 * 2x)
-  // 2: Rainbow 2 (3 * -5)
   // 3: Result
   
   // Evaluate Mode State
@@ -84,33 +85,33 @@ export default function ExpandBracketsPage() {
             <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[450px] flex flex-col items-center justify-center relative overflow-hidden">
               
               <div className="relative w-full max-w-lg mb-16 h-32 flex justify-center items-end text-5xl font-mono font-black">
-                 {/* The expression: 3 ( 2x - 5 ) */}
+                 {/* The expression: a ( bx + c ) */}
                  
                  <div className={`transition-all duration-300 z-10 ${step >= 1 ? 'text-rose-500' : 'text-indigo-600'}`}>
-                    3
+                    {a}
                  </div>
                  
                  <div className="text-slate-400 mx-2">(</div>
                  
                  <div className={`transition-all duration-300 z-10 ${step === 1 ? 'text-rose-500' : 'text-slate-700'}`}>
-                    2x
+                    {b}x
                  </div>
                  
                  <div className={`mx-2 transition-all duration-300 z-10 ${step === 2 ? 'text-rose-500' : 'text-slate-400'}`}>
-                    -
+                    {c >= 0 ? '+' : '-'}
                  </div>
                  
                  <div className={`transition-all duration-300 z-10 ${step === 2 ? 'text-rose-500' : 'text-slate-700'}`}>
-                    5
+                    {Math.abs(c)}
                  </div>
                  
                  <div className="text-slate-400 mx-2">)</div>
 
                  {/* Arcs (Rainbows) */}
                  <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" viewBox="0 0 500 150">
-                    {/* Arch to 2x */}
+                    {/* Arch to bx */}
                     <path 
-                       d="M 210,100 Q 240,30 290,100" 
+                       d="M 185,85 Q 220,40 255,85" 
                        fill="none" 
                        stroke="#f43f5e" 
                        strokeWidth="4"
@@ -119,9 +120,9 @@ export default function ExpandBracketsPage() {
                        className="transition-all duration-700 ease-in-out"
                        markerEnd="url(#arrowhead)"
                     />
-                    {/* Arch to -5 */}
+                    {/* Arch to c */}
                     <path 
-                       d="M 210,100 Q 300,10 390,100" 
+                       d="M 185,85 Q 250,20 315,85" 
                        fill="none" 
                        stroke="#f43f5e" 
                        strokeWidth="4"
@@ -132,8 +133,8 @@ export default function ExpandBracketsPage() {
                     />
                     
                     <defs>
-                       <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                          <polygon points="0 0, 10 3.5, 0 7" fill="#f43f5e" />
+                       <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                          <polygon points="0 0, 6 3, 0 6" fill="#f43f5e" />
                        </marker>
                     </defs>
                  </svg>
@@ -142,12 +143,12 @@ export default function ExpandBracketsPage() {
               {/* Steps display */}
               <div className="flex flex-col items-center gap-4 min-h-[100px]">
                  <div className={`text-xl font-mono font-bold text-slate-500 transition-all duration-500 ${step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                    = <span className={step === 1 ? 'text-rose-500' : ''}>(3 &times; 2x)</span> 
-                    <span className={`transition-all duration-500 ${step >= 2 ? 'opacity-100' : 'opacity-0'}`}> + <span className={step === 2 ? 'text-rose-500' : ''}>(3 &times; -5)</span></span>
+                    = <span className={step === 1 ? 'text-rose-500' : ''}>({a} &times; {b}x)</span> 
+                    <span className={`transition-all duration-500 ${step >= 2 ? 'opacity-100' : 'opacity-0'}`}> + <span className={step === 2 ? 'text-rose-500' : ''}>({a} &times; {c})</span></span>
                  </div>
                  
                  <div className={`text-3xl font-mono font-black text-emerald-600 bg-emerald-50 px-6 py-3 rounded-2xl border-4 border-emerald-100 transition-all duration-500 delay-300 ${step === 3 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
-                    6x - 15
+                    {a * b}x {a * c >= 0 ? '+' : '-'} {Math.abs(a * c)}
                  </div>
               </div>
 
@@ -258,6 +259,49 @@ export default function ExpandBracketsPage() {
         {/* Controls */}
         <div className={`lg:col-span-4 flex flex-col gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
           
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
+            <h3 className="text-slate-800 font-bold mb-4 text-sm">Ubah Persamaan</h3>
+            
+            <div className="space-y-6">
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-xs font-bold text-indigo-500">Angka Luar (a)</span>
+                     <span className="text-xs font-bold text-slate-500">{a}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={a} onChange={(e) => {setA(parseInt(e.target.value)); setStep(0);}}
+                     className="w-full accent-indigo-500"
+                  />
+               </div>
+               
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-xs font-bold text-slate-700">Koefisien x (b)</span>
+                     <span className="text-xs font-bold text-slate-500">{b}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={b} onChange={(e) => {setB(parseInt(e.target.value)); setStep(0);}}
+                     className="w-full accent-slate-500"
+                  />
+               </div>
+
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-xs font-bold text-rose-500">Konstanta (c)</span>
+                     <span className="text-xs font-bold text-slate-500">{c}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={c} onChange={(e) => {setC(parseInt(e.target.value)); setStep(0);}}
+                     className="w-full accent-rose-500"
+                  />
+               </div>
+            </div>
+            
+          </div>
+
           <div className="bg-rose-50 border border-rose-200 p-6 rounded-3xl shadow-sm">
             <h3 className="text-rose-800 font-bold mb-2 text-sm flex items-center gap-2">
                Sifat Distributif (Pelangi)

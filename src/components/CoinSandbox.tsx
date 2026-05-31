@@ -1088,7 +1088,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
         >
 
           {/* Floating Legend */}
-          <div className="absolute top-1 sm:top-4 left-1 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-0.5 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-1.5 py-1 md:px-4 md:py-2.5 rounded-md md:rounded-2xl border border-slate-700 shadow-lg scale-50 sm:scale-100 origin-top-left">
+          <div className="absolute top-1 sm:top-4 left-1 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-1 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-2 py-1.5 md:px-4 md:py-2.5 rounded-md md:rounded-2xl border border-slate-700 shadow-lg scale-75 sm:scale-100 origin-top-left">
             <div className="flex items-center gap-1 sm:gap-2">
               <div className="w-4 h-4 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <IceSvg />
@@ -1383,7 +1383,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                           : "transform 150ms ease-out",
                   zIndex: isGathering ? 45 : (isDragging ? 50 : (presentationState !== 'DONE' ? 40 : 10))
                 }}
-                className={`absolute w-16 h-16 rounded-xl flex flex-col items-center justify-center font-bold text-lg select-none cursor-grab active:cursor-grabbing touch-none ${coin.isNeutralizing ? 'animate-ping' : ''}`}
+                className={`absolute w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex flex-col items-center justify-center font-bold text-lg select-none cursor-grab active:cursor-grabbing touch-none ${coin.isNeutralizing ? 'animate-ping' : ''}`}
               >
                 {/* Minion Icon */}
                 <div className={`relative flex items-center justify-center w-full h-full drop-shadow-lg`}>

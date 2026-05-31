@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Combine, Info } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 
 export default function SimplifyFractionPage() {
   const [baseNumerator, setBaseNumerator] = useState(6);
@@ -90,23 +90,6 @@ export default function SimplifyFractionPage() {
                 <div className="h-full flex-1"></div>
              </div>
 
-             {/* Merge Icons */}
-             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                {Array.from({ length: currentDenominator }).map((_, idx) => (
-                  <div 
-                    key={`icon-${idx}`} 
-                    className="absolute h-full flex items-center justify-center transition-all duration-700 ease-in-out"
-                    style={{ 
-                       left: `${(idx / currentDenominator) * 100}%`,
-                       width: `${(1 / currentDenominator) * 100}%`
-                    }}
-                  >
-                    <div className={`transition-all duration-500 delay-100 ${divisor > 1 && idx < currentNumerator ? 'opacity-40 scale-100' : 'opacity-0 scale-50'}`}>
-                      <Combine size={24} className="text-white drop-shadow-sm" />
-                    </div>
-                  </div>
-                ))}
-             </div>
           </div>
 
           <div className="mt-8 text-center text-slate-500 font-medium bg-white/80 px-4 py-2 rounded-xl border border-slate-100 shadow-sm relative z-10">

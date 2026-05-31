@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Box, Info } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 
 export default function EquivalentFractionsPage() {
   const [baseNumerator, setBaseNumerator] = useState(1);
@@ -70,30 +70,31 @@ export default function EquivalentFractionsPage() {
              </div>
 
              {/* Vertical Cuts (Base Denominator) */}
-             <div className="absolute top-0 left-0 w-full h-full flex pointer-events-none">
-                {Array.from({ length: baseDenominator }).map((_, idx) => (
+             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                {Array.from({ length: baseDenominator - 1 }).map((_, idx) => (
                   <div 
                     key={`v-${idx}`}
-                    className="h-full flex-1 border-r-2 border-slate-300/70 last:border-r-0 flex flex-col items-center justify-center"
-                  >
-                     <div className={`transition-all duration-500 delay-100 ${idx < baseNumerator ? 'opacity-40 scale-100' : 'opacity-0 scale-50'}`}>
-                        <Box size={24} className="text-white drop-shadow-sm" />
-                     </div>
-                  </div>
+                    className="absolute top-0 w-[2px] h-full bg-slate-300/80"
+                    style={{ left: `${((idx + 1) / baseDenominator) * 100}%` }}
+                  />
                 ))}
              </div>
 
-             {/* Horizontal Cuts (Multiplier) */}
+             {/* Vertical Cuts (Multiplier) */}
              <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                {Array.from({ length: multiplier - 1 }).map((_, idx) => (
-                  <div 
-                    key={`h-${idx}`}
-                    className="absolute left-0 w-full h-[2px] bg-slate-300/70 transition-all duration-700 ease-in-out"
-                    style={{ 
-                       top: `${((idx + 1) / multiplier) * 100}%`,
-                       animation: 'fadeIn 0.5s ease-out'
-                    }}
-                  />
+                {Array.from({ length: baseDenominator }).map((_, baseIdx) => (
+                  <div key={`col-${baseIdx}`} className="absolute top-0 h-full" style={{ left: `${(baseIdx / baseDenominator) * 100}%`, width: `${(1 / baseDenominator) * 100}%` }}>
+                    {Array.from({ length: multiplier - 1 }).map((_, idx) => (
+                      <div 
+                        key={`m-${idx}`}
+                        className="absolute top-0 w-[2px] h-full bg-slate-300/80 transition-all duration-700 ease-in-out"
+                        style={{ 
+                           left: `${((idx + 1) / multiplier) * 100}%`,
+                           animation: 'fadeIn 0.5s ease-out'
+                        }}
+                      />
+                    ))}
+                  </div>
                 ))}
              </div>
           </div>

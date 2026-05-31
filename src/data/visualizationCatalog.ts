@@ -54,7 +54,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Area model transformasional.",
     modes: ["Split bagian", "Merge bagian", "Bandingkan nilai", "Tampilkan bentuk senilai"],
     href: "/student/visualizations/fractions/equivalent-fractions",
-    status: "development"
+    status: "ready"
   },
   {
     id: "frac-simplify",
@@ -67,7 +67,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Transformasi simbolik + area model.",
     modes: ["Cari faktor sama", "Bagi pembilang dan penyebut", "Cek nilai tetap", "Bandingkan sebelum dan sesudah"],
     href: "/student/visualizations/fractions/simplify",
-    status: "development"
+    status: "ready"
   },
   {
     id: "frac-compare",
@@ -80,7 +80,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Bar model / area model.",
     modes: ["Bandingkan penyebut sama", "Bandingkan pembilang sama", "Bandingkan penyebut berbeda", "Urutkan pecahan"],
     href: "/student/visualizations/fractions/compare-order",
-    status: "development"
+    status: "ready"
   },
   {
     id: "frac-add-same",
@@ -93,7 +93,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Bar model + simbolik.",
     modes: ["Tambah penyebut sama", "Kurang penyebut sama", "Hasil nol", "Sederhanakan jika perlu"],
     href: "/student/visualizations/fractions/same-denominator",
-    status: "development"
+    status: "ready"
   },
   {
     id: "frac-add-diff",
@@ -106,7 +106,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Transformasi pecahan senilai + bar model.",
     modes: ["Samakan penyebut", "Tambah setelah setara", "Kurang setelah setara", "Bandingkan sebelum dan sesudah"],
     href: "/student/visualizations/fractions/different-denominator",
-    status: "development"
+    status: "ready"
   }
 ];
 

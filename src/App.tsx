@@ -6,6 +6,11 @@ import VisualizationCatalogPage from "./pages/VisualizationCatalogPage";
 import IntegerVisualizationPage from "./pages/IntegerVisualizationPage";
 import FractionVisualizationPage from "./pages/FractionVisualizationPage";
 import FractionAreaModelPage from "./pages/visualizations/fractions/FractionAreaModelPage";
+import EquivalentFractionsPage from "./pages/visualizations/fractions/EquivalentFractionsPage";
+import SimplifyFractionPage from "./pages/visualizations/fractions/SimplifyFractionPage";
+import CompareFractionsPage from "./pages/visualizations/fractions/CompareFractionsPage";
+import AddSameDenominatorPage from "./pages/visualizations/fractions/AddSameDenominatorPage";
+import AddDiffDenominatorPage from "./pages/visualizations/fractions/AddDiffDenominatorPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
 import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
@@ -36,6 +41,11 @@ export default function App() {
           <Route path="student/visualizations/integer/number-line" element={<NumberLineVisualizationPage />} />
           <Route path="student/visualizations/fractions" element={<FractionVisualizationPage />} />
           <Route path="student/visualizations/fractions/area-model" element={<FractionAreaModelPage />} />
+          <Route path="student/visualizations/fractions/equivalent-fractions" element={<EquivalentFractionsPage />} />
+          <Route path="student/visualizations/fractions/simplify" element={<SimplifyFractionPage />} />
+          <Route path="student/visualizations/fractions/compare-order" element={<CompareFractionsPage />} />
+          <Route path="student/visualizations/fractions/same-denominator" element={<AddSameDenominatorPage />} />
+          <Route path="student/visualizations/fractions/different-denominator" element={<AddDiffDenominatorPage />} />
           <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
           <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />

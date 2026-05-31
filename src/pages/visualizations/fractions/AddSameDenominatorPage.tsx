@@ -5,9 +5,9 @@ import { ArrowLeft, Box, Info } from "lucide-react";
 export default function AddSameDenominatorPage() {
   const [step, setStep] = useState<0 | 1>(0); // 0 = split, 1 = merged
 
-  const n1 = 2;
-  const n2 = 1;
-  const den = 5;
+  const [n1, setN1] = useState(2);
+  const [n2, setN2] = useState(1);
+  const [den, setDen] = useState(5);
 
   return (
     <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
@@ -89,6 +89,78 @@ export default function AddSameDenominatorPage() {
 
         {/* Controls */}
         <div className="lg:col-span-4 flex flex-col gap-4">
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
+            <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">0</div>
+              Tentukan Pecahan
+            </h3>
+            
+            <div className="mb-4">
+              <p className="text-xs font-bold text-slate-400 mb-2">Pilihan Cepat:</p>
+              <div className="flex gap-2 flex-wrap">
+                {[[1,2,4], [2,3,6], [3,4,8], [2,2,5], [3,1,5]].map(([a, b, d]) => (
+                  <button
+                    key={`${a}-${b}-${d}`}
+                    onClick={() => { setN1(a); setN2(b); setDen(d); setStep(0); }}
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
+                  >
+                    {a}/{d} + {b}/{d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-slate-400 mb-2">Buat Soal Sendiri:</p>
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 w-max">
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={den} 
+                     value={n1}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setN1(Math.min(val, den));
+                       setStep(0);
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" min="1" max="20" 
+                     value={den}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setDen(Math.max(val, 1));
+                       setStep(0);
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                 </div>
+                 
+                 <div className="font-bold text-slate-400">+</div>
+
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={den} 
+                     value={n2}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setN2(Math.min(val, den));
+                       setStep(0);
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" disabled
+                     value={den}
+                     className="w-12 text-center border border-slate-200 bg-slate-100 text-slate-400 rounded-md py-1 font-mono text-xs"
+                   />
+                 </div>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</div>

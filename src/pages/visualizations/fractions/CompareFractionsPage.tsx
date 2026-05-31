@@ -2,32 +2,34 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, XCircle, Info } from "lucide-react";
 
-type Scenario = {
-  n1: number; d1: number; n2: number; d2: number; correct: '<' | '>' | '=';
-  label: string; tip: string;
-};
-
-const SCENARIOS: Scenario[] = [
-  { n1: 2, d1: 5, n2: 4, d2: 5, correct: '<', label: "Penyebut Sama", tip: "Jika penyebutnya sama (ukuran potongan sama), lihat saja pembilangnya (jumlah potongannya)." },
-  { n1: 2, d1: 3, n2: 2, d2: 5, correct: '>', label: "Pembilang Sama", tip: "Jika pembilangnya sama (jumlah potongan sama), yang penyebutnya lebih KECIL nilainya lebih BESAR (potongannya lebih tebal)." },
-  { n1: 1, d1: 2, n2: 2, d2: 5, correct: '>', label: "Berbeda Keduanya", tip: "Melihat dari panjang area arsirannya, mana yang lebih mendominasi?" },
+const SCENARIOS = [
+  { n1: 2, d1: 5, n2: 4, d2: 5, label: "Penyebut Sama", tip: "Jika penyebutnya sama (ukuran potongan sama), lihat saja pembilangnya (jumlah potongannya)." },
+  { n1: 2, d1: 3, n2: 2, d2: 5, label: "Pembilang Sama", tip: "Jika pembilangnya sama (jumlah potongan sama), yang penyebutnya lebih KECIL nilainya lebih BESAR (potongannya lebih tebal)." },
+  { n1: 1, d1: 2, n2: 2, d2: 5, label: "Berbeda Keduanya", tip: "Melihat dari panjang area arsirannya, mana yang lebih mendominasi?" },
 ];
 
 export default function CompareFractionsPage() {
-  const [scenarioIdx, setScenarioIdx] = useState(0);
+  const [n1, setN1] = useState(2);
+  const [d1, setD1] = useState(5);
+  const [n2, setN2] = useState(4);
+  const [d2, setD2] = useState(5);
+
   const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
   const [selectedOp, setSelectedOp] = useState<'<' | '>' | '=' | null>(null);
 
-  const sc = SCENARIOS[scenarioIdx];
+  const correct = (n1*d2 < n2*d1) ? '<' : (n1*d2 > n2*d1) ? '>' : '=';
+  
+  const matchingScenario = SCENARIOS.find(s => s.n1 === n1 && s.d1 === d1 && s.n2 === n2 && s.d2 === d2);
+  const tip = matchingScenario ? matchingScenario.tip : "Bandingkan nilai kedua pecahan. Mengubah ke penyebut yang sama dapat membantumu melihatnya lebih jelas.";
 
   useEffect(() => {
     setEvalResult('none');
     setSelectedOp(null);
-  }, [scenarioIdx]);
+  }, [n1, d1, n2, d2]);
 
   const handleGuess = (op: '<' | '>' | '=') => {
     setSelectedOp(op);
-    if (op === sc.correct) {
+    if (op === correct) {
       setEvalResult('correct');
     } else {
       setEvalResult('wrong');
@@ -87,7 +89,7 @@ export default function CompareFractionsPage() {
           )}
 
           <div className="w-full flex flex-col gap-6 mt-8 relative z-10 max-w-lg mx-auto">
-            {renderFractionBar(sc.n1, sc.d1, 'bg-indigo-400')}
+            {renderFractionBar(n1, d1, 'bg-indigo-400')}
             
             <div className="flex justify-center my-2 gap-4">
                {['<', '=', '>'].map((op) => (
@@ -107,7 +109,7 @@ export default function CompareFractionsPage() {
                ))}
             </div>
 
-            {renderFractionBar(sc.n2, sc.d2, 'bg-sky-400')}
+            {renderFractionBar(n2, d2, 'bg-sky-400')}
           </div>
 
         </div>
@@ -116,23 +118,75 @@ export default function CompareFractionsPage() {
         <div className="lg:col-span-4 flex flex-col gap-4">
           <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</div>
-              Pilih Skenario Kasus
+              <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">0</div>
+              Tentukan Pecahan
             </h3>
             
-            <div className="flex flex-col gap-3 mb-4">
+            <div className="flex flex-col gap-3 mb-6">
+              <p className="text-xs font-bold text-slate-400">Pilihan Skenario:</p>
               {SCENARIOS.map((s, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setScenarioIdx(idx)}
+                  onClick={() => { setN1(s.n1); setD1(s.d1); setN2(s.n2); setD2(s.d2); }}
                   className={`
-                    py-3 px-4 rounded-xl text-sm font-bold text-left transition-all active:scale-95
-                    ${scenarioIdx === idx ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100'}
+                    py-2.5 px-4 rounded-xl text-sm font-bold text-left transition-all active:scale-95
+                    ${matchingScenario?.label === s.label ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100'}
                   `}
                 >
-                  {s.label}
+                  {s.label} ({s.n1}/{s.d1} vs {s.n2}/{s.d2})
                 </button>
               ))}
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-slate-400 mb-2">Buat Soal Sendiri:</p>
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 w-max">
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={d1} 
+                     value={n1}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setN1(Math.min(val, d1));
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" min="1" max="20" 
+                     value={d1}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setD1(Math.max(val, 1));
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                 </div>
+                 
+                 <div className="font-bold text-slate-400 text-sm">vs</div>
+
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={d2} 
+                     value={n2}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setN2(Math.min(val, d2));
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" min="1" max="20" 
+                     value={d2}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setD2(Math.max(val, 1));
+                     }}
+                     className="w-12 text-center border border-slate-200 rounded-md py-1 font-mono text-xs focus:outline-none focus:border-indigo-400"
+                   />
+                 </div>
+              </div>
             </div>
           </div>
 
@@ -140,7 +194,7 @@ export default function CompareFractionsPage() {
             <div className="flex items-start gap-3">
               <Info className="text-amber-600 shrink-0 mt-0.5" />
               <p className="text-xs text-amber-800 leading-relaxed">
-                <strong>Tips:</strong> {sc.tip}
+                <strong>Tips:</strong> {tip}
               </p>
             </div>
           </div>

@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Combine, Info } from "lucide-react";
 
 export default function SimplifyFractionPage() {
-  const [baseNumerator] = useState(6);
-  const [baseDenominator] = useState(12);
+  const [baseNumerator, setBaseNumerator] = useState(6);
+  const [baseDenominator, setBaseDenominator] = useState(12);
   const [divisor, setDivisor] = useState(1);
 
   const currentNumerator = baseNumerator / divisor;
   const currentDenominator = baseDenominator / divisor;
-  const validDivisors = [1, 2, 3, 6];
+  
+  const validDivisors = useMemo(() => {
+    const divisors = [];
+    const min = Math.min(baseNumerator, baseDenominator);
+    for (let i = 1; i <= min; i++) {
+      if (baseNumerator % i === 0 && baseDenominator % i === 0) {
+        divisors.push(i);
+      }
+    }
+    return divisors;
+  }, [baseNumerator, baseDenominator]);
 
   return (
     <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
@@ -79,6 +89,57 @@ export default function SimplifyFractionPage() {
 
         {/* Controls */}
         <div className="lg:col-span-4 flex flex-col gap-4">
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
+            <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">0</div>
+              Tentukan Pecahan Dasar
+            </h3>
+            
+            <div className="mb-4">
+              <p className="text-xs font-bold text-slate-400 mb-2">Pilihan Cepat:</p>
+              <div className="flex gap-2 flex-wrap">
+                {[[6,12], [4,8], [9,12], [10,15], [8,16]].map(([n, d]) => (
+                  <button
+                    key={`${n}-${d}`}
+                    onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setDivisor(1); }}
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
+                  >
+                    {n}/{d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-slate-400 mb-2">Buat Soal Sendiri:</p>
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 w-max">
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={baseDenominator} 
+                     value={baseNumerator}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setBaseNumerator(Math.min(val, baseDenominator));
+                       setDivisor(1);
+                     }}
+                     className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-10 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" min="1" max="24" 
+                     value={baseDenominator}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setBaseDenominator(Math.max(val, baseNumerator));
+                       setDivisor(1);
+                     }}
+                     className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                   />
+                 </div>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</div>

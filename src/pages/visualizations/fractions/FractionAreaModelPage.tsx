@@ -127,6 +127,65 @@ export default function FractionAreaModelPage() {
 
           {/* Controls Area */}
           <div className="lg:col-span-4 flex flex-col gap-4">
+
+            <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
+              <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">0</div>
+                Tentukan Pecahan
+              </h3>
+              
+              <div className="mb-4">
+                <p className="text-xs font-bold text-slate-400 mb-2">Pilihan Cepat:</p>
+                <div className="flex gap-2 flex-wrap">
+                  {[[1,2], [3,4], [2,5], [5,8], [7,10]].map(([n, d]) => (
+                    <button
+                      key={`${n}-${d}`}
+                      onClick={() => {
+                        setDenominator(d);
+                        setTimeout(() => {
+                          setSelectedPieces(Array(d).fill(false).map((_, i) => i < n));
+                        }, 50);
+                      }}
+                      className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
+                    >
+                      {n}/{d}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold text-slate-400 mb-2">Buat Soal Sendiri (Otomatis Arsir):</p>
+                <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 w-max">
+                   <div className="flex flex-col items-center gap-1.5">
+                     <input 
+                       type="number" min="1" max={denominator} 
+                       value={numerator}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         const n = Math.min(val, denominator);
+                         setSelectedPieces(Array(denominator).fill(false).map((_, i) => i < n));
+                       }}
+                       className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                     <div className="w-10 h-0.5 bg-slate-300 rounded-full"></div>
+                     <input 
+                       type="number" min="1" max="10" 
+                       value={denominator}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         const d = Math.max(val, 1);
+                         setDenominator(d);
+                         setTimeout(() => {
+                           setSelectedPieces(Array(d).fill(false).map((_, i) => i < numerator));
+                         }, 50);
+                       }}
+                       className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                   </div>
+                </div>
+              </div>
+            </div>
             
             {/* Denominator Control */}
             <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">

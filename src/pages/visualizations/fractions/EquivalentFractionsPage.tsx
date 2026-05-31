@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Box, Info } from "lucide-react";
 
 export default function EquivalentFractionsPage() {
-  const [baseNumerator] = useState(1);
-  const [baseDenominator] = useState(2);
+  const [baseNumerator, setBaseNumerator] = useState(1);
+  const [baseDenominator, setBaseDenominator] = useState(2);
   const [multiplier, setMultiplier] = useState(1);
 
   const currentNumerator = baseNumerator * multiplier;
@@ -77,9 +77,60 @@ export default function EquivalentFractionsPage() {
 
         {/* Controls */}
         <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm mb-4">
             <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">1</div>
+              Tentukan Pecahan Dasar
+            </h3>
+            
+            <div className="mb-4">
+              <p className="text-xs font-bold text-slate-400 mb-2">Pilihan Cepat:</p>
+              <div className="flex gap-2 flex-wrap">
+                {[[1,2], [1,3], [2,3], [3,4], [1,4]].map(([n, d]) => (
+                  <button
+                    key={`${n}-${d}`}
+                    onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setMultiplier(1); }}
+                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-bold font-mono transition-colors"
+                  >
+                    {n}/{d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold text-slate-400 mb-2">Buat Soal Sendiri:</p>
+              <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 w-max">
+                 <div className="flex flex-col items-center gap-1.5">
+                   <input 
+                     type="number" min="1" max={baseDenominator} 
+                     value={baseNumerator}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setBaseNumerator(Math.min(val, baseDenominator));
+                       setMultiplier(1);
+                     }}
+                     className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                   />
+                   <div className="w-10 h-0.5 bg-slate-300 rounded-full"></div>
+                   <input 
+                     type="number" min="1" max="10" 
+                     value={baseDenominator}
+                     onChange={(e) => {
+                       const val = parseInt(e.target.value) || 1;
+                       setBaseDenominator(Math.max(val, baseNumerator));
+                       setMultiplier(1);
+                     }}
+                     className="w-16 text-center border border-slate-200 rounded-md py-1 font-mono text-sm focus:outline-none focus:border-indigo-400"
+                   />
+                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-xs">2</div>
               Ubah Potongan (Faktor Pengali)
             </h3>
             

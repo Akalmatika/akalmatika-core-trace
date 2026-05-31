@@ -901,21 +901,21 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                   <span className="text-slate-400 italic font-normal text-[10px]">Belum ada elemen</span>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-center gap-4 group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} - {negativeCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[8px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-center gap-4 group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} + {positiveCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[8px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-center gap-4 group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} + {negativeCount === 0 ? 0 : `(-${negativeCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[8px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-center gap-4 group px-1 py-0 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} - {positiveCount === 0 ? 0 : `(-${positiveCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[8px] sm:text-[10px] px-1.5 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[8px] sm:text-[10px] px-2 py-0.5 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
                   </>
                 )}
@@ -1048,11 +1048,11 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
       <div className="lg:col-span-8 flex flex-col justify-between">
         
         {/* Post-Presentation Instructions */}
-        <div className="min-h-[32px] sm:min-h-[48px] flex items-center justify-center mb-1 sm:mb-2 gap-2 sm:gap-4">
+        <div className="min-h-[28px] sm:min-h-[48px] flex flex-row items-center justify-center mb-1 sm:mb-2 gap-1.5 sm:gap-4">
           {presentationState === 'DONE' && !isGathering && !isCompleted && (
-            <div className="bg-indigo-950/80 backdrop-blur-md border border-indigo-500/50 text-indigo-100 px-3 py-1.5 sm:px-6 sm:py-2.5 rounded-lg sm:rounded-full text-[10px] sm:text-sm font-sans shadow-lg flex items-center gap-1.5 sm:gap-3 animate-fadeIn">
-              <Sparkles size={14} className="text-amber-400 animate-pulse shrink-0 sm:w-[18px] sm:h-[18px]" />
-              <span className="font-medium sm:font-semibold tracking-wide text-center">
+            <div className="bg-indigo-950/80 backdrop-blur-md border border-indigo-500/50 text-indigo-100 px-2 py-1 sm:px-6 sm:py-2.5 rounded-md sm:rounded-full text-[8.5px] sm:text-sm font-sans shadow-lg flex items-center gap-1 sm:gap-3 animate-fadeIn">
+              <Sparkles size={12} className="text-amber-400 animate-pulse shrink-0 sm:w-[18px] sm:h-[18px]" />
+              <span className="font-medium sm:font-semibold tracking-wide text-center leading-tight">
                 {hasNoZeroPairs 
                   ? "Semua elemen memiliki warna sama. Elemen-elemen ini tidak bisa dinetralkan!" 
                   : "Seret dan benturkan Es biru (+) ke Api merah (-) untuk menetralkannya (pasangan nol)!"}
@@ -1088,7 +1088,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
         >
 
           {/* Floating Legend */}
-          <div className="absolute top-1 sm:top-4 left-1 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-0.5 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-1.5 py-1 md:px-4 md:py-2.5 rounded-lg md:rounded-2xl border border-slate-700 shadow-lg scale-65 sm:scale-100 origin-top-left">
+          <div className="absolute top-1 sm:top-4 left-1 sm:left-4 z-40 flex flex-col md:flex-row items-start md:items-center gap-0.5 sm:gap-2 md:gap-4 bg-slate-800/80 backdrop-blur-sm px-1.5 py-1 md:px-4 md:py-2.5 rounded-md md:rounded-2xl border border-slate-700 shadow-lg scale-50 sm:scale-100 origin-top-left">
             <div className="flex items-center gap-1 sm:gap-2">
               <div className="w-4 h-4 sm:w-8 sm:h-8 rounded-md flex items-center justify-center">
                 <IceSvg />
@@ -1135,9 +1135,9 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
               <button
                 onClick={handleAutoSolve}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] flex items-center gap-2 animate-bounce cursor-pointer border-2 border-indigo-400 transition-all hover:scale-105 text-sm sm:text-base"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-sans font-bold px-3 py-1.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] flex items-center gap-1.5 sm:gap-2 animate-bounce cursor-pointer border-2 border-indigo-400 transition-all hover:scale-105 text-xs sm:text-base"
               >
-                <Wand2 size={18} />
+                <Wand2 size={14} className="sm:w-[18px] sm:h-[18px]" />
                 <span>Lakukan Otomatis</span>
               </button>
             </div>

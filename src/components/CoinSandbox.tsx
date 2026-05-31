@@ -18,7 +18,8 @@ import {
   RefreshCw,
   PlayCircle,
   ArrowRight,
-  Wand2
+  Wand2,
+  AlertCircle
 } from "lucide-react";
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';

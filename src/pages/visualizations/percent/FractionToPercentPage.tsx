@@ -16,10 +16,14 @@ export default function FractionToPercentPage() {
     { n: 2, d: 5 },
     { n: 1, d: 10 },
   ];
+  const ALLOWED_DENOMS = [2, 4, 5, 10, 20, 25, 50];
   const [selectedPreset, setSelectedPreset] = useState(0);
+  const [isCustom, setIsCustom] = useState(false);
+  const [customN, setCustomN] = useState<number>(3);
+  const [customD, setCustomD] = useState<number>(20);
   const [step, setStep] = useState<0 | 1 | 2>(0); // 0 = fraction, 1 = /100, 2 = percent
   
-  const currentFraction = PRESETS[selectedPreset];
+  const currentFraction = isCustom ? { n: customN, d: customD } : PRESETS[selectedPreset];
   const multiplier = 100 / currentFraction.d;
   const percentValue = currentFraction.n * multiplier;
   
@@ -229,14 +233,37 @@ export default function FractionToPercentPage() {
                {PRESETS.map((preset, idx) => (
                  <button
                    key={idx}
-                   onClick={() => { setSelectedPreset(idx); setStep(0); }}
-                   className={`py-3 rounded-xl border-2 transition-all active:scale-95 flex flex-col items-center font-mono font-bold ${selectedPreset === idx ? 'bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm' : 'border-slate-200 text-slate-500 hover:border-indigo-300'}`}
+                   onClick={() => { setSelectedPreset(idx); setIsCustom(false); setStep(0); }}
+                   className={`py-3 rounded-xl border-2 transition-all active:scale-95 flex flex-col items-center font-mono font-bold ${!isCustom && selectedPreset === idx ? 'bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm' : 'border-slate-200 text-slate-500 hover:border-indigo-300'}`}
                  >
                    <span>{preset.n}</span>
-                   <span className={`w-6 h-0.5 my-1 ${selectedPreset === idx ? 'bg-indigo-500' : 'bg-slate-300'}`}></span>
+                   <span className={`w-6 h-0.5 my-1 ${!isCustom && selectedPreset === idx ? 'bg-indigo-500' : 'bg-slate-300'}`}></span>
                    <span>{preset.d}</span>
                  </button>
                ))}
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-slate-100">
+              <h4 className="text-xs font-bold text-slate-500 mb-3">Buat Soal Sendiri</h4>
+              <div className="flex items-center justify-center gap-3">
+                <input
+                  type="number"
+                  min="1"
+                  value={customN}
+                  onChange={(e) => { setCustomN(parseInt(e.target.value) || 1); setIsCustom(true); setStep(0); }}
+                  className={`w-16 py-2 px-3 border-2 rounded-lg text-center font-mono font-bold outline-none transition-colors ${isCustom ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-slate-200 text-slate-600'}`}
+                />
+                <span className="font-bold text-slate-400">/</span>
+                <select
+                  value={customD}
+                  onChange={(e) => { setCustomD(parseInt(e.target.value)); setIsCustom(true); setStep(0); }}
+                  className={`w-20 py-2 px-2 border-2 rounded-lg text-center font-mono font-bold outline-none transition-colors appearance-none cursor-pointer ${isCustom ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'border-slate-200 text-slate-600'}`}
+                >
+                  {ALLOWED_DENOMS.map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             
           </div>

@@ -153,12 +153,12 @@ export default function SubstitutionMachinePage() {
                        </div>
 
                        {/* Flying Clone for step 2 */}
-                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 2 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24' : step > 2 ? 'opacity-0 translate-y-16 md:translate-y-20 lg:translate-y-24' : 'opacity-0 translate-y-0'}`}>
+                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 2 ? 'opacity-100 translate-y-[98px] md:translate-y-[110px]' : 'opacity-0 translate-y-0'}`}>
                           <div className="relative w-full h-full flex justify-center items-center">
-                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                             <div className={`absolute transition-opacity duration-500 ${step === 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">2</span><span className="text-emerald-400">({xVal})</span>
                              </div>
-                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
+                             <div className={`absolute transition-opacity duration-500 ${step === 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
                                 <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
@@ -174,7 +174,7 @@ export default function SubstitutionMachinePage() {
                        <div className="text-amber-400 z-10">5</div>
 
                        {/* Flying Clone for step 3 */}
-                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 3 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24' : step > 3 ? 'opacity-0 translate-y-16 md:translate-y-20 lg:translate-y-24' : 'opacity-0 translate-y-0'}`}>
+                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 3 ? 'opacity-100 translate-y-[98px] md:translate-y-[110px]' : 'opacity-0 translate-y-0'}`}>
                           <div className="w-full h-full flex items-center justify-center">
                              <span className="text-amber-400">5</span>
                           </div>
@@ -198,20 +198,22 @@ export default function SubstitutionMachinePage() {
                     <div className={`flex items-center transition-all duration-[500ms] ${step >= 2 ? 'h-14 md:h-16' : 'h-0 overflow-hidden'}`}>
                        <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
                           <SnakeBorder active={step === 4} color="#10b981" />
-                          <div className={`transition-opacity duration-300 delay-[1500ms] ${step >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                          
+                          {/* Static element ONLY appears at step >= 3 to avoid overlapping with clone at step 2 */}
+                          <div className={`transition-opacity duration-300 ${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
                              <span className="text-white">{2 * xVal}</span>
                           </div>
 
                           {/* Flying Clone for step 4 (Left operand) */}
-                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24 translate-x-12 md:translate-x-16 lg:translate-x-20' : step > 4 ? 'opacity-0' : 'opacity-0 translate-y-0 translate-x-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-[100px] md:translate-y-[128px] translate-x-[70px] md:translate-x-[90px]' : 'opacity-0 translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step === 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
                        </div>
                     </div>
                     
-                    <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-14 md:h-16 opacity-100 delay-[1500ms]' : 'h-0 overflow-hidden opacity-0'}`}>
+                    <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-14 md:h-16 opacity-100 delay-[500ms]' : 'h-0 overflow-hidden opacity-0'}`}>
                        <div className="p-3 text-slate-300">+</div>
                     </div>
                     
@@ -219,13 +221,15 @@ export default function SubstitutionMachinePage() {
                     <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-14 md:h-16' : 'h-0 overflow-hidden'}`}>
                        <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
                           <SnakeBorder active={step === 4} color="#10b981" />
-                          <div className={`transition-opacity duration-300 delay-[1500ms] ${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
+                          
+                          {/* Static element ONLY appears at step >= 4 to avoid overlapping with clone at step 3 */}
+                          <div className={`transition-opacity duration-300 ${step >= 4 ? 'opacity-100' : 'opacity-0'}`}>
                              <span className="text-amber-400">5</span>
                           </div>
 
                           {/* Flying Clone for step 4 (Right operand) */}
-                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24 -translate-x-12 md:-translate-x-16 lg:-translate-x-20' : step > 4 ? 'opacity-0' : 'opacity-0 translate-y-0 translate-x-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-[100px] md:translate-y-[128px] -translate-x-[70px] md:-translate-x-[90px]' : 'opacity-0 translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step === 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-amber-400">5</span>
                              </div>
                           </div>
@@ -244,8 +248,8 @@ export default function SubstitutionMachinePage() {
                     </div>
                     <div className={`col-span-3 flex items-center justify-center transition-all duration-[500ms] ${step >= 4 ? 'h-16 md:h-24' : 'h-0 overflow-hidden'}`}>
                        <div className="relative">
-                          {/* Final morphed result */}
-                          <span className={`block transition-opacity duration-500 delay-[1000ms] ${step >= 4 ? 'opacity-100' : 'opacity-0'} text-4xl md:text-5xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]`}>
+                          {/* Final morphed result fades in just as the step 4 clones fade out */}
+                          <span className={`block transition-opacity duration-500 ${step >= 4 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'} text-4xl md:text-5xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]`}>
                              {2 * xVal + 5}
                           </span>
                        </div>

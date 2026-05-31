@@ -15,16 +15,35 @@ const SnakeBorder = ({ active, color = "#818cf8" }: { active: boolean; color?: s
   );
 };
 
+const GrowingArrow = ({ active, delay = "0ms" }: { active: boolean; delay?: string }) => {
+  return (
+    <div className={`w-full h-full flex justify-center transition-opacity duration-300 ${active ? 'opacity-100' : 'opacity-0'}`} style={{ transitionDelay: active ? delay : '0ms' }}>
+      <svg width="24" height="100%" viewBox="0 0 24 40" preserveAspectRatio="none" className="overflow-visible">
+         <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+               <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" />
+            </marker>
+         </defs>
+         <line x1="12" y1="0" x2="12" y2="36" stroke="#94a3b8" strokeWidth="3" markerEnd="url(#arrowhead)"
+               pathLength="100" strokeDasharray="100" 
+               strokeDashoffset={active ? "0" : "100"}
+               style={{ transition: `stroke-dashoffset 1s ease-in-out ${active ? delay : '0ms'}` }} />
+      </svg>
+    </div>
+  );
+};
+
 export default function SubstitutionMachinePage() {
   const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
   
   // y = 2x + 5
   const [xVal, setXVal] = useState<number>(3);
   const [step, setStep] = useState(0); 
-  // 0: input x
-  // 1: replace x with (val)
-  // 2: multiply
-  // 3: add
+  // 0: Initial
+  // 1: Substituted x
+  // 2: Multiply
+  // 3: Drop constant
+  // 4: Add
   
   // Re-run steps animation on x change
   useEffect(() => {
@@ -105,38 +124,42 @@ export default function SubstitutionMachinePage() {
                  <Settings2 size={16} /> Mesin Fungsi
               </div>
 
-              <div className="flex justify-center w-full mt-8 mb-4">
-                 <div className="grid grid-cols-[auto_auto_auto_auto] gap-x-2 md:gap-x-4 lg:gap-x-6 items-center text-3xl md:text-4xl lg:text-5xl font-mono font-black justify-items-center whitespace-nowrap">
+              <div className="flex justify-center w-full mt-8 mb-4 overflow-x-auto pb-4">
+                 <div className="grid grid-cols-[auto_auto_auto_auto] gap-x-2 md:gap-x-4 lg:gap-x-6 items-center text-3xl md:text-4xl lg:text-5xl font-mono font-black justify-items-center whitespace-nowrap min-w-max px-4">
                     
                     {/* ROW 1 */}
-                    <div className="text-slate-400 justify-self-end py-2">
-                       f({step >= 1 ? <span className="text-emerald-400 transition-colors duration-1000">{xVal}</span> : <span className="text-indigo-400 transition-colors duration-1000">x</span>}) =
+                    <div className="text-slate-400 justify-self-end py-2 relative flex items-center p-3 rounded-xl">
+                       <SnakeBorder active={step === 1} color="#818cf8" />
+                       f(
+                       <span className="relative inline-flex justify-center items-center mx-1">
+                          <span className="invisible">{step >= 1 ? xVal : 'x'}</span>
+                          <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-0' : 'opacity-100'}`}>x</span>
+                          <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>{xVal}</span>
+                       </span>
+                       ) =
                     </div>
                     
                     {/* ROW 1: 2(x) Cell */}
-                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
-                       <SnakeBorder active={step === 1} color="#818cf8" />
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 || step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
+                       <SnakeBorder active={step === 1 || step === 2} color="#818cf8" />
                        
-                       <div className={`transition-opacity duration-300 ${step >= 2 ? 'opacity-0' : 'opacity-100'}`}>
-                          <span className="text-white">2</span>
-                          <span className={`transition-colors duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
-                             {step >= 1 ? `(${xVal})` : 'x'}
+                       <div className="text-white relative flex items-center z-10">
+                          2
+                          <span className="relative inline-flex justify-center items-center ml-1">
+                             <span className="invisible">{step >= 1 ? `(${xVal})` : 'x'}</span>
+                             <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-0' : 'opacity-100'} text-indigo-400`}>x</span>
+                             <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>({xVal})</span>
                           </span>
                        </div>
 
-                       {/* Flying Clone */}
-                       <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 2 ? 'translate-y-24 md:translate-y-28 lg:translate-y-32' : 'translate-y-0'}`}>
-                          <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
-                             <div className="relative w-full h-full flex justify-center items-center">
-                                <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-700' : 'opacity-100'}`}>
-                                   <span className="text-white">2</span>
-                                   <span className={`transition-colors duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
-                                      {step >= 1 ? `(${xVal})` : 'x'}
-                                   </span>
-                                </div>
-                                <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-700' : 'opacity-0'}`}>
-                                   <span className="text-white">{2 * xVal}</span>
-                                </div>
+                       {/* Flying Clone for step 2 */}
+                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 2 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24' : step > 2 ? 'opacity-0 translate-y-16 md:translate-y-20 lg:translate-y-24' : 'opacity-0 translate-y-0'}`}>
+                          <div className="relative w-full h-full flex justify-center items-center">
+                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
+                                <span className="text-white">2</span><span className="text-emerald-400">({xVal})</span>
+                             </div>
+                             <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
+                                <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
                        </div>
@@ -145,16 +168,14 @@ export default function SubstitutionMachinePage() {
                     <div className="text-slate-400 py-2">+</div>
                     
                     {/* ROW 1: 5 Cell */}
-                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
-                       <SnakeBorder active={step === 1} color="#fbbf24" />
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 3 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
+                       <SnakeBorder active={step === 3} color="#fbbf24" />
                        
-                       <div className={`transition-opacity duration-300 ${step >= 2 ? 'opacity-0' : 'opacity-100'}`}>
-                          <span className="text-amber-400">5</span>
-                       </div>
+                       <div className="text-amber-400 z-10">5</div>
 
-                       {/* Flying Clone */}
-                       <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 2 ? 'translate-y-24 md:translate-y-28 lg:translate-y-32' : 'translate-y-0'}`}>
-                          <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                       {/* Flying Clone for step 3 */}
+                       <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 3 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24' : step > 3 ? 'opacity-0 translate-y-16 md:translate-y-20 lg:translate-y-24' : 'opacity-0 translate-y-0'}`}>
+                          <div className="w-full h-full flex items-center justify-center">
                              <span className="text-amber-400">5</span>
                           </div>
                        </div>
@@ -162,55 +183,49 @@ export default function SubstitutionMachinePage() {
 
                     {/* ROW 2 (Arrows 1) */}
                     <div className="justify-self-end"></div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <ArrowDown className="text-slate-400 animate-bounce" />
+                    <div className={`flex items-center w-full transition-all duration-[500ms] ${step >= 2 ? 'h-10 md:h-12' : 'h-0 overflow-hidden'}`}>
+                       <GrowingArrow active={step >= 2} delay="0ms" />
                     </div>
                     <div></div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <ArrowDown className="text-slate-400 animate-bounce" />
+                    <div className={`flex items-center w-full transition-all duration-[500ms] ${step >= 3 ? 'h-10 md:h-12' : 'h-0 overflow-hidden'}`}>
+                       <GrowingArrow active={step >= 3} delay="0ms" />
                     </div>
 
-                    {/* ROW 3 */}
-                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <span className="text-slate-400">=</span>
-                    </div>
+                    {/* ROW 3 (Multiplication & Drop Result) */}
+                    <div className="justify-self-end"></div>
                     
                     {/* ROW 3: 2*xVal Cell */}
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
-                          <SnakeBorder active={step === 2} color="#818cf8" />
-                          
-                          <div className={`transition-opacity duration-300 ${step >= 3 ? 'opacity-0' : 'opacity-100'}`}>
+                    <div className={`flex items-center transition-all duration-[500ms] ${step >= 2 ? 'h-14 md:h-16' : 'h-0 overflow-hidden'}`}>
+                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
+                          <SnakeBorder active={step === 4} color="#10b981" />
+                          <div className={`transition-opacity duration-300 delay-[1500ms] ${step >= 2 ? 'opacity-100' : 'opacity-0'}`}>
                              <span className="text-white">{2 * xVal}</span>
                           </div>
 
-                          {/* Flying Clone */}
-                          <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 3 ? 'translate-y-24 md:translate-y-32 lg:translate-y-40 translate-x-12 md:translate-x-16 lg:translate-x-20' : 'translate-y-0 translate-x-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 3 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                          {/* Flying Clone for step 4 (Left operand) */}
+                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24 translate-x-12 md:translate-x-16 lg:translate-x-20' : step > 4 ? 'opacity-0' : 'opacity-0 translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">{2 * xVal}</span>
                              </div>
                           </div>
                        </div>
                     </div>
                     
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`transition-all duration-1000 ${step === 2 ? 'p-3 text-slate-300' : 'p-3 text-slate-400'}`}>
-                          +
-                       </div>
+                    <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-14 md:h-16 opacity-100 delay-[1500ms]' : 'h-0 overflow-hidden opacity-0'}`}>
+                       <div className="p-3 text-slate-300">+</div>
                     </div>
                     
                     {/* ROW 3: 5 Cell */}
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
-                          <SnakeBorder active={step === 2} color="#fbbf24" />
-                          
-                          <div className={`transition-opacity duration-300 ${step >= 3 ? 'opacity-0' : 'opacity-100'}`}>
+                    <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-14 md:h-16' : 'h-0 overflow-hidden'}`}>
+                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
+                          <SnakeBorder active={step === 4} color="#10b981" />
+                          <div className={`transition-opacity duration-300 delay-[1500ms] ${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
                              <span className="text-amber-400">5</span>
                           </div>
 
-                          {/* Flying Clone */}
-                          <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 3 ? 'translate-y-24 md:translate-y-32 lg:translate-y-40 -translate-x-12 md:-translate-x-16 lg:-translate-x-20' : 'translate-y-0 translate-x-0'}`}>
-                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 3 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                          {/* Flying Clone for step 4 (Right operand) */}
+                          <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step === 4 ? 'opacity-100 translate-y-16 md:translate-y-20 lg:translate-y-24 -translate-x-12 md:-translate-x-16 lg:-translate-x-20' : step > 4 ? 'opacity-0' : 'opacity-0 translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-amber-400">5</span>
                              </div>
                           </div>
@@ -219,18 +234,21 @@ export default function SubstitutionMachinePage() {
 
                     {/* ROW 4 (Arrow 2) */}
                     <div></div>
-                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <ArrowDown className="text-slate-400 animate-bounce" />
+                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[500ms] w-full ${step >= 4 ? 'h-10 md:h-12' : 'h-0 overflow-hidden'}`}>
+                       <GrowingArrow active={step >= 4} delay="0ms" />
                     </div>
 
-                    {/* ROW 5 (Result) */}
-                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    {/* ROW 5 (Final Result) */}
+                    <div className={`justify-self-end flex items-center transition-all duration-[500ms] ${step >= 4 ? 'h-16 md:h-24 opacity-100 delay-[1000ms]' : 'h-0 overflow-hidden opacity-0'}`}>
                        <span className="text-slate-400">=</span>
                     </div>
-                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <span className="text-4xl md:text-5xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-                          {2 * xVal + 5}
-                       </span>
+                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[500ms] ${step >= 4 ? 'h-16 md:h-24' : 'h-0 overflow-hidden'}`}>
+                       <div className="relative">
+                          {/* Final morphed result */}
+                          <span className={`block transition-opacity duration-500 delay-[1000ms] ${step >= 4 ? 'opacity-100' : 'opacity-0'} text-4xl md:text-5xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]`}>
+                             {2 * xVal + 5}
+                          </span>
+                       </div>
                     </div>
 
                  </div>
@@ -240,14 +258,15 @@ export default function SubstitutionMachinePage() {
               <div className="w-full max-w-lg bg-slate-700/50 border border-slate-600 p-5 rounded-2xl text-center min-h-[5rem] flex items-center justify-center mb-8 shadow-inner">
                 <p className="text-slate-300 text-sm leading-relaxed transition-opacity duration-500">
                   {step === 0 && "Fungsi awal sebelum substitusi. Variabel x siap diganti."}
-                  {step === 1 && `Substitusi: Ganti variabel x di ruas kiri dan kanan menjadi angka ${xVal}. Perhatikan f(x) menjadi f(${xVal}).`}
-                  {step === 2 && `Kalikan 2 dengan ${xVal} menghasilkan ${2*xVal}, sedangkan konstanta 5 diturunkan ke bawah.`}
-                  {step === 3 && `Jumlahkan hasil perkalian dengan konstanta untuk mendapatkan hasil akhir dari f(${xVal}).`}
+                  {step === 1 && `Substitusi: Ganti variabel x di ruas kiri dan kanan menjadi angka ${xVal}.`}
+                  {step === 2 && `Kalikan 2 dengan ${xVal} menghasilkan ${2*xVal}.`}
+                  {step === 3 && `Konstanta 5 diturunkan ke bawah karena tidak ada operasi lain di sekitarnya.`}
+                  {step === 4 && `Jumlahkan hasil perkalian dengan konstanta untuk mendapatkan hasil akhir dari f(${xVal}).`}
                 </p>
               </div>
 
               <div className="w-full flex justify-center">
-                 {step < 3 ? (
+                 {step < 4 ? (
                     <button
                        onClick={() => {
                           setStep(s => s + 1);

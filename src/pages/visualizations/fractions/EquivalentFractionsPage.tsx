@@ -38,7 +38,11 @@ export default function EquivalentFractionsPage() {
               <div>{baseDenominator}</div>
             </div>
 
-            <div className="text-3xl md:text-4xl font-bold text-indigo-400">=</div>
+            <div className="flex flex-col gap-1 items-center justify-center text-indigo-400 font-bold font-mono px-2 md:px-4">
+               <div className={`transition-all duration-500 ${multiplier > 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>× {multiplier}</div>
+               <div className="text-3xl md:text-4xl font-bold">=</div>
+               <div className={`transition-all duration-500 ${multiplier > 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}>× {multiplier}</div>
+            </div>
 
             {/* Equivalent Fraction */}
             <div className="flex flex-col items-center text-5xl md:text-7xl font-black font-mono text-indigo-600 transition-all duration-300 transform">
@@ -56,17 +60,21 @@ export default function EquivalentFractionsPage() {
           <div className="w-full max-w-lg h-32 md:h-40 relative z-10 bg-slate-50 border-2 border-slate-300 overflow-hidden shadow-inner">
              
              {/* The Colored Area */}
-             <div 
-               className="absolute top-0 left-0 h-full bg-indigo-400 transition-all duration-700 ease-in-out"
-               style={{ width: `${(baseNumerator / baseDenominator) * 100}%` }}
-             />
+             <div className="absolute top-0 left-0 w-full h-full flex">
+                {Array.from({ length: baseDenominator }).map((_, idx) => (
+                  <div 
+                    key={`color-${idx}`}
+                    className={`h-full flex-1 transition-colors duration-700 ${idx < baseNumerator ? 'bg-indigo-400' : 'bg-transparent'}`}
+                  />
+                ))}
+             </div>
 
              {/* Vertical Cuts (Base Denominator) */}
              <div className="absolute top-0 left-0 w-full h-full flex pointer-events-none">
                 {Array.from({ length: baseDenominator }).map((_, idx) => (
                   <div 
                     key={`v-${idx}`}
-                    className="h-full flex-1 border-r-2 border-slate-300/80 last:border-r-0 flex items-center justify-center"
+                    className="h-full flex-1 border-r-2 border-slate-300/70 last:border-r-0 flex flex-col items-center justify-center"
                   >
                      <div className={`transition-all duration-500 delay-100 ${idx < baseNumerator ? 'opacity-40 scale-100' : 'opacity-0 scale-50'}`}>
                         <Box size={24} className="text-white drop-shadow-sm" />
@@ -80,8 +88,11 @@ export default function EquivalentFractionsPage() {
                 {Array.from({ length: multiplier - 1 }).map((_, idx) => (
                   <div 
                     key={`h-${idx}`}
-                    className="absolute left-0 w-full h-[3px] bg-slate-800/20 transition-all duration-500 ease-in-out animate-fadeIn"
-                    style={{ top: `${((idx + 1) / multiplier) * 100}%` }}
+                    className="absolute left-0 w-full h-[2px] bg-slate-300/70 transition-all duration-700 ease-in-out"
+                    style={{ 
+                       top: `${((idx + 1) / multiplier) * 100}%`,
+                       animation: 'fadeIn 0.5s ease-out'
+                    }}
                   />
                 ))}
              </div>

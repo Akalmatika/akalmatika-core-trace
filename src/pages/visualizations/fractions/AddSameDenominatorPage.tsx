@@ -153,7 +153,7 @@ export default function AddSameDenominatorPage() {
             evalResult={evalResult}
             onNext={handleNextQuiz}
             isLastQuestion={quizStep === 2}
-            nextPath="/student/visualizations/fractions/diff-denominator"
+            nextPath="/student/visualizations/fractions/different-denominator"
             nextLabel="Lanjut: Penyebut Berbeda"
             isFinished={isFinished}
             score={score}

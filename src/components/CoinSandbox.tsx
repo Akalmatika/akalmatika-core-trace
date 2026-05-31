@@ -758,61 +758,61 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
       <div className="lg:col-span-4 flex flex-col justify-between space-y-1.5 sm:space-y-6">
         <div className="space-y-4">
           <div>
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col items-center gap-1.5 md:items-start text-center md:text-left z-20">
-              <h2 className="text-xl font-sans font-black tracking-tight text-slate-800 drop-shadow-sm flex items-center justify-center md:justify-start gap-2">
-                <Coins size={22} className="text-indigo-600 animate-pulse" /> 
-                {activeEquation ? "Visualisasi Soal" : "Eksplorasi Bebas"}
-              </h2>
-              <p className="text-xs font-bold font-sans text-slate-500 bg-white/60 px-3 py-1 rounded-full border border-slate-200/50 shadow-sm flex items-center gap-1">
-                <Terminal size={12} strokeWidth={2.5} /> {activeEquation ? "Latihan Mandiri Interaktif" : "Papan Es & Api"}
-              </p>
-            </div>
-              <div className="flex gap-2">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col items-start gap-1 z-20">
+                <div className="flex items-center gap-2 mb-1 sm:mb-0">
+                  <span className="text-[9px] sm:text-[10px] font-bold font-sans text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-sm flex items-center gap-1 uppercase tracking-wider">
+                    <Terminal size={10} strokeWidth={2.5} /> {activeEquation ? "Latihan Mandiri" : "Mode Eksplorasi"}
+                  </span>
+                </div>
+                <h2 className="text-lg sm:text-2xl font-sans font-black tracking-tight text-slate-800 drop-shadow-sm flex items-center gap-2">
+                  <Coins size={20} className="text-indigo-600 animate-pulse sm:w-6 sm:h-6" /> 
+                  {activeEquation ? "Visualisasi Soal" : "Eksplorasi Bebas"}
+                </h2>
+              </div>
+              <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 shrink-0">
                 {onBackToDiagnostic && (
                   <button
                     id="btn-back-to-diagnostics"
                     onClick={onBackToDiagnostic}
-                    className="font-mono text-3xs font-bold text-slate-500 hover:text-slate-700 hover:underline flex items-center gap-0.5 transition-all cursor-pointer p-2 -m-2"
+                    className="font-mono text-3xs sm:text-[10px] font-bold text-slate-500 hover:text-slate-700 hover:underline flex items-center gap-0.5 transition-all cursor-pointer p-1"
                   >
-                    &larr; Kembali ke Hasil
+                    &larr; Kembali
                   </button>
                 )}
                 {onProceedToDrill && (
                   <button
                     onClick={onProceedToDrill}
-                    className="bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 font-sans font-bold text-[10px] uppercase tracking-wider px-3 py-2 rounded-lg flex items-center gap-1 transition-colors cursor-pointer shadow-sm"
+                    className="bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white border border-indigo-200 hover:border-indigo-600 font-sans font-bold text-[9px] sm:text-xs tracking-wide px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-xl flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer shadow-sm group"
                   >
-                    Lanjut Latihan
+                    Lanjut Latihan <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform sm:w-3.5 sm:h-3.5" />
                   </button>
                 )}
               </div>
             </div>
-            <h3 className="font-sans font-bold text-slate-900 text-sm sm:text-lg mt-1 sm:mt-2 tracking-tight">
-              {activeEquation ? `Modeling: ${activeEquation.expression}` : "Zero-Pair Element Sandbox"}
-            </h3>
-            <div className="text-[10px] sm:text-xs text-slate-500 font-sans leading-relaxed space-y-0.5 sm:space-y-1 mt-0.5 sm:mt-1">
-              {activeEquation ? (
-                <span>
-                  Mari ubah persamaan <strong className="text-indigo-600 font-mono font-bold select-all">{activeEquation.expression}</strong> ke bentuk es dan api!
-                  {activeEquation.op === '-' && " Mengurangkan berarti sama dengan menambahkan bilangan berlawanan."}
-                  {hasNoZeroPairs ? (
-                    <p className="flex items-start gap-2 bg-amber-50 text-amber-700 p-2.5 rounded-lg border border-amber-100">
-                      <Info size={16} className="mt-0.5 shrink-0" />
-                      <span> Semua elemen bertanda sama, hitung totalnya dan klik <strong>Selesai</strong> jika sudah!</span>
-                    </p>
-                  ) : (
-                    <p className="flex items-start gap-2 bg-blue-50 text-blue-700 p-2.5 rounded-lg border border-blue-100">
-                      <Wand2 size={16} className="mt-0.5 shrink-0" />
-                      <span> Seret elemen berlawanan agar saling menetralisir!</span>
-                    </p>
-                  )}
-                </span>
-              ) : (
-                <p className="text-slate-500 text-xs leading-relaxed font-sans">
-                  Seret Es (<strong className="text-sky-600">Biru +1</strong>) ke Api (<strong className="text-rose-600">Merah -1</strong>) untuk visualisasi netralisasi.
-                </p>
-              )}
+            
+            <div className="mt-2 sm:mt-4">
+              <h3 className="font-sans font-bold text-slate-900 text-xs sm:text-base tracking-tight">
+                {activeEquation ? `Modeling: ${activeEquation.expression}` : "Zero-Pair Element Sandbox"}
+              </h3>
+              <div className="text-[10px] sm:text-xs text-slate-500 font-sans leading-relaxed mt-0.5 sm:mt-1 space-y-1">
+                {activeEquation ? (
+                  <div>
+                    Mari ubah persamaan <strong className="text-indigo-600 font-mono font-bold select-all">{activeEquation.expression}</strong> ke bentuk es dan api!
+                    {activeEquation.op === '-' && " Mengurangkan berarti sama dengan menambahkan bilangan berlawanan."}
+                    {hasNoZeroPairs && (
+                      <p className="flex items-start gap-2 bg-amber-50 text-amber-700 p-2 sm:p-2.5 rounded-md sm:rounded-lg border border-amber-100 mt-1 sm:mt-2">
+                        <AlertCircle size={14} className="mt-0.5 shrink-0 sm:w-4 sm:h-4" />
+                        <span className="leading-tight font-medium">Elemen memiliki muatan yang sama. Kamu tidak bisa menetralkannya (membentuk pasangan nol). Silakan Lakukan Otomatis untuk mengevaluasi!</span>
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <span>
+                    Seret Es (<strong className="text-sky-500">Biru +1</strong>) ke Api (<strong className="text-rose-500">Merah -1</strong>) untuk visualisasi netralisasi pasangan nol (zero-pair). 
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -1216,23 +1216,23 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
           {/* Result Overlay Modal */}
           {isCompleted && (
             <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-[60] flex flex-col items-center justify-center p-2 sm:p-4 animate-fadeIn">
-              <div className="bg-white p-3 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl max-w-xs sm:max-w-sm md:max-w-md w-full text-center space-y-2 sm:space-y-4 md:space-y-6 transform animate-bounceIn relative overflow-hidden">
+              <div className="bg-white p-3 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl w-[95%] max-w-[400px] sm:max-w-md text-center space-y-2 sm:space-y-4 md:space-y-6 transform animate-bounceIn relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1.5 sm:h-2 bg-gradient-to-r from-emerald-400 to-sky-400"></div>
                 <div className="w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto shadow-inner">
                   <CheckCircle2 className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10 text-emerald-500 animate-pulse" />
                 </div>
                 <h3 className="text-base sm:text-xl md:text-3xl font-black text-slate-800 font-sans tracking-tight">Eksplorasi Selesai!</h3>
                 
-                <div className="bg-slate-50 border border-slate-100 rounded-lg sm:rounded-xl p-2 sm:p-4 font-mono text-slate-800 text-lg sm:text-2xl tracking-wide flex flex-col items-center justify-center gap-1.5 sm:gap-3 shadow-inner">
-                  <InlineMath math={activeEquation?.expression || ''} />
+                <div className="bg-slate-50 border border-slate-100 rounded-lg sm:rounded-xl p-2 sm:p-4 font-mono text-slate-800 text-base sm:text-2xl tracking-wide flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-1 shadow-inner overflow-x-auto w-full">
+                  <span className="shrink-0"><InlineMath math={activeEquation?.expression || ''} /></span>
                   {activeEquation?.op === '-' && (
-                    <div className="text-slate-500 text-sm sm:text-lg">
+                    <span className="text-slate-500 text-sm sm:text-lg shrink-0">
                       <InlineMath math={`= ${activeEquation.a} + ${activeEquation.b < 0 ? Math.abs(activeEquation.b) : `(-${activeEquation.b})`}`} />
-                    </div>
+                    </span>
                   )}
-                  <div className="text-indigo-600 font-bold text-xl sm:text-3xl mt-0.5 sm:mt-1">
+                  <span className="text-indigo-600 font-bold text-lg sm:text-3xl shrink-0">
                     <InlineMath math={`= ${netValue}`} />
-                  </div>
+                  </span>
                 </div>
 
                 <div className="pt-2 sm:pt-5 border-t border-slate-100 w-full text-left space-y-2 sm:space-y-5">

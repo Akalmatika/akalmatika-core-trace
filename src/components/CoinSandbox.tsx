@@ -817,60 +817,60 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
           </div>
 
           {/* Quick Spawn Controls */}
-          <div className="space-y-2">
-            <span className="text-2xs font-mono font-bold text-slate-400 block uppercase">Spawn Manipulatives</span>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-1 sm:space-y-2">
+            <span className="text-[9px] sm:text-[10px] font-mono font-bold text-slate-400 block uppercase">Spawn Manipulatives</span>
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
               <button
                 id="btn-spawn-positive"
                 onClick={() => spawnCoin(1)}
-                className="flex items-center justify-center gap-1.5 bg-sky-50 border border-sky-200 hover:bg-sky-100/80 active:translate-y-0.5 text-sky-700 font-semibold px-3 py-2 rounded-xl text-xs transition-all cursor-pointer font-sans"
+                className="flex items-center justify-center gap-1 sm:gap-1.5 bg-sky-50 border border-sky-200 hover:bg-sky-100/80 active:translate-y-0.5 text-sky-700 font-semibold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-all cursor-pointer font-sans"
               >
-                <Plus size={14} strokeWidth={2.5} />
+                <Plus size={12} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
                 <span>Positive (+1)</span>
               </button>
               <button
                 id="btn-spawn-negative"
                 onClick={() => spawnCoin(-1)}
-                className="flex items-center justify-center gap-1.5 bg-rose-50 border border-rose-200 hover:bg-rose-100/90 active:translate-y-0.5 text-rose-700 font-semibold px-3 py-2 rounded-xl text-xs transition-all cursor-pointer font-sans"
+                className="flex items-center justify-center gap-1 sm:gap-1.5 bg-rose-50 border border-rose-200 hover:bg-rose-100/90 active:translate-y-0.5 text-rose-700 font-semibold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition-all cursor-pointer font-sans"
               >
-                <Minus size={14} strokeWidth={2.5} />
+                <Minus size={12} className="sm:w-[14px] sm:h-[14px]" strokeWidth={2.5} />
                 <span>Negative (-1)</span>
               </button>
             </div>
           </div>
 
           {/* Real-time Math Ledger Card */}
-          <div className="bg-slate-50 border border-slate-150 p-4 rounded-xl space-y-3">
-            <div className="flex items-center justify-between pb-1 border-b border-slate-200/60 mb-2">
-              <span className="text-3xs font-mono font-bold text-slate-405 block uppercase tracking-wider">WORKSPACE MATH LEDGER</span>
+          <div className="bg-slate-50 border border-slate-150 p-2 sm:p-4 rounded-xl space-y-1.5 sm:space-y-3">
+            <div className="flex items-center justify-between pb-0.5 sm:pb-1 border-b border-slate-200/60 mb-1 sm:mb-2">
+              <span className="text-[9px] sm:text-[10px] font-mono font-bold text-slate-405 block uppercase tracking-wider">WORKSPACE MATH LEDGER</span>
               <button 
                 onClick={handleClear} 
-                className="text-xs flex items-center gap-1 text-rose-600 hover:bg-rose-100/80 bg-rose-50 border border-rose-200/80 px-2 py-0.5 rounded-md transition-colors font-semibold"
+                className="text-[9px] sm:text-xs flex items-center gap-1 text-rose-600 hover:bg-rose-100/80 bg-rose-50 border border-rose-200/80 px-1.5 py-0.5 rounded transition-colors font-semibold"
               >
                 <RotateCcw size={10} /> Reset
               </button>
             </div>
             
-            <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-              <div className="bg-white p-2 rounded-lg border border-slate-100">
-                <span className="text-sky-600 font-bold text-base block">{positiveCount}</span>
-                <span className="text-3xs text-slate-400">ES (+1)</span>
+            <div className="grid grid-cols-3 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-mono">
+              <div className="bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
+                <span className="text-sky-600 font-bold text-sm sm:text-base block">{positiveCount}</span>
+                <span className="text-[8px] sm:text-[9px] text-slate-400">ES (+1)</span>
               </div>
-              <div className="flex flex-col items-center justify-center bg-white p-2 rounded-lg border border-slate-100">
-                <span className="text-rose-600 font-bold text-base block">{negativeCount}</span>
-                <span className="text-3xs text-slate-400">API (-1)</span>
+              <div className="flex flex-col items-center justify-center bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
+                <span className="text-rose-600 font-bold text-sm sm:text-base block">{negativeCount}</span>
+                <span className="text-[8px] sm:text-[9px] text-slate-400">API (-1)</span>
               </div>
-              <div className="bg-white p-2 rounded-lg border border-slate-100">
-                <span className={`font-extrabold text-base block ${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-500"}`}>
+              <div className="bg-white p-1 sm:p-2 rounded-lg border border-slate-100">
+                <span className={`font-extrabold text-sm sm:text-base block ${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-500"}`}>
                   {netValue > 0 ? `+${netValue}` : netValue}
                 </span>
-                <span className="text-3xs text-slate-400">NET VALUE</span>
+                <span className="text-[8px] sm:text-[9px] text-slate-400">NET VALUE</span>
               </div>
             </div>
 
             {/* Algebraic Representation Expression */}
-            <div className="bg-white p-3 rounded-xl border border-slate-100 text-center select-all">
-              <span tabIndex={0} className="text-3xs font-mono text-slate-400 flex items-center justify-center gap-1 mb-0.5 relative group outline-hidden">
+            <div className="bg-white py-1.5 px-2 sm:p-3 rounded-lg sm:rounded-xl border border-slate-100 text-center select-all">
+              <span tabIndex={0} className="text-[8px] sm:text-[9px] font-mono text-slate-400 flex items-center justify-center gap-1 mb-0 sm:mb-0.5 relative group outline-hidden">
                 ALGEBRAIC REPRESENTATION
                 <HelpCircle size={10} className="cursor-help" />
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-48 p-2 bg-slate-800 text-white text-[10px] rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 transition-opacity z-50 text-center shadow-lg font-sans normal-case">
@@ -878,7 +878,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                   <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
                 </div>
               </span>
-              <span className="font-mono text-sm font-extrabold text-slate-800">
+              <span className="font-mono text-[11px] sm:text-sm font-extrabold text-slate-800 leading-tight">
                 {positiveCount === 0 && negativeCount === 0 ? "0" : (
                   <>
                     {Array(positiveCount).fill("(+1)").join(" + ") || ""}
@@ -894,28 +894,28 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             </div>
 
             {/* Kemungkinan Soal Representation */}
-            <div className="bg-white p-3 rounded-xl border border-slate-100 text-center">
-              <span className="text-3xs font-mono text-slate-400 block mb-1">KEMUNGKINAN SOAL EKUIVALEN</span>
-              <div className="font-mono text-xs font-extrabold text-slate-700 flex flex-col gap-1 select-all">
+            <div className="bg-white py-1.5 px-2 sm:p-3 rounded-lg sm:rounded-xl border border-slate-100 text-center">
+              <span className="text-[8px] sm:text-[9px] font-mono text-slate-400 block mb-0.5 sm:mb-1">KEMUNGKINAN SOAL EKUIVALEN</span>
+              <div className="font-mono text-[10px] sm:text-xs font-extrabold text-slate-700 flex flex-col gap-0.5 sm:gap-1 select-all">
                 {positiveCount === 0 && negativeCount === 0 ? (
-                  <span className="text-slate-400 italic font-normal">Belum ada elemen</span>
+                  <span className="text-slate-400 italic font-normal text-[10px]">Belum ada elemen</span>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between group px-1 py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} - {negativeCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[10px] px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount, '-')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} + {positiveCount} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[10px] px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount, '+')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{positiveCount} + {negativeCount === 0 ? 0 : `(-${negativeCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[10px] px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(positiveCount, negativeCount === 0 ? 0 : -negativeCount, '+')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
-                    <div className="flex items-center justify-between group px-1 py-1 rounded hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center justify-between group px-1 py-0.5 sm:py-1 rounded hover:bg-slate-50 transition-colors">
                       <span>{negativeCount === 0 ? 0 : `-${negativeCount}`} - {positiveCount === 0 ? 0 : `(-${positiveCount})`} = <span className={`${netValue > 0 ? "text-sky-600" : netValue < 0 ? "text-rose-600" : "text-slate-700"}`}>{netValue > 0 ? `+${netValue}` : netValue}</span></span>
-                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[10px] px-3 py-1.5 bg-indigo-100 text-indigo-700 rounded-lg transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
+                      <button onClick={() => handleSelectEquivalent(negativeCount === 0 ? 0 : -negativeCount, positiveCount === 0 ? 0 : -positiveCount, '-')} className="text-[9px] sm:text-[10px] px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 text-indigo-700 rounded-md transition-colors font-sans cursor-pointer hover:bg-indigo-200">Pilih</button>
                     </div>
                   </>
                 )}

@@ -17,6 +17,7 @@ export default function CompareFractionsPage() {
 
   const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
   const [selectedOp, setSelectedOp] = useState<'<' | '>' | '=' | null>(null);
+  const [isSameDenominator, setIsSameDenominator] = useState(false);
 
   const correct = (n1*d2 < n2*d1) ? '<' : (n1*d2 > n2*d1) ? '>' : '=';
   
@@ -26,6 +27,7 @@ export default function CompareFractionsPage() {
   useEffect(() => {
     setEvalResult('none');
     setSelectedOp(null);
+    setIsSameDenominator(false);
   }, [n1, d1, n2, d2]);
 
   const handleGuess = (op: '<' | '>' | '=') => {
@@ -38,26 +40,46 @@ export default function CompareFractionsPage() {
     }
   };
 
-  const renderFractionBar = (num: number, den: number, color: string) => (
-    <div className="flex items-center gap-4 w-full">
-      <div className="flex flex-col items-center text-xl font-bold font-mono text-slate-700 w-12">
-        <div>{num}</div>
-        <div className="w-full h-0.5 bg-slate-800 my-0.5"></div>
-        <div>{den}</div>
-      </div>
-      <div className="flex-1 h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner w-full">
-        {Array.from({ length: den }).map((_, idx) => (
+  const renderFractionBar = (baseNum: number, baseDen: number, multiplier: number, color: string) => {
+    const currentNum = baseNum * multiplier;
+    const currentDen = baseDen * multiplier;
+
+    return (
+      <div className="flex items-center gap-4 w-full">
+        <div className="flex flex-col items-center text-xl font-bold font-mono text-slate-700 w-12 transition-all">
+          <div>{currentNum}</div>
+          <div className="w-full h-0.5 bg-slate-800 my-0.5 rounded-full"></div>
+          <div>{currentDen}</div>
+        </div>
+        <div className="flex-1 h-16 relative bg-slate-50 overflow-hidden shadow-inner border-2 border-slate-300 w-full">
+          {/* Base Color Fill */}
           <div 
-            key={idx}
-            className={`
-              h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 transition-all duration-500
-              ${idx < num ? color : 'bg-transparent'}
-            `}
+            className={`absolute top-0 left-0 h-full transition-all duration-500 ${color}`}
+            style={{ width: `${(baseNum / baseDen) * 100}%` }}
           />
-        ))}
+          
+          {/* Base Partitions */}
+          {Array.from({ length: baseDen }).map((_, baseIdx) => (
+            <div key={`col-${baseIdx}`} className="absolute top-0 h-full pointer-events-none" style={{ left: `${(baseIdx / baseDen) * 100}%`, width: `${(1 / baseDen) * 100}%` }}>
+              <div className="absolute top-0 right-0 w-0.5 h-full bg-slate-300 pointer-events-none z-10" />
+              {/* Multiplier Partitions */}
+              <div className={`transition-all duration-500 w-full h-full absolute top-0 left-0 ${multiplier > 1 ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0'}`}>
+                {Array.from({ length: Math.max(0, multiplier - 1) }).map((_, idx) => (
+                  <div 
+                    key={`slice-${idx}`}
+                    className="absolute top-0 w-0.5 h-full bg-slate-300/80 pointer-events-none"
+                    style={{ 
+                      left: `${((idx + 1) / multiplier) * 100}%`,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
@@ -90,7 +112,7 @@ export default function CompareFractionsPage() {
           )}
 
           <div className="w-full flex flex-col gap-6 mt-8 relative z-10 max-w-lg mx-auto">
-            {renderFractionBar(n1, d1, 'bg-indigo-400')}
+            {renderFractionBar(n1, d1, isSameDenominator ? d2 : 1, 'bg-indigo-400')}
             
             <div className="flex justify-center my-2 gap-4">
                {['<', '=', '>'].map((op) => (
@@ -110,7 +132,23 @@ export default function CompareFractionsPage() {
                ))}
             </div>
 
-            {renderFractionBar(n2, d2, 'bg-sky-400')}
+            {renderFractionBar(n2, d2, isSameDenominator ? d1 : 1, 'bg-sky-400')}
+            
+            {/* Action Buttons */}
+            {d1 !== d2 && (
+              <div className="mt-4 flex justify-center w-full">
+                <button
+                  onClick={() => setIsSameDenominator(!isSameDenominator)}
+                  className={`py-3 px-6 rounded-xl font-bold text-sm transition-all shadow-sm flex items-center justify-center gap-2 ${
+                    isSameDenominator 
+                      ? 'bg-slate-200 text-slate-700 hover:bg-slate-300 border-2 border-slate-300' 
+                      : 'bg-indigo-600 text-white hover:bg-indigo-700 border-2 border-indigo-600'
+                  }`}
+                >
+                  {isSameDenominator ? 'Kembalikan Penyebut Awal' : 'Samakan Penyebut'}
+                </button>
+              </div>
+            )}
           </div>
 
         </div>

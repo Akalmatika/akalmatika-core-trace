@@ -315,7 +315,7 @@ export default function StudentPortal() {
       
       {/* Tab Switcher: Quest vs Drilling */}
       {currentStep !== "quiz" && currentStep !== "remedial" && (
-        <div className="flex bg-slate-200/60 p-1 rounded-xl w-fit gap-1 select-none">
+        <div className="flex flex-col sm:flex-row bg-slate-200/60 p-1 rounded-xl w-full sm:w-fit gap-1 select-none">
           <button
             id="btn-subtab-quest"
             onClick={() => setActiveSubTab("quest")}
@@ -568,7 +568,7 @@ export default function StudentPortal() {
               </div>
 
               {/* Visualizer Mode Toggle Tabs */}
-              <div className="flex flex-col md:flex-row border-b border-slate-200 w-full gap-2 md:gap-4">
+              <div className="flex flex-col md:flex-row border-b border-slate-200 w-full gap-2 md:gap-4 overflow-x-auto max-w-full">
                 <button
                   onClick={() => setVisualizerMode("coins")}
                   className={`py-3 font-sans text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -641,7 +641,7 @@ export default function StudentPortal() {
               </div>
 
               {/* Visualizer Mode Toggle Tabs */}
-              <div className="flex flex-col md:flex-row border-b border-slate-200 w-full gap-2 md:gap-4">
+              <div className="flex flex-col md:flex-row border-b border-slate-200 w-full gap-2 md:gap-4 overflow-x-auto max-w-full">
                 <button
                   id="btn-viz-coins"
                   onClick={() => setVisualizerMode("coins")}

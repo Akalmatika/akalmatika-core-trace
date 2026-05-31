@@ -1109,10 +1109,10 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
             <div className="absolute top-4 right-4 z-50 scale-90 md:scale-100 origin-top-right">
               <button
                 onClick={() => { setPresentationState('IDLE'); setCoins([]); setIsCompleted(false); setIsGathering(false); setIsTransformed(false); setIsAutoSolving(false); isAutoSolvingRef.current = false; setIsAutoSolvePending(false); }}
-                className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
+                className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 p-2 md:px-4 md:py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
               >
-                <PlayCircle size={14} />
-                <span>Ulangi Animasi</span>
+                <PlayCircle size={14} className="w-5 h-5 md:w-4 md:h-4" />
+                <span className="hidden md:inline">Ulangi Animasi</span>
               </button>
             </div>
           )}
@@ -1153,11 +1153,11 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                   const displayOp = isTransformed && activeEquation.op === '-' ? '+' : activeEquation.op;
                   return (
                     <>
-                      <div className="flex items-center justify-center gap-2 md:gap-4 text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter drop-shadow-lg">
-                      <div className={`transition-all duration-700 ${presentationState === 'STEP_A' ? (activeEquation.a < 0 ? 'scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
+                      <div className="flex items-center justify-center gap-1.5 md:gap-4 text-white text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter drop-shadow-lg">
+                      <div className={`transition-all duration-700 ${presentationState === 'STEP_A' ? (activeEquation.a < 0 ? 'scale-110 md:scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-110 md:scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
                         <InlineMath math={activeEquation.a < 0 ? `(${activeEquation.a})` : `${activeEquation.a}`} />
                       </div>
-                      <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_OP' || isTransformed ? 'scale-125 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'text-slate-500 opacity-60'}`}>
+                      <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_OP' || isTransformed ? 'scale-110 md:scale-125 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'text-slate-500 opacity-60'}`}>
                         <div className="relative w-12 h-16 flex items-center justify-center">
                           <span className={`transition-all duration-500 absolute ${isTransformed ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'}`}>
                             <InlineMath math={activeEquation.op} />
@@ -1167,7 +1167,7 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                           </span>
                         </div>
                       </div>
-                      <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_B' ? (activeEquation.b < 0 ? 'scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
+                      <div className={`flex flex-col items-center justify-center transition-all duration-700 ${presentationState === 'STEP_B' ? (activeEquation.b < 0 ? 'scale-110 md:scale-125 text-rose-400 drop-shadow-[0_0_15px_rgba(251,113,133,0.8)]' : 'scale-110 md:scale-125 text-sky-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]') : 'text-slate-400 opacity-60'}`}>
                         <div className="relative w-28 md:w-32 h-16 flex items-center justify-center">
                           <span className={`transition-all duration-500 absolute ${isTransformed ? 'opacity-0 scale-50 blur-sm' : 'opacity-100 scale-100 blur-0'}`}>
                             <InlineMath math={activeEquation.b < 0 ? `(${activeEquation.b})` : `${activeEquation.b}`} />
@@ -1181,17 +1181,17 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
                     {/* Independent Explanation Text Container Below Equation */}
                     <div className="mt-4 md:mt-8 min-h-[48px] flex flex-col items-center justify-center relative w-full z-50 px-4">
                       {presentationState === 'STEP_OP' && activeEquation.op === '-' && (
-                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn px-5 py-2 md:py-2.5 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
+                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
                           Kurang sama artinya menambahkan lawannya
                         </span>
                       )}
                       {presentationState === 'STEP_B' && activeEquation.op === '-' && (
-                        <span className={`relative block text-sm md:text-base font-sans tracking-wide font-bold text-center w-full max-w-sm leading-snug animate-fadeIn px-5 py-2 md:py-2.5 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md ${(-activeEquation.b) < 0 ? 'text-rose-300' : 'text-sky-300'}`}>
+                        <span className={`relative block text-sm md:text-base font-sans tracking-wide font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md ${(-activeEquation.b) < 0 ? 'text-rose-300' : 'text-sky-300'}`}>
                           Lawan dari {activeEquation.b < 0 ? `(${activeEquation.b})` : activeEquation.b} adalah {-activeEquation.b}
                         </span>
                       )}
                       {(presentationState === 'STEP_OP' || presentationState === 'STEP_B') && activeEquation.op === '+' && (
-                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn px-5 py-2 md:py-2.5 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
+                        <span className="relative block text-sm md:text-base font-sans tracking-wide text-amber-300 font-bold text-center w-full max-w-sm leading-snug animate-fadeIn p-4 md:px-6 md:py-3 bg-slate-900/95 rounded-2xl md:rounded-full shadow-2xl border border-slate-700/80 backdrop-blur-md">
                           Tambahkan / Masukkan
                         </span>
                       )}
@@ -1203,9 +1203,9 @@ export default function CoinSandbox({ studentMode = false, initialEquation, onBa
               {presentationState === 'IDLE' && (
                 <button
                   onClick={() => setPresentationState('STEP_A')}
-                  className="mt-6 md:mt-12 bg-emerald-500 hover:bg-emerald-400 text-white font-bold font-sans px-6 py-3 md:px-8 md:py-4 rounded-full shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex items-center gap-3 text-base md:text-lg animate-pulse cursor-pointer pointer-events-auto"
+                  className="mt-6 md:mt-12 w-full max-w-xs mx-auto md:w-auto bg-emerald-500 hover:bg-emerald-400 text-white font-bold font-sans px-4 py-3 md:px-8 md:py-4 rounded-full shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all flex justify-center items-center gap-2 md:gap-3 text-sm md:text-lg animate-pulse cursor-pointer pointer-events-auto"
                 >
-                  <PlayCircle size={24} />
+                  <PlayCircle size={20} className="md:w-6 md:h-6" />
                   Tampilkan Visualisasi
                 </button>
               )}

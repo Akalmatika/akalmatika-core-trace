@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Compass, 
   Cpu, 
@@ -33,12 +33,25 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabID>("overview");
   const [selectedEquation, setSelectedEquation] = useState<{ expression: string; a: number; b: number; op: '+' | '-'; detectedMisconceptionCode?: string | null } | undefined>(undefined);
 
+  // Development/Testing shortcut for deep linking
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const role = params.get("role") as RoleID | null;
+    const tab = params.get("tab") as TabID | null;
+    if (role) {
+      setActiveRole(role);
+    }
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-900 font-sans antialiased">
       
       {/* Top Navigation Bar */}
-      <header id="app-header" className="bg-white border-b border-slate-150 sticky top-0 z-50 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <header id="app-header" className="bg-white border-b border-slate-150 sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
           className="flex items-center gap-3 cursor-pointer group" 
           onClick={() => setActiveRole("landing")}
@@ -55,7 +68,7 @@ export default function App() {
           </div>
         </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
             {activeRole !== "landing" && (
               <button
                 id="btn-return-landing"
@@ -75,7 +88,7 @@ export default function App() {
       </header>
 
       {/* Main Content Workspace Area */}
-      <main className="max-w-7xl mx-auto w-full px-6 py-8 flex-1 flex flex-col justify-center">
+      <main className="max-w-7xl mx-auto w-full px-6 py-8 pb-24 md:pb-8 flex-1 flex flex-col justify-center">
         
         {/* 1. LANDING PORTAL SELECTOR SCREEN */}
         {activeRole === "landing" && (

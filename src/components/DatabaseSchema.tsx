@@ -18,7 +18,7 @@ export default function DatabaseSchema() {
             PostgreSQL definitions with strict Row-Level Security (RLS) to manage student-teacher isolation bounds.
           </p>
         </div>
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg self-start">
+        <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-lg self-start max-w-full overflow-x-auto">
           {DATABASE_SCHEMA.map((table, idx) => (
             <button
               id={`tab-table-${table.name}`}
@@ -37,7 +37,7 @@ export default function DatabaseSchema() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-4 min-w-0">
           <div className="border border-slate-100 rounded-xl overflow-hidden shadow-2xs">
             <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex items-center justify-between">
               <span className="font-mono text-xs font-semibold text-indigo-900 uppercase">

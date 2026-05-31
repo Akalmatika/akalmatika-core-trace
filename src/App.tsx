@@ -70,14 +70,15 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-900 font-sans antialiased">
       
       {/* Top Navigation Bar */}
-      <header id="app-header" className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
+      <header id="app-header" className="bg-slate-900 border-b border-slate-800 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
-          className="flex items-center cursor-pointer group" 
+          className="flex items-center gap-3 cursor-pointer group" 
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <img src="/logo.png" alt="Akalmatika Logo" className="h-8 md:h-10 object-contain transition-transform group-hover:scale-105" />
+          <img src="/Akalmatika_Icon_Avatar_Gelap.png" alt="Akalmatika Icon" className="h-10 md:h-12 object-contain transition-transform group-hover:scale-105 bg-white rounded-xl p-1" />
+          <img src="/Akalmatika_LogoUtama_White.png" alt="Akalmatika Logo Utama" className="h-6 md:h-8 object-contain transition-transform group-hover:scale-105 hidden sm:block" />
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
@@ -442,10 +443,11 @@ export default function App() {
       </main>
 
       {/* Footer System Blueprint Credits */}
-      <footer id="app-footer" className="bg-white border-t border-slate-150 py-6 px-6 mt-12">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
-          <div>
-            <span>AKALMATIKA CORE-TRACE • DUAL PORTAL EDISI PREMIUM</span>
+      <footer id="app-footer" className="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
+          <div className="flex items-center gap-4">
+            <img src="/Akalmatika_LogoSekunder_White.png" alt="Akalmatika Logo Sekunder" className="h-6 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            <span className="hidden md:inline-block border-l border-slate-700 pl-4">AKALMATIKA CORE-TRACE • DUAL PORTAL EDISI PREMIUM</span>
           </div>
           <div className="flex gap-4">
             <span>SUPABASE SECURITY LEVEL: STRICT</span>

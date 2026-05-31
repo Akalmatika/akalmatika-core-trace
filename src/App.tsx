@@ -77,7 +77,7 @@ export default function App() {
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-20 md:h-24 w-auto object-contain transition-transform group-hover:scale-105" />
+          <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-28 md:h-32 w-auto object-contain transition-transform group-hover:scale-105" />
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">

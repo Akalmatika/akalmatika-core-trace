@@ -324,7 +324,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 max-w-full text-4xl md:text-6xl font-black font-mono tracking-tighter">
           
           {/* Term A */}
-          <div className="relative min-w-0 md:min-w-[64px] h-16 flex items-center justify-center">
+          <div className="relative h-16 flex items-center justify-center">
+            <span className="invisible px-1">{a < 0 ? `(${a})` : a}</span>
             <span className={`transition-all duration-300 absolute ${
               state === 'HIGHLIGHT_A' || state === 'MOVE_ZERO_TO_A'
                 ? 'text-amber-500 scale-110' 
@@ -335,7 +336,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </div>
           
           {/* Operator */}
-          <div className="relative min-w-0 md:min-w-[48px] h-16 flex items-center justify-center">
+          <div className="relative h-16 flex items-center justify-center">
+             <span className="invisible px-2">{op}</span>
              {/* NEW Operator */}
              {op === '-' && (
                <span className={`absolute font-black text-emerald-500 pointer-events-none ${isTransformed ? 'animate-fusion-in-center' : 'opacity-0'}`}>
@@ -355,7 +357,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </div>
 
           {/* Term B */}
-          <div className="relative min-w-0 md:min-w-[80px] h-16 flex items-center justify-center">
+          <div className="relative h-16 flex items-center justify-center">
+             <span className="invisible px-1">{`(-${Math.abs(b)})`}</span>
              {/* NEW Term B */}
              {op === '-' && (
                <span className={`absolute font-black text-emerald-500 pointer-events-none ${isTransformed ? 'animate-fusion-in-center' : 'opacity-0'}`}>

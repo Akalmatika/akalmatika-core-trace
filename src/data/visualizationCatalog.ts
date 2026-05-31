@@ -122,7 +122,7 @@ export const percentVisualizations: VisualizationItem[] = [
     representation: "Grid 10x10.",
     modes: ["Arsir persen", "Baca sebagai x/100", "Baca sebagai x%", "Bandingkan 25%, 50%, 75%, 100%"],
     href: "/student/visualizations/percent/grid-100",
-    status: "development"
+    status: "ready"
   },
   {
     id: "perc-fraction-to-percent",
@@ -135,7 +135,7 @@ export const percentVisualizations: VisualizationItem[] = [
     representation: "Transformasi pecahan → /100 → persen.",
     modes: ["Ubah penyebut ke 100", "Baca persen", "Bandingkan pecahan & persen", "Quick presets"],
     href: "/student/visualizations/percent/fraction-to-percent",
-    status: "development"
+    status: "ready"
   }
 ];
 

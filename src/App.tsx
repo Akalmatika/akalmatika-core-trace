@@ -11,6 +11,8 @@ import SimplifyFractionPage from "./pages/visualizations/fractions/SimplifyFract
 import CompareFractionsPage from "./pages/visualizations/fractions/CompareFractionsPage";
 import AddSameDenominatorPage from "./pages/visualizations/fractions/AddSameDenominatorPage";
 import AddDiffDenominatorPage from "./pages/visualizations/fractions/AddDiffDenominatorPage";
+import Grid100Page from "./pages/visualizations/percent/Grid100Page";
+import FractionToPercentPage from "./pages/visualizations/percent/FractionToPercentPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
 import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
@@ -47,6 +49,8 @@ export default function App() {
           <Route path="student/visualizations/fractions/same-denominator" element={<AddSameDenominatorPage />} />
           <Route path="student/visualizations/fractions/different-denominator" element={<AddDiffDenominatorPage />} />
           <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
+          <Route path="student/visualizations/percent/grid-100" element={<Grid100Page />} />
+          <Route path="student/visualizations/percent/fraction-to-percent" element={<FractionToPercentPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
           <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />
           

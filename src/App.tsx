@@ -77,8 +77,13 @@ export default function App() {
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <img src="/Akalmatika_Icon_Avatar_Gelap.png" alt="Akalmatika Icon" className="h-10 md:h-12 object-contain transition-transform group-hover:scale-105 bg-white rounded-xl p-1" />
-          <img src="/Akalmatika_LogoUtama_White.png" alt="Akalmatika Logo Utama" className="h-6 md:h-8 object-contain transition-transform group-hover:scale-105 hidden sm:block" />
+          <img src="/Akalmatika_Icon_Avatar_Gelap.png" alt="Akalmatika Icon" className="h-10 md:h-12 w-10 md:w-12 object-contain transition-transform group-hover:scale-105 rounded-xl shadow-xs" />
+          <div>
+            <h1 className="font-sans font-black text-lg md:text-xl text-white tracking-tight leading-none group-hover:text-indigo-400 transition-colors">
+              Akalmatika <span className="text-indigo-400 font-normal">core-trace</span>
+            </h1>
+            <span className="text-3xs font-mono text-slate-400 mt-1 block uppercase tracking-widest font-bold">Google JuaraVibeCode 2026</span>
+          </div>
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">

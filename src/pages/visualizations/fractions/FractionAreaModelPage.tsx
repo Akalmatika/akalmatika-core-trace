@@ -105,7 +105,7 @@ export default function FractionAreaModelPage() {
             </div>
 
             {/* The Area Model Canvas */}
-            <div className="w-full max-w-lg h-32 md:h-40 flex rounded-2xl overflow-hidden border-2 border-slate-300 shadow-inner relative z-10 bg-slate-50">
+            <div className="w-full max-w-lg h-32 md:h-40 flex overflow-hidden border-2 border-slate-300 shadow-inner relative z-10 bg-slate-50">
               {selectedPieces.map((isSelected, idx) => (
                 <div 
                   key={idx}
@@ -208,7 +208,7 @@ export default function FractionAreaModelPage() {
               onClick={() => handleEvaluate(false)}
               className="cursor-pointer group flex flex-col items-center"
             >
-              <div className={`w-48 h-24 border-2 border-slate-300 rounded-xl overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-rose-400 ${evalResult === 'wrong' ? 'border-rose-400' : ''}`}>
+              <div className={`w-48 h-24 border-2 border-slate-300 overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-rose-400 ${evalResult === 'wrong' ? 'border-rose-400' : ''}`}>
                 <div className="w-1/4 h-full border-r-2 border-slate-300 bg-emerald-400/80"></div>
                 <div className="w-1/2 h-full border-r-2 border-slate-300 bg-slate-50"></div>
                 <div className="w-1/4 h-full bg-slate-50"></div>
@@ -221,7 +221,7 @@ export default function FractionAreaModelPage() {
               onClick={() => handleEvaluate(true)}
               className="cursor-pointer group flex flex-col items-center"
             >
-              <div className={`w-48 h-24 border-2 border-slate-300 rounded-xl overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-emerald-400 ${evalResult === 'correct' ? 'border-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.4)]' : ''}`}>
+              <div className={`w-48 h-24 border-2 border-slate-300 overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-emerald-400 ${evalResult === 'correct' ? 'border-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.4)]' : ''}`}>
                 <div className="w-1/3 h-full border-r-2 border-slate-300 bg-slate-50"></div>
                 <div className="w-1/3 h-full border-r-2 border-slate-300 bg-indigo-400/80"></div>
                 <div className="w-1/3 h-full bg-slate-50"></div>
@@ -235,7 +235,7 @@ export default function FractionAreaModelPage() {
               className="cursor-pointer group flex flex-col items-center"
             >
                {/* Just a stylized asymmetrical bar for simplicity of implementation */}
-              <div className={`w-48 h-24 border-2 border-slate-300 rounded-xl overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-rose-400 ${evalResult === 'wrong' ? 'border-rose-400' : ''}`}>
+              <div className={`w-48 h-24 border-2 border-slate-300 overflow-hidden flex transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg group-hover:border-rose-400 ${evalResult === 'wrong' ? 'border-rose-400' : ''}`}>
                 <div className="w-1/2 h-full border-r-2 border-slate-300 bg-amber-400/80"></div>
                 <div className="w-[10%] h-full border-r-2 border-slate-300 bg-slate-50"></div>
                 <div className="w-[40%] h-full bg-slate-50"></div>

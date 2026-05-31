@@ -70,20 +70,14 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-900 font-sans antialiased">
       
       {/* Top Navigation Bar */}
-      <header id="app-header" className="bg-slate-900 border-b border-slate-800 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
+      <header id="app-header" className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-2 md:px-6 md:py-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
-          className="flex items-center gap-3 cursor-pointer group" 
+          className="flex items-center cursor-pointer group" 
           onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
-          <img src="/Akalmatika_Icon_Avatar_Gelap.png" alt="Akalmatika Icon" className="h-10 md:h-12 w-10 md:w-12 object-contain transition-transform group-hover:scale-105 rounded-xl shadow-xs" />
-          <div>
-            <h1 className="font-sans font-black text-lg md:text-xl text-white tracking-tight leading-none group-hover:text-indigo-400 transition-colors">
-              Akalmatika <span className="text-indigo-400 font-normal">core-trace</span>
-            </h1>
-            <span className="text-3xs font-mono text-slate-400 mt-1 block uppercase tracking-widest font-bold">Google JuaraVibeCode 2026</span>
-          </div>
+          <img src="/Akalmatika_LogoUtama_Horizontal_Terang.png" alt="Akalmatika Logo Utama" className="h-10 md:h-12 object-contain transition-transform group-hover:scale-105 drop-shadow-xs" />
         </div>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">

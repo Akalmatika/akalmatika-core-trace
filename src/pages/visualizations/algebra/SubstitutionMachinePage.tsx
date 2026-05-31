@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { InlineMath } from 'react-katex';
-import { ArrowLeft, Info, Settings2 } from "lucide-react";
+import { ArrowLeft, Info, Settings2, ArrowDown } from "lucide-react";
 import { QuizContainer } from "../../../components/visualizations/QuizContainer";
 
 export default function SubstitutionMachinePage() {
@@ -93,42 +93,92 @@ export default function SubstitutionMachinePage() {
                  <Settings2 size={16} /> Mesin Fungsi
               </div>
 
-              <div className="flex flex-col gap-12 w-full max-w-sm mt-8">
-                 {/* Step 0: Input */}
-                 <div className="flex items-center gap-4 text-3xl font-mono font-black">
-                    <span className="text-slate-400">f(x) =</span>
-                    <span className="text-white">2</span>
-                    <span className={`text-indigo-400 ${step >= 1 ? 'hidden' : 'block'}`}>x</span>
-                    {step >= 1 && (
-                       <span className="text-emerald-400 bg-emerald-900/30 px-2 rounded-lg border border-emerald-500/50 animate-pulse">
-                          ({xVal})
-                       </span>
-                    )}
-                    <span className="text-slate-400 mx-2">+</span>
-                    <span className="text-amber-400">5</span>
-                 </div>
+              <div className="flex flex-col gap-2 w-full max-w-xl mt-8 mb-4 items-center">
+                 
+                 <div className="flex flex-col text-4xl md:text-5xl font-mono font-black items-start">
+                    
+                    {/* ROW 1 */}
+                    <div className="flex items-center gap-2 md:gap-4">
+                       <div className="w-24 md:w-32 text-right text-slate-400">
+                          f({step >= 1 ? <span className="text-emerald-400 transition-colors duration-1000">{xVal}</span> : <span className="text-indigo-400 transition-colors duration-1000">x</span>}) =
+                       </div>
+                       <div className="flex items-center gap-2 md:gap-4">
+                          <div className={`w-24 md:w-32 text-center transition-all duration-1000 ${step === 2 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
+                             <span className="text-white">2</span>
+                             <span className={`transition-all duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
+                                {step >= 1 ? `(${xVal})` : 'x'}
+                             </span>
+                          </div>
+                          <div className="w-8 text-center text-slate-400">+</div>
+                          <div className={`w-16 md:w-20 text-center text-amber-400 transition-all duration-1000 ${step === 2 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
+                             5
+                          </div>
+                       </div>
+                    </div>
 
-                 {/* Step 2: Multiply */}
-                 <div className={`flex items-center gap-4 text-3xl font-mono font-black transition-all duration-500 ${step >= 2 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8 pointer-events-none'}`}>
-                    <span className="text-slate-400">=&gt;</span>
-                    <span className="text-white bg-slate-700 px-3 py-1 rounded-lg border border-slate-600">{2 * xVal}</span>
-                    <span className="text-slate-400 mx-2">+</span>
-                    <span className="text-amber-400">5</span>
-                 </div>
+                    {/* ROW 2 (Arrows 1) */}
+                    <div className={`flex items-center gap-2 md:gap-4 transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-12 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className="w-24 md:w-32"></div>
+                       <div className="flex items-center gap-2 md:gap-4">
+                          <div className="w-24 md:w-32 flex justify-center"><ArrowDown className="text-slate-400 animate-bounce" /></div>
+                          <div className="w-8"></div>
+                          <div className="w-16 md:w-20 flex justify-center"><ArrowDown className="text-slate-400 animate-bounce" /></div>
+                       </div>
+                    </div>
 
-                 {/* Step 3: Result */}
-                 <div className={`flex items-center gap-4 text-5xl font-mono font-black transition-all duration-500 delay-300 ${step >= 3 ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 -translate-x-8 scale-90 pointer-events-none'}`}>
-                    <span className="text-slate-400">=&gt;</span>
-                    <span className="text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-                       {2 * xVal + 5}
-                    </span>
+                    {/* ROW 3 */}
+                    <div className={`flex items-center gap-2 md:gap-4 transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-16 md:h-20 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className="w-24 md:w-32 text-right text-slate-400">=</div>
+                       <div className="flex items-center gap-2 md:gap-4">
+                          <div className={`w-24 md:w-32 text-center text-white transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
+                             {2 * xVal}
+                          </div>
+                          <div className={`w-8 text-center text-slate-400 transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
+                             +
+                          </div>
+                          <div className={`w-16 md:w-20 text-center text-amber-400 transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
+                             5
+                          </div>
+                       </div>
+                    </div>
+
+                    {/* ROW 4 (Arrow 2) */}
+                    <div className={`flex items-center gap-2 md:gap-4 transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-12 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className="w-24 md:w-32"></div>
+                       <div className="flex items-center gap-2 md:gap-4 w-[13rem] md:w-[16rem] justify-center">
+                          <ArrowDown className="text-slate-400 animate-bounce" />
+                       </div>
+                    </div>
+
+                    {/* ROW 5 (Result) */}
+                    <div className={`flex items-center gap-2 md:gap-4 transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-20 md:h-24 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className="w-24 md:w-32 text-right text-slate-400">=</div>
+                       <div className="flex items-center gap-2 md:gap-4 w-[13rem] md:w-[16rem] justify-center">
+                          <span className="text-5xl md:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                             {2 * xVal + 5}
+                          </span>
+                       </div>
+                    </div>
+
                  </div>
               </div>
 
-              <div className="mt-16 w-full flex justify-center">
+              {/* Explanation Box */}
+              <div className="w-full max-w-lg bg-slate-700/50 border border-slate-600 p-5 rounded-2xl text-center min-h-[5rem] flex items-center justify-center mb-8 shadow-inner">
+                <p className="text-slate-300 text-sm leading-relaxed transition-opacity duration-500">
+                  {step === 0 && "Fungsi awal sebelum substitusi. Variabel x siap diganti."}
+                  {step === 1 && `Substitusi: Ganti variabel x di ruas kiri dan kanan menjadi angka ${xVal}. Perhatikan f(x) menjadi f(${xVal}).`}
+                  {step === 2 && `Kalikan 2 dengan ${xVal} menghasilkan ${2*xVal}, sedangkan konstanta 5 diturunkan ke bawah.`}
+                  {step === 3 && `Jumlahkan hasil perkalian dengan konstanta untuk mendapatkan hasil akhir dari f(${xVal}).`}
+                </p>
+              </div>
+
+              <div className="w-full flex justify-center">
                  {step < 3 ? (
                     <button
-                       onClick={() => setStep(s => s + 1)}
+                       onClick={() => {
+                          setStep(s => s + 1);
+                       }}
                        className="px-8 py-3 rounded-xl font-bold bg-indigo-500 text-white hover:bg-indigo-400 transition-colors shadow-lg shadow-indigo-500/25"
                     >
                        Proses Langkah {step + 1}
@@ -136,7 +186,7 @@ export default function SubstitutionMachinePage() {
                  ) : (
                     <button
                        onClick={() => setStep(0)}
-                       className="px-8 py-3 rounded-xl font-bold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
+                       className="px-8 py-3 rounded-xl font-bold bg-slate-600 text-slate-300 hover:bg-slate-500 transition-colors"
                     >
                        Reset Mesin
                     </button>

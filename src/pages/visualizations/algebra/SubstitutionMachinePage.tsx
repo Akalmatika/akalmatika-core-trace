@@ -53,32 +53,33 @@ export default function SubstitutionMachinePage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-          <Link to="/student/visualizations" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold text-sm mb-3 transition-colors">
-            <ArrowLeft size={16} /> Kembali ke Galeri
-          </Link>
-          <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Substitution Machine</h2>
-          <p className="text-slate-500 text-sm mt-1">
-            Ganti huruf (variabel) dengan angka dan hitung nilainya langkah demi langkah.
-          </p>
-        </div>
-        
-        {/* Mode Switcher */}
-        <div className="flex bg-slate-100 p-1 rounded-xl self-start">
-          <button 
-            onClick={() => setMode('explore')}
-            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-          >
-            Eksplorasi
-          </button>
-          <button 
-            onClick={() => { setMode('evaluate'); handleRetryQuiz(); }}
-            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-          >
-            Evaluasi
-          </button>
+    <div className="w-full max-w-6xl mx-auto pb-24">
+      {/* Header */}
+      <div className="mb-8">
+        <Link to="/visualizations" className="inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-600 font-medium mb-4 transition-colors">
+          <ArrowLeft size={20} /> Kembali ke Galeri
+        </Link>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">Substitution Machine</h1>
+            <p className="text-slate-500">Ganti huruf (variabel) dengan angka dan hitung nilainya langkah demi langkah.</p>
+          </div>
+          
+          {/* Mode Toggle */}
+          <div className="flex bg-slate-100 p-1 rounded-xl w-fit">
+            <button 
+              onClick={() => { setMode('explore'); setStep(0); }}
+              className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              Eksplorasi
+            </button>
+            <button 
+              onClick={() => { setMode('evaluate'); setStep(0); }}
+              className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode === 'evaluate' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              Evaluasi
+            </button>
+          </div>
         </div>
       </div>
 
@@ -100,58 +101,122 @@ export default function SubstitutionMachinePage() {
                     <div className="text-slate-400 justify-self-end py-2">
                        f({step >= 1 ? <span className="text-emerald-400 transition-colors duration-1000">{xVal}</span> : <span className="text-indigo-400 transition-colors duration-1000">x</span>}) =
                     </div>
-                    <div className={`transition-all duration-1000 ${step === 2 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
-                       <span className="text-white">2</span>
-                       <span className={`transition-all duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
-                          {step >= 1 ? `(${xVal})` : 'x'}
-                       </span>
+                    
+                    {/* ROW 1: 2(x) Cell */}
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
+                       <SnakeBorder active={step === 1} color="#818cf8" />
+                       
+                       <div className={`transition-opacity duration-300 ${step >= 2 ? 'opacity-0' : 'opacity-100'}`}>
+                          <span className="text-white">2</span>
+                          <span className={`transition-colors duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
+                             {step >= 1 ? `(${xVal})` : 'x'}
+                          </span>
+                       </div>
+
+                       {/* Flying Clone */}
+                       <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 2 ? 'translate-y-24 md:translate-y-28 lg:translate-y-32' : 'translate-y-0'}`}>
+                          <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                             <div className="relative w-full h-full flex justify-center items-center">
+                                <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-700' : 'opacity-100'}`}>
+                                   <span className="text-white">2</span>
+                                   <span className={`transition-colors duration-1000 ${step >= 1 ? 'text-emerald-400' : 'text-indigo-400'}`}>
+                                      {step >= 1 ? `(${xVal})` : 'x'}
+                                   </span>
+                                </div>
+                                <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-700' : 'opacity-0'}`}>
+                                   <span className="text-white">{2 * xVal}</span>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
                     </div>
+                    
                     <div className="text-slate-400 py-2">+</div>
-                    <div className={`text-amber-400 transition-all duration-1000 ${step === 2 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
-                       5
+                    
+                    {/* ROW 1: 5 Cell */}
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
+                       <SnakeBorder active={step === 1} color="#fbbf24" />
+                       
+                       <div className={`transition-opacity duration-300 ${step >= 2 ? 'opacity-0' : 'opacity-100'}`}>
+                          <span className="text-amber-400">5</span>
+                       </div>
+
+                       {/* Flying Clone */}
+                       <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 2 ? 'translate-y-24 md:translate-y-28 lg:translate-y-32' : 'translate-y-0'}`}>
+                          <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                             <span className="text-amber-400">5</span>
+                          </div>
+                       </div>
                     </div>
 
                     {/* ROW 2 (Arrows 1) */}
                     <div className="justify-self-end"></div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <ArrowDown className="text-slate-400 animate-bounce" />
                     </div>
                     <div></div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <ArrowDown className="text-slate-400 animate-bounce" />
                     </div>
 
                     {/* ROW 3 */}
-                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <span className="text-slate-400">=</span>
                     </div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg' : 'p-2'}`}>
-                          <span className="text-white">{2 * xVal}</span>
+                    
+                    {/* ROW 3: 2*xVal Cell */}
+                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
+                          <SnakeBorder active={step === 2} color="#818cf8" />
+                          
+                          <div className={`transition-opacity duration-300 ${step >= 3 ? 'opacity-0' : 'opacity-100'}`}>
+                             <span className="text-white">{2 * xVal}</span>
+                          </div>
+
+                          {/* Flying Clone */}
+                          <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 3 ? 'translate-y-24 md:translate-y-32 lg:translate-y-40 translate-x-12 md:translate-x-16 lg:translate-x-20' : 'translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 3 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                                <span className="text-white">{2 * xVal}</span>
+                             </div>
+                          </div>
                        </div>
                     </div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg text-slate-400' : 'p-2 text-slate-400'}`}>
+                    
+                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className={`transition-all duration-1000 ${step === 2 ? 'p-3 text-slate-300' : 'p-3 text-slate-400'}`}>
                           +
                        </div>
                     </div>
-                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
-                       <div className={`transition-all duration-1000 ${step === 3 ? 'bg-indigo-900/80 ring-4 ring-indigo-400 rounded-xl p-2 scale-110 shadow-lg text-amber-400' : 'p-2 text-amber-400'}`}>
-                          5
+                    
+                    {/* ROW 3: 5 Cell */}
+                    <div className={`flex items-center transition-all duration-[1000ms] ${step >= 2 ? 'opacity-100 h-14 md:h-20 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                       <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
+                          <SnakeBorder active={step === 2} color="#fbbf24" />
+                          
+                          <div className={`transition-opacity duration-300 ${step >= 3 ? 'opacity-0' : 'opacity-100'}`}>
+                             <span className="text-amber-400">5</span>
+                          </div>
+
+                          {/* Flying Clone */}
+                          <div className={`absolute inset-0 transition-transform duration-[1500ms] ease-in-out ${step >= 3 ? 'translate-y-24 md:translate-y-32 lg:translate-y-40 -translate-x-12 md:-translate-x-16 lg:-translate-x-20' : 'translate-y-0 translate-x-0'}`}>
+                             <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 3 ? 'opacity-0 delay-[1500ms]' : 'opacity-100'}`}>
+                                <span className="text-amber-400">5</span>
+                             </div>
+                          </div>
                        </div>
                     </div>
 
                     {/* ROW 4 (Arrow 2) */}
                     <div></div>
-                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-10 md:h-12 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-10 md:h-12 delay-[500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <ArrowDown className="text-slate-400 animate-bounce" />
                     </div>
 
                     {/* ROW 5 (Result) */}
-                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`justify-self-end flex items-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <span className="text-slate-400">=</span>
                     </div>
-                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[3000ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
+                    <div className={`col-span-3 flex items-center justify-center transition-all duration-[1000ms] ${step >= 3 ? 'opacity-100 h-16 md:h-24 delay-[1500ms]' : 'opacity-0 h-0 overflow-hidden delay-0'}`}>
                        <span className="text-4xl md:text-5xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-6 py-2 rounded-2xl border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
                           {2 * xVal + 5}
                        </span>

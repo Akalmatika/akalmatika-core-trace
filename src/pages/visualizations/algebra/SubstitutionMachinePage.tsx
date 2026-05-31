@@ -128,7 +128,7 @@ export default function SubstitutionMachinePage() {
                  <div className="grid grid-cols-[auto_auto_auto_auto] gap-x-2 md:gap-x-4 lg:gap-x-6 items-center text-3xl md:text-4xl lg:text-5xl font-mono font-black justify-items-center whitespace-nowrap min-w-max px-4">
                     
                     {/* ROW 1 */}
-                    <div className="text-slate-400 justify-self-end py-2 relative flex items-center p-3 rounded-xl">
+                    <div className="text-slate-400 justify-self-end py-2 relative flex items-center p-3 rounded-xl h-14 md:h-16">
                        f(
                        <span className="relative inline-flex justify-center items-center mx-1 min-w-[1.5rem]">
                           {step === 1 && <SnakeBorder active={true} color="#818cf8" />}
@@ -140,7 +140,7 @@ export default function SubstitutionMachinePage() {
                     </div>
                     
                     {/* ROW 1: 2(x) Cell */}
-                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl h-14 md:h-16 transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
                        <SnakeBorder active={step === 2} color="#818cf8" />
                        
                        <div className="text-white relative flex items-center z-10">
@@ -154,7 +154,7 @@ export default function SubstitutionMachinePage() {
                        </div>
 
                        {/* Flying Clone for step 2 */}
-                       <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 2 ? 'translate-y-[98px] md:translate-y-[110px]' : 'translate-y-0'} ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
+                       <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 2 ? 'translate-y-[96px] md:translate-y-[112px]' : 'translate-y-0'} ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
                           <div className="relative w-full h-full flex justify-center items-center">
                              <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
                                 <span className="text-white">2</span><span className="text-emerald-400">({xVal})</span>
@@ -166,16 +166,16 @@ export default function SubstitutionMachinePage() {
                        </div>
                     </div>
                     
-                    <div className="text-slate-400 py-2">+</div>
+                    <div className="text-slate-400 flex items-center h-14 md:h-16">+</div>
                     
                     {/* ROW 1: 5 Cell */}
-                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 3 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl h-14 md:h-16 transition-all duration-500 ${step === 3 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
                        <SnakeBorder active={step === 3} color="#fbbf24" />
                        
                        <div className="text-amber-400 z-10">5</div>
 
                        {/* Flying Clone for step 3 */}
-                       <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 3 ? 'translate-y-[98px] md:translate-y-[110px]' : 'translate-y-0'} ${step === 3 ? 'opacity-100' : 'opacity-0'}`}>
+                       <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 3 ? 'translate-y-[96px] md:translate-y-[112px]' : 'translate-y-0'} ${step === 3 ? 'opacity-100' : 'opacity-0'}`}>
                           <div className="w-full h-full flex items-center justify-center">
                              <span className="text-amber-400">5</span>
                           </div>
@@ -193,7 +193,9 @@ export default function SubstitutionMachinePage() {
                     </div>
 
                     {/* ROW 3 (Multiplication & Drop Result) */}
-                    <div className="justify-self-end"></div>
+                    <div className={`justify-self-end flex items-center h-14 md:h-16 transition-opacity duration-300 ${step >= 2 ? 'opacity-100' : 'opacity-0'}`}>
+                       <span className="text-slate-400 py-2">=</span>
+                    </div>
                     
                     {/* ROW 3: 2*xVal Cell */}
                     <div className={`flex items-center transition-all duration-[500ms] ${step >= 2 ? 'h-14 md:h-16' : 'h-0 overflow-hidden'}`}>

@@ -8,8 +8,8 @@ const SnakeBorder = ({ active, color = "#818cf8" }: { active: boolean; color?: s
   if (!active) return null;
   return (
     <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible z-20">
-      <rect x="0" y="0" width="100%" height="100%" rx="12" ry="12" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" pathLength="100" strokeDasharray="30 70">
-        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="0.8s" repeatCount="indefinite" />
+      <rect x="0" y="0" width="100%" height="100%" rx="8" ry="8" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" pathLength="100" strokeDasharray="100" strokeDashoffset="100">
+        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.5s" repeatCount="1" fill="freeze" />
       </rect>
     </svg>
   );
@@ -129,26 +129,27 @@ export default function SubstitutionMachinePage() {
                     
                     {/* ROW 1 */}
                     <div className="text-slate-400 justify-self-end py-2 relative flex items-center p-3 rounded-xl">
-                       <SnakeBorder active={step === 1} color="#818cf8" />
                        f(
-                       <span className="relative inline-flex justify-center items-center mx-1">
+                       <span className="relative inline-flex justify-center items-center mx-1 min-w-[1.5rem]">
+                          {step === 1 && <SnakeBorder active={true} color="#818cf8" />}
                           <span className="invisible">{step >= 1 ? xVal : 'x'}</span>
-                          <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-0' : 'opacity-100'}`}>x</span>
-                          <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>{xVal}</span>
+                          <span className={`absolute transition-opacity duration-[1500ms] delay-[1000ms] ${step >= 1 ? 'opacity-0' : 'opacity-100'}`}>x</span>
+                          <span className={`absolute transition-opacity duration-[1500ms] delay-[1000ms] ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>{xVal}</span>
                        </span>
                        ) =
                     </div>
                     
                     {/* ROW 1: 2(x) Cell */}
-                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 1 || step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
-                       <SnakeBorder active={step === 1 || step === 2} color="#818cf8" />
+                    <div className={`relative flex items-center justify-center p-3 rounded-xl transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
+                       <SnakeBorder active={step === 2} color="#818cf8" />
                        
                        <div className="text-white relative flex items-center z-10">
                           2
-                          <span className="relative inline-flex justify-center items-center ml-1">
+                          <span className="relative inline-flex justify-center items-center ml-1 min-w-[2.5rem]">
+                             {step === 1 && <SnakeBorder active={true} color="#818cf8" />}
                              <span className="invisible">{step >= 1 ? `(${xVal})` : 'x'}</span>
-                             <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-0' : 'opacity-100'} text-indigo-400`}>x</span>
-                             <span className={`absolute transition-opacity duration-1000 ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>({xVal})</span>
+                             <span className={`absolute transition-opacity duration-[1500ms] delay-[1000ms] ${step >= 1 ? 'opacity-0' : 'opacity-100'} text-indigo-400`}>x</span>
+                             <span className={`absolute transition-opacity duration-[1500ms] delay-[1000ms] ${step >= 1 ? 'opacity-100' : 'opacity-0'} text-emerald-400`}>({xVal})</span>
                           </span>
                        </div>
 

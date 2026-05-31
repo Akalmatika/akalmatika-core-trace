@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import StudentLayout from "./components/layout/StudentLayout";
 import LandingPage from "./pages/LandingPage";
 import DiagnosticCatalogPage from "./pages/DiagnosticCatalogPage";
+import DiagnosticPage from "./pages/DiagnosticPage";
 import VisualizationCatalogPage from "./pages/VisualizationCatalogPage";
 import IntegerVisualizationPage from "./pages/IntegerVisualizationPage";
 import FractionVisualizationPage from "./pages/FractionVisualizationPage";
@@ -42,7 +43,7 @@ export default function App() {
           
           {/* Diagnostic Flow */}
           <Route path="student/diagnostic" element={<DiagnosticCatalogPage />} />
-          <Route path="student/diagnostic/*" element={<PlaceholderVisualizationPage />} />
+          <Route path="student/diagnostic/:topicId" element={<DiagnosticPage />} />
           
           {/* Visualizations Flow */}
           <Route path="student/visualizations" element={<VisualizationCatalogPage />} />

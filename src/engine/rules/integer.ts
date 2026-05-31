@@ -1,37 +1,15 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { DiagnosticQuestion, MisconceptionRule } from "./types";
 
-export interface Equation {
-  expression: string;
-  a: number;
-  b: number;
-  op: '+' | '-';
-  correctAnswer: number;
-}
-
-export interface MisconceptionRule {
-  code: string;
-  name: string;
-  description: string;
-  pattern: string;
-  remedialScaffold: string;
-  // Predicts the answers a student with this specific misconception would give for the active cluster.
-  predictAnswers: (cluster: Equation[]) => (number | null)[];
-}
-
-// The exact math cluster defined for diagnosis
-export const DIAGNOSTIC_CLUSTER: Equation[] = [
-  { expression: "-2 + 3", a: -2, b: 3, op: '+', correctAnswer: 1 },
-  { expression: "-3 + 5", a: -3, b: 5, op: '+', correctAnswer: 2 },
-  { expression: "-1 + 4", a: -1, b: 4, op: '+', correctAnswer: 3 },
-  { expression: "-2 + (-3)", a: -2, b: -3, op: '+', correctAnswer: -5 },
-  { expression: "4 - (-2)", a: 4, b: -2, op: '-', correctAnswer: 6 },
-  { expression: "-3 - (-1)", a: -3, b: -1, op: '-', correctAnswer: -2 }
+export const integerCluster: DiagnosticQuestion[] = [
+  { expression: "-2 + 3", correctAnswer: 1, meta: { a: -2, b: 3, op: '+' } },
+  { expression: "-3 + 5", correctAnswer: 2, meta: { a: -3, b: 5, op: '+' } },
+  { expression: "-1 + 4", correctAnswer: 3, meta: { a: -1, b: 4, op: '+' } },
+  { expression: "-2 + (-3)", correctAnswer: -5, meta: { a: -2, b: -3, op: '+' } },
+  { expression: "4 - (-2)", correctAnswer: 6, meta: { a: 4, b: -2, op: '-' } },
+  { expression: "-3 - (-1)", correctAnswer: -2, meta: { a: -3, b: -1, op: '-' } }
 ];
 
-export const ENGINE_RULES: MisconceptionRule[] = [
+export const integerRules: MisconceptionRule[] = [
   {
     code: "MC-ADD-SIGN-CONF",
     name: "Absolute Sum Rule Confusion",
@@ -40,7 +18,8 @@ export const ENGINE_RULES: MisconceptionRule[] = [
     remedialScaffold: "Help the student realize addition is dynamic tracking of opposite elements. If you have 2 negative elements and add 3 positive elements, they neutralize to form zero-pairs, leaving 1 positive element!",
     predictAnswers: (cluster) => {
       return cluster.map(eq => {
-        if (eq.op === '+' && eq.a < 0 && eq.b > 0) return -(Math.abs(eq.a) + Math.abs(eq.b));
+        const { a, b, op } = eq.meta || {};
+        if (op === '+' && a < 0 && b > 0) return -(Math.abs(a) + Math.abs(b));
         return null;
       });
     }
@@ -53,7 +32,8 @@ export const ENGINE_RULES: MisconceptionRule[] = [
     remedialScaffold: "Ask the student: 'Which amount is larger: your negative elements or your positive elements?' Since your positive elements (3) are more than your negative elements (2), the final result has to be positive.",
     predictAnswers: (cluster) => {
       return cluster.map(eq => {
-        if (eq.op === '+' && eq.a < 0 && eq.b > 0) return -Math.abs(Math.abs(eq.b) - Math.abs(eq.a));
+        const { a, b, op } = eq.meta || {};
+        if (op === '+' && a < 0 && b > 0) return -Math.abs(Math.abs(b) - Math.abs(a));
         return null;
       });
     }
@@ -65,7 +45,10 @@ export const ENGINE_RULES: MisconceptionRule[] = [
     pattern: "-a + b => abs(a) + abs(b)",
     remedialScaffold: "Direct the student's attention to signs: 'Signs aren't decorations; they represent opposite types of elements.' Help them feel the physical difference between positive elements and negative elements neutralizing.",
     predictAnswers: (cluster) => {
-      return cluster.map(eq => Math.abs(eq.a) + Math.abs(eq.b));
+      return cluster.map(eq => {
+        const { a, b } = eq.meta || {};
+        return Math.abs(a) + Math.abs(b);
+      });
     }
   },
   {
@@ -76,7 +59,8 @@ export const ENGINE_RULES: MisconceptionRule[] = [
     remedialScaffold: "Remind the student that subtracting a number is mathematically equivalent to adding its opposite. Therefore, subtracting a negative number is exactly the same as adding a positive number!",
     predictAnswers: (cluster) => {
       return cluster.map(eq => {
-        if (eq.op === '-' && eq.b < 0) return eq.a - Math.abs(eq.b);
+        const { a, b, op } = eq.meta || {};
+        if (op === '-' && b < 0) return a - Math.abs(b);
         return null;
       });
     }

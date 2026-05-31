@@ -20,7 +20,7 @@ import {
   XCircle
 } from "lucide-react";
 import { triangulateAnswers, TriangulationResult } from "../engine/parser";
-import { DIAGNOSTIC_CLUSTER, ENGINE_RULES } from "../engine/rules";
+import { integerCluster as DIAGNOSTIC_CLUSTER, integerRules as ENGINE_RULES } from "../engine/rules";
 import CoinSandbox from "./CoinSandbox";
 import InteractiveNumberLine from "./InteractiveNumberLine";
 import AITutorChat from "./AITutorChat";
@@ -140,7 +140,7 @@ export default function StudentPortal() {
       setCurrentQuestionIdx(prev => prev + 1);
     } else {
       const parsedAns = answers.map(ans => Number(ans));
-      const result = triangulateAnswers(parsedAns);
+      const result = triangulateAnswers(parsedAns, DIAGNOSTIC_CLUSTER, ENGINE_RULES);
       setDiagnosticResult(result);
       
       if (result.isPerfectTrack) {
@@ -220,9 +220,11 @@ export default function StudentPortal() {
       for (const rule of ENGINE_RULES) {
         const predicted = rule.predictAnswers([{
           expression: drillQuestion.expression,
-          a: drillQuestion.a,
-          b: drillQuestion.b,
-          op: drillQuestion.op,
+          meta: {
+            a: drillQuestion.a,
+            b: drillQuestion.b,
+            op: drillQuestion.op
+          },
           correctAnswer: drillQuestion.correctAnswer
         }]);
         if (predicted[0] !== null && predicted[0] === submittedVal) {

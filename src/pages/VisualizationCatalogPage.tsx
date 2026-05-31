@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { visualizationCategories } from "../data/visualizationCategories";
-import { Database, Layers, ArrowRight } from "lucide-react";
+import { Layers, ArrowRight } from "lucide-react";
 
 export default function VisualizationCatalogPage() {
   return (
@@ -15,14 +15,14 @@ export default function VisualizationCatalogPage() {
         </p>
       </div>
 
-      {/* Grid of Category Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+      {/* Grid of Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {visualizationCategories.map((category) => (
-          <div key={category.id} className="bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-lg rounded-2xl p-5 md:p-6 transition-all duration-300 flex flex-col justify-between shadow-xs group">
-            <div className="space-y-4">
+          <div key={category.id} className="bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-lg rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between shadow-xs">
+            <div className="space-y-5">
               <div className="flex items-start justify-between">
-                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center border border-emerald-100 group-hover:scale-110 transition-transform">
-                  <Database size={24} />
+                <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 shadow-2xs">
+                  <category.icon size={24} />
                 </div>
                 <div className="flex items-center gap-1 bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-[10px] font-bold">
                   <Layers size={12} />

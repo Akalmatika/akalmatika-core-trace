@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { diagnosticCatalog } from "../data/diagnosticCatalog";
-import { Activity, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function DiagnosticCatalogPage() {
   return (
@@ -22,7 +22,7 @@ export default function DiagnosticCatalogPage() {
             <div className="space-y-3">
               <div className="flex items-start justify-between">
                 <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center border border-indigo-100">
-                  <Activity size={20} />
+                  <item.icon size={20} />
                 </div>
                 <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
                   {item.targetConcept}

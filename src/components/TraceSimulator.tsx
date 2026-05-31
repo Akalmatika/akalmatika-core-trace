@@ -12,8 +12,9 @@ import {
   Check, 
   Info 
 } from "lucide-react";
-import { triangulateAnswers, runEngineDiagnosticProofs, TestCaseProof, TriangulationResult } from "../engine/parser";
-import { DIAGNOSTIC_CLUSTER } from "../engine/rules";
+import { triangulateAnswers, runEngineDiagnosticProofs, TestCaseProof } from "../engine/parser";
+import { integerCluster as DIAGNOSTIC_CLUSTER, integerRules as ENGINE_RULES } from "../engine/rules";
+import { TriangulationResult } from "../engine/rules/types";
 
 export interface TraceSimulatorProps {
   onMisconceptionDetected?: (code: string, failedEquation: { expression: string; a: number; b: number; op: '+' | '-' }) => void;

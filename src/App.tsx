@@ -33,17 +33,37 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabID>("overview");
   const [selectedEquation, setSelectedEquation] = useState<{ expression: string; a: number; b: number; op: '+' | '-'; detectedMisconceptionCode?: string | null } | undefined>(undefined);
 
-  // Development/Testing shortcut for deep linking
+  const navigateToRole = (role: RoleID) => {
+    const url = new URL(window.location.href);
+    if (role === "landing") {
+      url.searchParams.delete("role");
+      url.searchParams.delete("tab");
+    } else {
+      url.searchParams.set("role", role);
+    }
+    window.history.pushState({}, '', url);
+    setActiveRole(role);
+  };
+
+  // History/Routing for deep linking and back button
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const role = params.get("role") as RoleID | null;
-    const tab = params.get("tab") as TabID | null;
-    if (role) {
-      setActiveRole(role);
-    }
-    if (tab) {
-      setActiveTab(tab);
-    }
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const role = params.get("role") as RoleID | null;
+      const tab = params.get("tab") as TabID | null;
+      
+      if (role) setActiveRole(role);
+      else setActiveRole("landing");
+
+      if (tab) setActiveTab(tab);
+      else setActiveTab("overview");
+    };
+
+    // Initial load
+    handlePopState();
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   return (
@@ -54,7 +74,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <div 
           className="flex items-center gap-3 cursor-pointer group" 
-          onClick={() => setActiveRole("landing")}
+          onClick={() => navigateToRole("landing")}
           title="Kembali ke Halaman Utama"
         >
           <div className="p-2.5 bg-indigo-600 group-hover:bg-indigo-500 text-white rounded-xl shadow-xs transition-colors">
@@ -72,7 +92,7 @@ export default function App() {
             {activeRole !== "landing" && (
               <button
                 id="btn-return-landing"
-                onClick={() => setActiveRole("landing")}
+                onClick={() => navigateToRole("landing")}
                 className="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-650 font-bold px-3 py-1.5 rounded-xl text-xs transition-all cursor-pointer font-sans shadow-2xs border border-slate-200"
               >
                 <LogOut size={12} />
@@ -107,12 +127,12 @@ export default function App() {
             </div>
 
             {/* Premium Role Selection Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-4">
+            <div className="grid grid-cols-1 max-w-md mx-auto pt-4">
               
               {/* Card 1: Siswa Portal */}
               <div 
                 id="portal-card-siswa"
-                onClick={() => setActiveRole("siswa")}
+                onClick={() => navigateToRole("siswa")}
                 className="bg-white border border-slate-100 hover:border-indigo-250 hover:shadow-xl rounded-3xl p-6 md:p-8 transition-all duration-300 group cursor-pointer flex flex-col justify-between space-y-6 shadow-2xs"
               >
                 <div className="space-y-4">
@@ -132,51 +152,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Card 2: Guru Portal */}
-              <div 
-                id="portal-card-guru"
-                onClick={() => setActiveRole("guru")}
-                className="bg-white border border-slate-100 hover:border-indigo-250 hover:shadow-xl rounded-3xl p-6 md:p-8 transition-all duration-300 group cursor-pointer flex flex-col justify-between space-y-6 shadow-2xs"
-              >
-                <div className="space-y-4">
-                  <div className="w-12 h-12 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center shadow-xs transition-transform group-hover:scale-110">
-                    <Users size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-sans font-black text-slate-900 text-lg md:text-xl">Portal Guru</h3>
-                    <p className="text-xs text-slate-500 font-sans mt-1.5 leading-relaxed">
-                      Pantau perkembangan kelas, sebaran salah konsep siswa, grafik deteksi otomatis, dan dapatkan panduan taktis penanganan kognitif secara tatap muka.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 group-hover:text-indigo-800 transition-colors">
-                  <span>Buka Dashboard</span>
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
-
-              {/* Card 3: Developer Lab */}
-              <div 
-                id="portal-card-developer"
-                onClick={() => setActiveRole("developer")}
-                className="bg-white border border-slate-100 hover:border-indigo-250 hover:shadow-xl rounded-3xl p-6 md:p-8 transition-all duration-300 group cursor-pointer flex flex-col justify-between space-y-6 shadow-2xs"
-              >
-                <div className="space-y-4">
-                  <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center shadow-xs transition-transform group-hover:scale-110">
-                    <Cpu size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-sans font-black text-slate-900 text-lg md:text-xl">Developer Lab</h3>
-                    <p className="text-xs text-slate-500 font-sans mt-1.5 leading-relaxed">
-                      Inspeksi keandalan arsitektur: skema database relasional Supabase dengan aturan RLS, struktur file direktori, detail tech stack, dan compiler trace simulator.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 group-hover:text-indigo-800 transition-colors">
-                  <span>Inspeksi Teknis</span>
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                </div>
-              </div>
+              {/* Card 2 & 3 Hidden as requested */}
 
             </div>
           </div>
@@ -188,7 +164,7 @@ export default function App() {
             <div className="mb-4">
               <button
                 id="btn-siswa-back"
-                onClick={() => setActiveRole("landing")}
+                onClick={() => navigateToRole("landing")}
                 className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
               >
                 <ChevronLeft size={16} />
@@ -205,7 +181,7 @@ export default function App() {
             <div className="mb-4">
               <button
                 id="btn-guru-back"
-                onClick={() => setActiveRole("landing")}
+                onClick={() => navigateToRole("landing")}
                 className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
               >
                 <ChevronLeft size={16} />
@@ -225,7 +201,7 @@ export default function App() {
               <div>
                 <button
                   id="btn-developer-back"
-                  onClick={() => setActiveRole("landing")}
+                  onClick={() => navigateToRole("landing")}
                   className="inline-flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer mb-2"
                 >
                   <ChevronLeft size={16} />

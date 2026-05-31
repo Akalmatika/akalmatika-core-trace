@@ -69,66 +69,38 @@ export default function StudentPortal() {
   // Generate dynamic signed integer questions for Drilling Mode
   const generateNewDrillQuestion = () => {
     try {
-      let types = ["ADD-NEG", "SUB-NEG", "ADD-OPP", "SUB-OPP"];
-      if (drillStreak < 2) {
-        types = ["ADD-POS", "SUB-POS-EASY"];
-      } else if (drillStreak >= 3) {
-        types = ["ADD-NEG", "SUB-NEG", "SUB-NEG", "SUB-NEG", "ADD-OPP", "SUB-OPP"]; // SUB-NEG has higher probability
-      }
-      
-      const type = types[Math.floor(Math.random() * types.length)];
-      
-      let a = 0;
-      let b = 0;
-      let expression = "";
-      
-      // Random values from -8 to 8 (avoiding 0 for clear signed conceptual tracking)
       const getRandomNonZero = () => {
         const val = Math.floor(Math.random() * 8) + 1;
         return Math.random() > 0.5 ? val : -val;
       };
 
-      if (type === "ADD-POS") {
-        a = Math.abs(getRandomNonZero());
-        b = Math.abs(getRandomNonZero());
-        expression = `${a} + ${b}`;
-      } else if (type === "SUB-POS-EASY") {
-        a = Math.abs(getRandomNonZero());
-        b = Math.abs(getRandomNonZero());
-        if (b > a) {
-          const temp = a;
-          a = b;
-          b = temp;
+      let a = getRandomNonZero();
+      let b = getRandomNonZero();
+      let op: '+' | '-' = Math.random() > 0.5 ? '+' : '-';
+
+      // 50% chance to target the specific misconception if it exists
+      if (diagnosticResult?.detectedMisconceptionCode && Math.random() < 0.5) {
+        switch(diagnosticResult.detectedMisconceptionCode) {
+          case "MC-ADD-SIGN-CONF":
+          case "MC-SIGN-FIRST-NUM":
+            a = -Math.abs(getRandomNonZero());
+            b = Math.abs(getRandomNonZero());
+            op = '+';
+            break;
+          case "MC-ADD-ABS-SUM":
+            a = Math.random() > 0.5 ? -Math.abs(getRandomNonZero()) : Math.abs(getRandomNonZero());
+            b = a < 0 ? Math.abs(getRandomNonZero()) : -Math.abs(getRandomNonZero());
+            op = '+';
+            break;
+          case "MC-SUB-IGNORE-NEG":
+            op = '-';
+            b = -Math.abs(getRandomNonZero());
+            break;
         }
-        expression = `${a} - ${b}`;
-      } else if (type === "ADD-NEG") {
-        a = -Math.abs(getRandomNonZero());
-        b = -Math.abs(getRandomNonZero());
-        expression = `${a} + (${b})`;
-      } else if (type === "SUB-NEG") {
-        a = getRandomNonZero();
-        b = -Math.abs(getRandomNonZero());
-        expression = `${a} - (${b})`;
-      } else if (type === "ADD-OPP") {
-        a = -Math.abs(getRandomNonZero());
-        b = Math.abs(getRandomNonZero());
-        expression = `${a} + ${b}`;
-      } else {
-        a = getRandomNonZero();
-        b = Math.abs(getRandomNonZero());
-        expression = `${a} - ${b}`;
       }
 
-      // Compute correct answer securely
-      let correctAnswer = 0;
-      let op: '+' | '-' = '+';
-      if (expression.includes(" + ")) {
-        correctAnswer = a + b;
-        op = '+';
-      } else {
-        correctAnswer = a - b;
-        op = '-';
-      }
+      const expression = `${a} ${op} ${b < 0 ? `(${b})` : b}`;
+      const correctAnswer = op === '+' ? a + b : a - b;
 
       setDrillQuestion({ expression, a, b, op, correctAnswer });
       setDrillAnswer("");
@@ -178,7 +150,16 @@ export default function StudentPortal() {
           .map((ans, idx) => ans !== DIAGNOSTIC_CLUSTER[idx].correctAnswer ? idx : -1)
           .filter(idx => idx !== -1);
         
-        const failedIdx = incorrectIndices.length > 0 ? incorrectIndices[0] : 0;
+        let failedIdx = incorrectIndices.length > 0 ? incorrectIndices[0] : 0;
+        
+        // Cerdas memilih soal yang sesuai dengan prediksi miskonsepsi
+        if (result.detectedMisconceptionCode && result.predictedForBug) {
+          const specificBugIdx = parsedAns.findIndex((ans, idx) => ans === result.predictedForBug[idx] && ans !== DIAGNOSTIC_CLUSTER[idx].correctAnswer);
+          if (specificBugIdx !== -1) {
+            failedIdx = specificBugIdx;
+          }
+        }
+
         const failedEq = DIAGNOSTIC_CLUSTER[failedIdx];
 
         const equationData = {

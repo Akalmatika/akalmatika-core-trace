@@ -53,21 +53,38 @@ export default function EquivalentFractionsPage() {
           </div>
 
           {/* Area Model */}
-          <div className="w-full max-w-lg h-32 md:h-40 flex border-2 border-slate-300 relative z-10 bg-slate-50 overflow-hidden shadow-inner">
-             {Array.from({ length: currentDenominator }).map((_, idx) => (
-                <div 
-                  key={idx}
-                  className={`
-                    h-full flex-1 border-r-2 border-slate-300/50 last:border-r-0 
-                    transition-colors duration-500 ease-out flex items-center justify-center
-                    ${idx < currentNumerator ? 'bg-indigo-400' : 'bg-transparent'}
-                  `}
-                >
-                  <div className={`transition-all duration-500 ${idx < currentNumerator ? 'opacity-50 scale-100' : 'opacity-0 scale-50'}`}>
-                    <Box size={20} className="text-white" />
+          <div className="w-full max-w-lg h-32 md:h-40 relative z-10 bg-slate-50 border-2 border-slate-300 overflow-hidden shadow-inner">
+             
+             {/* The Colored Area */}
+             <div 
+               className="absolute top-0 left-0 h-full bg-indigo-400 transition-all duration-700 ease-in-out"
+               style={{ width: `${(baseNumerator / baseDenominator) * 100}%` }}
+             />
+
+             {/* Vertical Cuts (Base Denominator) */}
+             <div className="absolute top-0 left-0 w-full h-full flex pointer-events-none">
+                {Array.from({ length: baseDenominator }).map((_, idx) => (
+                  <div 
+                    key={`v-${idx}`}
+                    className="h-full flex-1 border-r-2 border-slate-300/80 last:border-r-0 flex items-center justify-center"
+                  >
+                     <div className={`transition-all duration-500 delay-100 ${idx < baseNumerator ? 'opacity-40 scale-100' : 'opacity-0 scale-50'}`}>
+                        <Box size={24} className="text-white drop-shadow-sm" />
+                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+             </div>
+
+             {/* Horizontal Cuts (Multiplier) */}
+             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                {Array.from({ length: multiplier - 1 }).map((_, idx) => (
+                  <div 
+                    key={`h-${idx}`}
+                    className="absolute left-0 w-full h-[3px] bg-slate-800/20 transition-all duration-500 ease-in-out animate-fadeIn"
+                    style={{ top: `${((idx + 1) / multiplier) * 100}%` }}
+                  />
+                ))}
+             </div>
           </div>
 
           <div className="mt-8 text-center text-slate-500 font-medium bg-white/80 px-4 py-2 rounded-xl border border-slate-100 shadow-sm relative z-10">

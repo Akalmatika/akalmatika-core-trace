@@ -107,37 +107,56 @@ export default function ExpandBracketsPage() {
                  
                  <div className="text-slate-400 mx-2">)</div>
 
-                 {/* Arcs (Rainbows) */}
-                 <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" viewBox="0 0 500 150">
-                    {/* Arch to bx */}
-                    <path 
-                       d={`M ${175 - (a.toString().length - 1) * 15},85 Q 220,40 255,85`}
-                       fill="none" 
-                       stroke="#f43f5e" 
-                       strokeWidth="4"
-                       strokeDasharray="200"
-                       strokeDashoffset={step >= 1 ? "0" : "200"}
-                       className="transition-all duration-700 ease-in-out"
-                       markerEnd="url(#arrowhead)"
-                    />
-                    {/* Arch to c */}
-                    <path 
-                       d={`M ${175 - (a.toString().length - 1) * 15},85 Q 250,20 ${315 + (b.toString().length - 1) * 10},85`}
-                       fill="none" 
-                       stroke="#f43f5e" 
-                       strokeWidth="4"
-                       strokeDasharray="300"
-                       strokeDashoffset={step >= 2 ? "0" : "300"}
-                       className="transition-all duration-700 ease-in-out"
-                       markerEnd="url(#arrowhead)"
-                    />
-                    
-                    <defs>
-                       <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                          <polygon points="0 0, 6 3, 0 6" fill="#f43f5e" />
-                       </marker>
-                    </defs>
-                 </svg>
+                 {(() => {
+                    const aStr = a.toString();
+                    const bStr = b.toString();
+                    const cStr = Math.abs(c).toString();
+
+                    const startX = 200 - 15 * (bStr.length + cStr.length);
+                    const targetX1 = 255 + 15 * (aStr.length - cStr.length);
+                    const targetX2 = 285 + 15 * (aStr.length + bStr.length);
+
+                    const cx1 = (startX + targetX1) / 2;
+                    const cx2 = (startX + targetX2) / 2;
+
+                    return (
+                       <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" viewBox="0 0 500 150">
+                          {/* Arch to bx */}
+                          <path 
+                             d={`M ${startX},85 Q ${cx1},40 ${targetX1},85`}
+                             fill="none" 
+                             stroke="#f43f5e" 
+                             strokeWidth="4"
+                             pathLength="100"
+                             strokeDasharray="100"
+                             strokeDashoffset={step >= 1 ? "0" : "100"}
+                             className="transition-all duration-700 ease-in-out"
+                             markerEnd="url(#arrowhead1)"
+                          />
+                          {/* Arch to c */}
+                          <path 
+                             d={`M ${startX},85 Q ${cx2},20 ${targetX2},85`}
+                             fill="none" 
+                             stroke="#f43f5e" 
+                             strokeWidth="4"
+                             pathLength="100"
+                             strokeDasharray="100"
+                             strokeDashoffset={step >= 2 ? "0" : "100"}
+                             className="transition-all duration-700 ease-in-out"
+                             markerEnd="url(#arrowhead2)"
+                          />
+                          
+                          <defs>
+                             <marker id="arrowhead1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                <polygon points="0 0, 6 3, 0 6" fill="#f43f5e" className={`transition-opacity duration-300 ${step >= 1 ? 'opacity-100 delay-500' : 'opacity-0 delay-0'}`} />
+                             </marker>
+                             <marker id="arrowhead2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                <polygon points="0 0, 6 3, 0 6" fill="#f43f5e" className={`transition-opacity duration-300 ${step >= 2 ? 'opacity-100 delay-500' : 'opacity-0 delay-0'}`} />
+                             </marker>
+                          </defs>
+                       </svg>
+                    );
+                 })()}
               </div>
 
               {/* Steps display */}

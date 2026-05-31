@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { HelpCircle, PlayCircle, RotateCcw, PauseCircle } from "lucide-react";
 
 export interface NumberLineProps {
@@ -54,6 +54,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
     SHOW_RESULT: 3000,
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // Reset state when equation changes from props
     setA(initialEquation.a);
@@ -64,6 +66,19 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
     setInputOp(initialEquation.op);
     setState('IDLE');
     setIsPaused(false);
+
+    // Heroic entry and scroll into view
+    setTimeout(() => {
+      const topContainer = document.getElementById('interactive-number-line');
+      if (topContainer) {
+        topContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (containerRef.current) {
+        containerRef.current.classList.remove('animate-heroic');
+        void containerRef.current.offsetWidth; // trigger reflow
+        containerRef.current.classList.add('animate-heroic');
+      }
+    }, 100);
   }, [initialEquation.a, initialEquation.b, initialEquation.op]);
 
   useEffect(() => {
@@ -302,7 +317,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       </div>
 
       {/* Combined Container: Equation + SVG Number Line */}
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
+      <div ref={containerRef} className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
         
         {/* Dynamic Text Explanation (Top) */}
         <div className="min-h-[2.5rem] flex items-center justify-center px-4 w-full z-10 mt-6 sm:mt-2 mb-0 sm:mb-2 max-w-[85%] sm:max-w-[70%]">
@@ -577,6 +592,16 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
                   animation: fadeOutPlus 2.5s ease-in-out forwards;
                   display: inline-block;
                   overflow: hidden;
+                }
+                
+                /* Heroic Animation for new equations */
+                @keyframes heroicEntry {
+                  0% { transform: scale(0.95); opacity: 0; box-shadow: 0 0 0 transparent; }
+                  40% { transform: scale(1.02); opacity: 1; box-shadow: 0 0 30px rgba(99, 102, 241, 0.5); }
+                  100% { transform: scale(1); opacity: 1; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+                }
+                .animate-heroic {
+                  animation: heroicEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
                 }
               `}
             </style>

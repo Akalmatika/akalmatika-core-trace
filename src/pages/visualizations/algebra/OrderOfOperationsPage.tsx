@@ -29,13 +29,14 @@ interface RenderNode {
 function getOperatorPrecedence(op: string): number {
   if (op === "+" || op === "-") return 1;
   if (op === "*" || op === "/") return 2;
+  if (op === "^") return 3;
   return 0;
 }
 
 /* ─── Tokenizer ──────────────────────────────────────────────── */
 function tokenize(str: string): string[] {
   const clean = str.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/");
-  return clean.match(/\d+|\+|-|\*|\/|\(|\)/g) || [];
+  return clean.match(/\d+|\+|-|\*|\/|\(|\)|\^/g) || [];
 }
 
 /* ─── AST Builder (Shunting-yard) ────────────────────────────── */
@@ -181,6 +182,10 @@ export default function OrderOfOperationsPage() {
     }
   }, [rootNode]);
 
+  function handleAppendSymbol(symbol: string) {
+    setCustomExpr(prev => prev + symbol);
+  }
+
   function handleNodeClick(nodeId: string) {
     if (nodeId !== clickableId || !rootNode) return;
     setHistory(prev => [...prev, JSON.parse(JSON.stringify(rootNode))]);
@@ -193,6 +198,7 @@ export default function OrderOfOperationsPage() {
         else if (node.value === "-") res = l - r;
         else if (node.value === "*") res = l * r;
         else if (node.value === "/") res = l / r;
+        else if (node.value === "^") res = Math.pow(l, r);
         return { id: `num-${res}-${Date.now()}-${Math.floor(Math.random() * 1000)}`, type: "number", value: String(res) };
       }
       if (node.type === "operator") {
@@ -219,7 +225,7 @@ export default function OrderOfOperationsPage() {
   function handleCustomSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!customExpr.trim()) return;
-    if (/[^0-9\s+\-*/()×÷]/.test(customExpr)) { setCustomError("Gunakan angka, kurung, dan operasi saja."); return; }
+    if (/[^0-9\s+\-*/()×÷^]/.test(customExpr)) { setCustomError("Gunakan angka, kurung, pangkat, dan operasi saja."); return; }
     const ast = buildAST(customExpr);
     if (!ast) { setCustomError("Format tidak valid."); return; }
     setRootNode(ast); setHistory([]); setStepsLog([customExpr]); setIsFinished(false); setCustomError("");
@@ -256,40 +262,75 @@ export default function OrderOfOperationsPage() {
           <div className="absolute inset-0 bg-[radial-gradient(#f1f5f9_1px,transparent_1px)] [background-size:16px_16px] opacity-75" />
 
           {/* Presets row + custom input */}
-          <div className="relative z-10 flex flex-wrap items-center gap-2 pb-3 mb-3 border-b border-slate-100">
-            {presets.map((p, idx) => (
-              <button
-                key={idx}
-                onClick={() => { setCustomExpr(""); setActivePresetIdx(idx); }}
-                className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer ${
-                  activePresetIdx === idx && !customExpr
-                    ? "bg-indigo-600 text-white shadow-sm"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200/50"
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-            <div className="h-4 w-px bg-slate-200 mx-1 hidden sm:block" />
-            <form onSubmit={handleCustomSubmit} className="flex gap-1.5 items-center">
-              <input
-                type="text"
-                placeholder="Rumus kustom…"
-                value={customExpr}
-                onChange={(e) => setCustomExpr(e.target.value)}
-                className="bg-slate-50 focus:bg-white text-[11px] border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-lg px-2.5 py-1 w-36 font-mono text-slate-800 transition-all"
-              />
-              <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-[10px] px-3 py-1 rounded-lg transition-colors cursor-pointer">
-                Buat
-              </button>
-            </form>
-          </div>
-
-          {customError && (
-            <div className="relative z-10 bg-rose-50 border border-rose-100 text-rose-700 text-[10px] px-3 py-1.5 rounded-xl mb-2 flex items-center gap-1.5">
-              <AlertTriangle size={12} className="shrink-0" /> {customError}
+          <div className="relative z-10 flex flex-col gap-2.5 pb-3 mb-3 border-b border-slate-100">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider select-none">Preset:</span>
+              {presets.map((p, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => { setCustomExpr(""); setActivePresetIdx(idx); }}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer ${
+                    activePresetIdx === idx && !customExpr
+                      ? "bg-indigo-600 text-white shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200/50"
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
             </div>
-          )}
+
+            <div className="flex flex-wrap items-center gap-3">
+              <form onSubmit={handleCustomSubmit} className="flex gap-1.5 items-center">
+                <input
+                  type="text"
+                  placeholder="Rumus kustom…"
+                  value={customExpr}
+                  onChange={(e) => setCustomExpr(e.target.value)}
+                  className="bg-slate-50 focus:bg-white text-[11px] border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-lg px-2.5 py-1 w-36 font-mono text-slate-800 transition-all"
+                />
+                <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-[10px] px-3 py-1 rounded-lg transition-colors cursor-pointer">
+                  Buat
+                </button>
+              </form>
+
+              {/* Clickable Symbols */}
+              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200/50">
+                {[
+                  { label: "(", value: "(" },
+                  { label: ")", value: ")" },
+                  { label: "+", value: "+" },
+                  { label: "−", value: "-" },
+                  { label: "×", value: "*" },
+                  { label: "÷", value: "/" },
+                  { label: "^", value: "^" },
+                ].map((sym) => (
+                  <button
+                    key={sym.label}
+                    type="button"
+                    onClick={() => handleAppendSymbol(sym.value)}
+                    className="w-6 h-6 rounded-md bg-white hover:bg-slate-50 border border-slate-200 text-[11px] font-bold font-mono text-slate-700 hover:text-indigo-600 flex items-center justify-center transition-all cursor-pointer hover:shadow-xs active:scale-95"
+                  >
+                    {sym.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {customError && (
+              <div className="bg-rose-50 border border-rose-100 text-rose-700 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+                <AlertTriangle size={12} className="shrink-0" /> {customError}
+              </div>
+            )}
+
+            {/* Quick tip box placed directly under custom formula builder */}
+            <div className="bg-indigo-50 border border-indigo-100 rounded-xl px-3 py-2 text-[10px] text-indigo-800 leading-snug flex items-start gap-1.5 select-none">
+              <span className="shrink-0">💡</span>
+              <p>
+                <span className="font-bold">Tip:</span> Node yang berpendar ungu adalah operasi yang <strong>harus diklik terlebih dahulu</strong> sesuai aturan PEMDAS.
+              </p>
+            </div>
+          </div>
 
           {/* ── SVG Tree Canvas (compact) ─────────────────────── */}
           <div className="relative z-10 w-full border border-slate-200/60 bg-linear-to-b from-slate-50/50 to-slate-100/50 rounded-xl p-3 flex items-center justify-center shadow-inner overflow-hidden">
@@ -464,10 +505,6 @@ export default function OrderOfOperationsPage() {
             )}
           </div>
 
-          {/* Quick tip box */}
-          <div className="bg-indigo-50/60 border border-indigo-100 rounded-2xl px-4 py-3 text-[10px] text-indigo-800 leading-snug">
-            <span className="font-bold">💡 Tip:</span> Node yang berpendar ungu adalah operasi yang <strong>harus diklik terlebih dahulu</strong> sesuai aturan PEMDAS.
-          </div>
         </div>
       </div>
 

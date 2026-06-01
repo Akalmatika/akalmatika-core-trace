@@ -95,10 +95,8 @@ export default function StudentLayout() {
             <img src="/Akalmatika_LogoSekunder_Gelap_clean.png" alt="Akalmatika Logo Sekunder" className="h-10 md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity" />
             <span className="hidden md:inline-block border-l border-slate-700 pl-4">AKALMATIKA INTERACTIVE LEARNING</span>
           </div>
-          <div className="flex gap-4 text-center md:text-left">
-            <span>MOBILE-FIRST UI</span>
-            <span className="hidden sm:inline"> • </span>
-            <span>DATA-DRIVEN CATALOG</span>
+          <div className="text-center md:text-right">
+            <span>© 2026 Akalmatika • Media Belajar Matematika Interaktif</span>
           </div>
         </div>
       </footer>

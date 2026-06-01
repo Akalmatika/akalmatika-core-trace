@@ -228,99 +228,194 @@ export default function PlsvBalancePage() {
                 <ShieldAlert size={14} className="shrink-0" />
                 <span>{tiltMessage}</span>
               </div>
-            )}
-
-            {/* Vector Scale SVG */}
-            <div className="relative z-10 w-full max-w-lg min-h-[260px] border border-slate-150 bg-slate-50/50 rounded-2xl p-4 flex items-center justify-center shadow-inner overflow-hidden">
+            )}            {/* Vector Scale SVG */}
+            <div className="relative z-10 w-full max-w-lg min-h-[260px] border border-slate-200/60 bg-linear-to-b from-slate-50/50 to-slate-100/50 rounded-2xl p-6 flex items-center justify-center shadow-inner overflow-hidden">
               <svg width="100%" height="220" viewBox="0 0 400 220" className="overflow-visible select-none">
+                <defs>
+                  {/* Metallic Gradients */}
+                  <linearGradient id="metalStand" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#475569" />
+                    <stop offset="50%" stopColor="#94a3b8" />
+                    <stop offset="100%" stopColor="#334155" />
+                  </linearGradient>
+                  <linearGradient id="metalBeam" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#64748b" />
+                    <stop offset="50%" stopColor="#cbd5e1" />
+                    <stop offset="100%" stopColor="#475569" />
+                  </linearGradient>
+                  {/* Token Gradients */}
+                  <radialGradient id="goldCoin" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stopColor="#fbbf24" />
+                    <stop offset="70%" stopColor="#d97706" />
+                    <stop offset="100%" stopColor="#b45309" />
+                  </radialGradient>
+                  <radialGradient id="balloonRed" cx="35%" cy="35%" r="65%">
+                    <stop offset="0%" stopColor="#fda4af" />
+                    <stop offset="60%" stopColor="#f43f5e" />
+                    <stop offset="100%" stopColor="#be123c" />
+                  </radialGradient>
+                  <linearGradient id="xBlock" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#818cf8" />
+                    <stop offset="100%" stopColor="#4f46e5" />
+                  </linearGradient>
+                  {/* Glassmorphic Pan style */}
+                  <linearGradient id="panGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#e2e8f0" stopOpacity="0.9" />
+                  </linearGradient>
+                </defs>
+
+                {/* Dial Gauge background */}
+                <path d="M 170 90 A 30 30 0 0 1 230 90" fill="none" stroke="#cbd5e1" strokeWidth="2.5" strokeDasharray="3 3" />
+
                 {/* Stand Pillar Base */}
-                <rect x="180" y="140" width="40" height="60" fill="#64748b" rx="4" />
-                <rect x="150" y="190" width="100" height="15" fill="#475569" rx="6" />
+                <rect x="188" y="90" width="24" height="110" fill="url(#metalStand)" rx="2" />
+                <path d="M 140 200 L 260 200 L 245 208 L 155 208 Z" fill="#334155" />
+                <rect x="130" y="208" width="140" height="4" fill="#1e293b" rx="2" />
+
+                {/* Dial Pointer needle (Rotates to show imbalance indicator) */}
+                <g transform={`translate(200, 90) rotate(${tiltAngle})`}>
+                  <line x1="0" y1="0" x2="0" y2="-32" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" />
+                  <polygon points="-4,-24 0,-32 4,-24" fill="#ef4444" />
+                </g>
+
                 {/* Central Pivot point */}
-                <circle cx="200" cy="90" r="10" fill="#334155" />
+                <circle cx="200" cy="90" r="10" fill="#1e293b" />
+                <circle cx="200" cy="90" r="6" fill="#cbd5e1" />
 
                 {/* Rotating Beam and Pans Group */}
-                <g style={{ transform: `rotate(${tiltAngle}deg)`, transformOrigin: "200px 90px", transition: "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)" }}>
+                <g style={{ transform: `rotate(${tiltAngle}deg)`, transformOrigin: "200px 90px", transition: "transform 0.75s cubic-bezier(0.19, 1, 0.22, 1)" }}>
                   {/* Balance Beam line */}
-                  <line x1="80" y1="90" x2="320" y2="90" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
+                  <rect x="70" y="86" width="260" height="8" fill="url(#metalBeam)" rx="3" />
+                  <circle cx="80" cy="90" r="4.5" fill="#1e293b" />
+                  <circle cx="320" cy="90" r="4.5" fill="#1e293b" />
 
-                  {/* Left hanger and pan */}
-                  <line x1="80" y1="90" x2="80" y2="140" stroke="#94a3b8" strokeWidth="2.5" />
-                  <path d="M 50 140 L 110 140 L 95 155 L 65 155 Z" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="2" />
+                  {/* Left hanger (Double suspension cords) */}
+                  <line x1="80" y1="90" x2="52" y2="140" stroke="#64748b" strokeWidth="1.5" />
+                  <line x1="80" y1="90" x2="108" y2="140" stroke="#64748b" strokeWidth="1.5" />
 
-                  {/* Right hanger and pan */}
-                  <line x1="320" y1="90" x2="320" y2="140" stroke="#94a3b8" strokeWidth="2.5" />
-                  <path d="M 290 140 L 350 140 L 335 155 L 305 155 Z" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="2" />
-
-                  {/* Weights on Left Pan */}
-                  <g transform="translate(80, 138)">
-                    {/* Variable X blocks */}
-                    {Array.from({ length: Math.max(0, leftXQty) }).map((_, i) => (
-                      <rect
-                        key={`left-x-${i}`}
-                        x={-20 + (i * 12)}
-                        y={-22}
-                        width="16"
-                        height="20"
-                        fill="#4f46e5"
-                        stroke="#4338ca"
-                        strokeWidth="1.5"
-                        rx="3"
-                        className="shadow-2xs"
-                      />
-                    ))}
-                    {/* Constant blocks */}
-                    {Array.from({ length: Math.min(10, Math.max(0, leftConst)) }).map((_, i) => (
-                      <circle
-                        key={`left-c-pos-${i}`}
-                        cx={-15 + (i * 8)}
-                        y={-6}
-                        r="5"
-                        fill="#10b981"
-                        stroke="#059669"
-                        strokeWidth="1"
-                      />
-                    ))}
-                    {/* Negative Constant balloons */}
-                    {Array.from({ length: Math.min(10, Math.max(0, -leftConst)) }).map((_, i) => (
-                      <circle
-                        key={`left-c-neg-${i}`}
-                        cx={-15 + (i * 8)}
-                        y={-38}
-                        r="5"
-                        fill="#f43f5e"
-                        stroke="#e11d48"
-                        strokeWidth="1"
-                      />
-                    ))}
+                  {/* Left Hanger Pan Group - Counter rotated to keep perfectly level */}
+                  <g transform={`translate(80, 140) rotate(${-tiltAngle})`} style={{ transition: "transform 0.75s cubic-bezier(0.19, 1, 0.22, 1)" }}>
+                    {/* Hanging Pan Plate */}
+                    <path d="M -30 0 L 30 0 L 22 12 L -22 12 Z" fill="url(#panGrad)" stroke="#475569" strokeWidth="1.5" strokeLinejoin="round" />
+                    
+                    {/* Weights on Left Pan */}
+                    <g transform="translate(0, -2)">
+                      {/* Variable X blocks */}
+                      {Array.from({ length: Math.max(0, leftXQty) }).map((_, i) => {
+                        const cols = 2;
+                        const row = Math.floor(i / cols);
+                        const col = i % cols;
+                        return (
+                          <g key={`left-x-${i}`} transform={`translate(${-22 + col * 24}, ${-20 - row * 22})`}>
+                            <rect
+                              x="0"
+                              y="0"
+                              width="20"
+                              height="20"
+                              fill="url(#xBlock)"
+                              stroke="#312e81"
+                              strokeWidth="1.5"
+                              rx="4"
+                              className="shadow-md"
+                            />
+                            <text x="10" y="14" fill="#ffffff" textAnchor="middle" className="font-sans font-black text-[10px] select-none">x</text>
+                          </g>
+                        );
+                      })}
+                      {/* Constant positive blocks (Gold Coins) */}
+                      {Array.from({ length: Math.min(10, Math.max(0, leftConst)) }).map((_, i) => {
+                        const row = Math.floor(i / 5);
+                        const col = i % 5;
+                        return (
+                          <circle
+                            key={`left-c-pos-${i}`}
+                            cx={-16 + col * 8}
+                            cy={-6 - row * 10}
+                            r="5"
+                            fill="url(#goldCoin)"
+                            stroke="#92400e"
+                            strokeWidth="0.8"
+                            className="shadow-2xs"
+                          />
+                        );
+                      })}
+                      {/* Negative Constant balloons */}
+                      {Array.from({ length: Math.min(10, Math.max(0, -leftConst)) }).map((_, i) => {
+                        const row = Math.floor(i / 5);
+                        const col = i % 5;
+                        const bx = -16 + col * 8;
+                        const by = -32 - row * 14;
+                        return (
+                          <g key={`left-c-neg-${i}`} className="animate-pulse">
+                            {/* Balloon string */}
+                            <line x1={bx} y1={by} x2={bx} y2={by + 10} stroke="#94a3b8" strokeWidth="0.7" />
+                            {/* Balloon body */}
+                            <circle
+                              cx={bx}
+                              cy={by}
+                              r="5"
+                              fill="url(#balloonRed)"
+                              stroke="#be123c"
+                              strokeWidth="0.8"
+                            />
+                          </g>
+                        );
+                      })}
+                    </g>
                   </g>
 
-                  {/* Weights on Right Pan */}
-                  <g transform="translate(320, 138)">
-                    {/* Constant blocks */}
-                    {Array.from({ length: Math.min(12, Math.max(0, rightConst)) }).map((_, i) => (
-                      <circle
-                        key={`right-c-pos-${i}`}
-                        cx={-22 + (i * 8)}
-                        y={-6}
-                        r="5"
-                        fill="#10b981"
-                        stroke="#059669"
-                        strokeWidth="1"
-                      />
-                    ))}
-                    {/* Negative Constant balloons */}
-                    {Array.from({ length: Math.min(12, Math.max(0, -rightConst)) }).map((_, i) => (
-                      <circle
-                        key={`right-c-neg-${i}`}
-                        cx={-22 + (i * 8)}
-                        y={-38}
-                        r="5"
-                        fill="#f43f5e"
-                        stroke="#e11d48"
-                        strokeWidth="1"
-                      />
-                    ))}
+                  {/* Right hanger (Double suspension cords) */}
+                  <line x1="320" y1="90" x2="292" y2="140" stroke="#64748b" strokeWidth="1.5" />
+                  <line x1="320" y1="90" x2="348" y2="140" stroke="#64748b" strokeWidth="1.5" />
+
+                  {/* Right Hanger Pan Group - Counter rotated to keep perfectly level */}
+                  <g transform={`translate(320, 140) rotate(${-tiltAngle})`} style={{ transition: "transform 0.75s cubic-bezier(0.19, 1, 0.22, 1)" }}>
+                    {/* Hanging Pan Plate */}
+                    <path d="M -30 0 L 30 0 L 22 12 L -22 12 Z" fill="url(#panGrad)" stroke="#475569" strokeWidth="1.5" strokeLinejoin="round" />
+
+                    {/* Weights on Right Pan */}
+                    <g transform="translate(0, -2)">
+                      {/* Constant positive blocks (Gold Coins) */}
+                      {Array.from({ length: Math.min(15, Math.max(0, rightConst)) }).map((_, i) => {
+                        const row = Math.floor(i / 5);
+                        const col = i % 5;
+                        return (
+                          <circle
+                            key={`right-c-pos-${i}`}
+                            cx={-16 + col * 8}
+                            cy={-6 - row * 10}
+                            r="5"
+                            fill="url(#goldCoin)"
+                            stroke="#92400e"
+                            strokeWidth="0.8"
+                            className="shadow-2xs"
+                          />
+                        );
+                      })}
+                      {/* Negative Constant balloons */}
+                      {Array.from({ length: Math.min(15, Math.max(0, -rightConst)) }).map((_, i) => {
+                        const row = Math.floor(i / 5);
+                        const col = i % 5;
+                        const bx = -16 + col * 8;
+                        const by = -32 - row * 14;
+                        return (
+                          <g key={`right-c-neg-${i}`} className="animate-pulse">
+                            {/* Balloon string */}
+                            <line x1={bx} y1={by} x2={bx} y2={by + 10} stroke="#94a3b8" strokeWidth="0.7" />
+                            {/* Balloon body */}
+                            <circle
+                              cx={bx}
+                              cy={by}
+                              r="5"
+                              fill="url(#balloonRed)"
+                              stroke="#be123c"
+                              strokeWidth="0.8"
+                            />
+                          </g>
+                        );
+                      })}
+                    </g>
                   </g>
                 </g>
               </svg>

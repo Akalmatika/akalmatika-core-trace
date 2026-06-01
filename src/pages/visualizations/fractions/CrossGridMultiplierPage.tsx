@@ -162,12 +162,12 @@ export default function CrossGridMultiplierPage() {
                 </div>
 
                 {/* 2D Cross Grid Visualizer */}
-                <div className="border border-slate-200 bg-slate-50/50 rounded-2xl p-6 flex items-center justify-center min-w-[280px] shadow-inner">
-                  <div className="grid border-2 border-slate-400 bg-white shadow-sm overflow-hidden" style={{
+                <div className="border border-slate-200 bg-slate-50/50 rounded-2xl p-6 flex items-center justify-center min-w-[280px] shadow-inner overflow-hidden">
+                  <div className="grid border border-indigo-200 shadow-xl ring-4 ring-indigo-500/5 bg-white rounded-xl overflow-hidden transition-all duration-300" style={{
                     gridTemplateColumns: `repeat(${d2}, 1fr)`,
                     gridTemplateRows: `repeat(${d1}, 1fr)`,
-                    width: "220px",
-                    height: "220px"
+                    width: "230px",
+                    height: "230px"
                   }}>
                     {Array.from({ length: d1 }).map((_, rIdx) => 
                       Array.from({ length: d2 }).map((_, cIdx) => {
@@ -175,17 +175,18 @@ export default function CrossGridMultiplierPage() {
                         const isVerticalShaded = cIdx < n2;
                         const isOverlap = isHorizontalShaded && isVerticalShaded;
 
-                        let cellBg = "bg-transparent";
-                        if (isOverlap) cellBg = "bg-emerald-400/90 border border-emerald-500/50";
-                        else if (isHorizontalShaded) cellBg = "bg-sky-400/50 border border-sky-400/20";
-                        else if (isVerticalShaded) cellBg = "bg-amber-400/40 border border-amber-400/20";
+                        let cellBg = "bg-transparent hover:bg-slate-50";
+                        if (isOverlap) cellBg = "bg-emerald-500/85 border border-emerald-400/50 text-white font-extrabold shadow-inner animate-pulse";
+                        else if (isHorizontalShaded) cellBg = "bg-sky-500/40 border border-sky-400/20 text-sky-900";
+                        else if (isVerticalShaded) cellBg = "bg-amber-400/45 border border-amber-300/20 text-amber-950";
 
                         return (
                           <div 
                             key={`cell-${rIdx}-${cIdx}`} 
-                            className={`w-full h-full transition-all duration-300 flex items-center justify-center text-[8px] font-mono font-bold text-slate-450 ${cellBg}`}
+                            className={`w-full h-full border border-slate-100 transition-all duration-500 flex flex-col items-center justify-center text-[9px] font-mono font-bold select-none ${cellBg}`}
                           >
-                            {isOverlap ? "Over" : ""}
+                            <span className="scale-90 opacity-90">1/{d1 * d2}</span>
+                            {isOverlap && <span className="text-[6px] uppercase tracking-tighter opacity-75 font-sans">Overlap</span>}
                           </div>
                         );
                       })

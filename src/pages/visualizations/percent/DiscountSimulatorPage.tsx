@@ -327,97 +327,153 @@ export default function DiscountSimulatorPage() {
                 </div>
               )}
             </div>
-
             {/* Breakdown Checkout Receipt */}
-            <div className="relative z-10 bg-slate-50 border border-slate-200 rounded-2xl p-6 font-mono text-xs text-slate-700 space-y-3 shadow-inner">
-              <span className="font-bold border-b border-dashed border-slate-300 pb-2 block text-[10px] text-slate-400 uppercase tracking-widest text-center">Receipt Akalmatika Mart</span>
+            <div className="relative z-10 bg-white/70 backdrop-blur-md border border-slate-200/60 rounded-3xl p-6 font-mono text-xs text-slate-700 space-y-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
+              <span className="font-bold border-b border-dashed border-slate-250 pb-2.5 block text-[10px] text-slate-400 uppercase tracking-widest text-center">Receipt Akalmatika Mart</span>
               
               <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span className="font-bold">Rp {subtotal.toLocaleString("id-ID")}</span>
+                <span>Subtotal Belanja:</span>
+                <span className="font-bold text-slate-800">Rp {subtotal.toLocaleString("id-ID")}</span>
               </div>
 
               {discount1 > 0 && (
-                <div className="flex justify-between text-indigo-750">
+                <div className="flex justify-between text-indigo-600">
                   <span>Diskon Tahap 1 ({discount1}%):</span>
                   <span>-Rp {disc1Amount.toLocaleString("id-ID")}</span>
                 </div>
               )}
 
               {discount2 > 0 && (
-                <div className="flex justify-between text-indigo-750">
+                <div className="flex justify-between text-indigo-500">
                   <span>Diskon Tahap 2 ({discount2}%):</span>
                   <span>-Rp {disc2Amount.toLocaleString("id-ID")}</span>
                 </div>
               )}
 
-              <div className="border-t border-dashed border-slate-300 pt-2 flex justify-between">
-                <span>Total Diskon Terakumulasi:</span>
-                <span className="font-bold text-indigo-800">-Rp {totalDiscount.toLocaleString("id-ID")}</span>
+              <div className="border-t border-dashed border-slate-200 pt-2 flex justify-between">
+                <span>Total Diskon (Akumulasi):</span>
+                <span className="font-bold text-indigo-750">-Rp {totalDiscount.toLocaleString("id-ID")}</span>
               </div>
 
-              <div className="flex justify-between text-emerald-700">
+              <div className="flex justify-between text-emerald-600">
                 <span>PPN Pajak ({taxRate}%):</span>
                 <span>+Rp {taxAmount.toLocaleString("id-ID")}</span>
               </div>
 
-              <div className="border-t-2 border-slate-350 pt-3 flex justify-between text-sm font-black text-slate-900">
+              <div className="border-t-2 border-slate-300 pt-3 flex justify-between text-sm font-black text-slate-900">
                 <span>TOTAL AKHIR:</span>
-                <span className="font-mono text-emerald-650 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Rp {grandTotal.toLocaleString("id-ID")}</span>
+                <span className="font-mono text-emerald-650 bg-emerald-50/60 px-3 py-1 rounded-xl border border-emerald-200/50">Rp {grandTotal.toLocaleString("id-ID")}</span>
               </div>
             </div>
 
             {/* Misconception Alert Block */}
             {subtotal > 0 && showMisconception && (
-              <div className="relative z-10 bg-rose-50/50 border border-rose-100 rounded-2xl p-5 mt-8 space-y-4 animate-scaleUp">
-                <div className="flex items-center justify-between border-b border-rose-100 pb-2">
+              <div className="relative z-10 bg-rose-50/40 backdrop-blur-md border border-rose-100/60 rounded-3xl p-6 mt-8 space-y-5 animate-scaleUp">
+                <div className="flex items-center justify-between border-b border-rose-100 pb-3">
                   <h4 className="text-[10px] font-black text-rose-600 uppercase tracking-widest flex items-center gap-1.5">
                     <ShieldAlert size={14} className="text-rose-500" />
-                    MISKONSEPSI: DISKON ADITIF (50% + 20% ≠ 70%)
+                    MISKONSEPSI: DISKON ADITIF ({discount1}% + {discount2}% ≠ {additiveDiscountRate}%)
                   </h4>
                   <button
                     onClick={() => setShowMisconception(false)}
-                    className="text-[9px] font-bold text-slate-400 hover:text-slate-650"
+                    className="text-[9px] font-bold text-slate-400 hover:text-rose-600 underline cursor-pointer"
                   >
                     Tutup
                   </button>
                 </div>
 
-                <p className="text-[11px] text-slate-650 leading-relaxed">
-                  Banyak orang salah mengira diskon bertingkat <span className="font-bold">{discount1}% + {discount2}%</span> sama dengan diskon langsung <span className="font-bold">{additiveDiscountRate}%</span>. 
-                  Berikut adalah perbandingan pembuktian secara riil:
+                <p className="text-xs text-slate-650 leading-relaxed">
+                  Miskonsepsi umum siswa adalah menjumlahkan diskon bertingkat secara langsung (<span className="font-bold">{discount1}% + {discount2}% = {additiveDiscountRate}%</span>). 
+                  Berikut pembuktian visual 100 sel mengapa keduanya berbeda secara matematis:
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-white border border-rose-150 p-4 rounded-xl space-y-2 font-sans text-xs">
-                    <span className="font-black text-rose-600 block text-[9px] uppercase">🚨 JIKA DISAMAKAN {additiveDiscountRate}% LANGSUNG:</span>
-                    <div className="space-y-1 font-mono text-[11px] text-slate-600">
-                      <div>Subtotal: Rp {subtotal.toLocaleString("id-ID")}</div>
-                      <div className="text-rose-700 font-bold">Potongan ({additiveDiscountRate}%): -Rp {additiveDiscountAmount.toLocaleString("id-ID")}</div>
-                      <div>Pajak ({taxRate}%): +Rp {additiveTaxAmount.toLocaleString("id-ID")}</div>
-                      <div className="border-t border-slate-100 pt-1 text-slate-800 font-bold">Total Akhir: Rp {additiveGrandTotal.toLocaleString("id-ID")}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Grid 1: Diskon Bertingkat Real */}
+                  <div className="bg-white border border-slate-200/70 p-4 rounded-2xl flex flex-col items-center space-y-3">
+                    <span className="font-bold text-slate-800 text-[10px] uppercase text-center block">
+                      ✅ Diskon Bertingkat ({discount1}% + {discount2}%)
+                    </span>
+                    
+                    {/* 10x10 Grid representation */}
+                    <div className="grid grid-cols-10 gap-0.5 p-1 bg-slate-50 border border-slate-200/50 rounded-lg w-full max-w-[140px]">
+                      {Array.from({ length: 100 }).map((_, i) => {
+                        const isDisc1 = i < discount1;
+                        const isDisc2 = !isDisc1 && i < (discount1 + (100 - discount1) * (discount2 / 100));
+                        return (
+                          <div
+                            key={i}
+                            className={`aspect-square rounded-[1.5px] transition-all duration-500 ${
+                              isDisc1
+                                ? "bg-indigo-500"
+                                : isDisc2
+                                ? "bg-indigo-300"
+                                : "bg-slate-350"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    <div className="text-[10px] text-slate-500 space-y-1 w-full font-mono">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-indigo-500 rounded-[2px]" />
+                        <span>Diskon 1: {discount1}% (Blue)</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-indigo-300 rounded-[2px]" />
+                        <span>Diskon 2: {(((100 - discount1) * discount2) / 100).toFixed(0)}% sisa (Light Blue)</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-slate-350 rounded-[2px]" />
+                        <span className="font-bold text-slate-700">Kamu Bayar: {((100 - discount1) * (100 - discount2) / 100).toFixed(0)}% (Gray)</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="bg-white border border-emerald-150 p-4 rounded-xl space-y-2 font-sans text-xs">
-                    <span className="font-black text-emerald-600 block text-[9px] uppercase">✅ DIHITUNG BERMALAS-MALASAN (BERTINGKAT):</span>
-                    <div className="space-y-1 font-mono text-[11px] text-slate-600">
-                      <div>Subtotal: Rp {subtotal.toLocaleString("id-ID")}</div>
-                      <div className="text-emerald-700 font-bold">Potongan Real: -Rp {totalDiscount.toLocaleString("id-ID")}</div>
-                      <div>Pajak ({taxRate}%): +Rp {taxAmount.toLocaleString("id-ID")}</div>
-                      <div className="border-t border-slate-100 pt-1 text-slate-850 font-bold">Total Akhir: Rp {grandTotal.toLocaleString("id-ID")}</div>
+                  {/* Grid 2: Diskon Aditif Salah */}
+                  <div className="bg-white border border-rose-100 p-4 rounded-2xl flex flex-col items-center space-y-3">
+                    <span className="font-bold text-rose-600 text-[10px] uppercase text-center block">
+                      🚨 Diskon Aditif Salah ({additiveDiscountRate}%)
+                    </span>
+
+                    {/* 10x10 Grid representation */}
+                    <div className="grid grid-cols-10 gap-0.5 p-1 bg-slate-50 border border-slate-200/50 rounded-lg w-full max-w-[140px]">
+                      {Array.from({ length: 100 }).map((_, i) => {
+                        const isDisc = i < Math.min(100, additiveDiscountRate);
+                        return (
+                          <div
+                            key={i}
+                            className={`aspect-square rounded-[1.5px] transition-all duration-500 ${
+                              isDisc ? "bg-rose-450" : "bg-slate-350"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    <div className="text-[10px] text-slate-500 space-y-1 w-full font-mono">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-rose-450 rounded-[2px]" />
+                        <span>Asumsi Diskon: {additiveDiscountRate}% (Red)</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 bg-slate-350 rounded-[2px]" />
+                        <span className="font-bold text-slate-700">Asumsi Bayar: {Math.max(0, 100 - additiveDiscountRate)}% (Gray)</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white border border-slate-205 p-4 rounded-xl text-center font-mono text-xs">
-                  <span className="text-slate-500">Selisih kerugian toko (atau selisih bayar): </span>
-                  <span className="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">Rp {priceDifference.toLocaleString("id-ID")} lebih mahal secara bertingkat</span>
+                <div className="bg-white border border-slate-200 p-4 rounded-2xl text-center font-mono text-[11px]">
+                  <span className="text-slate-500">Selisih yang harus kamu bayar di kasir: </span>
+                  <span className="font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">
+                    Rp {priceDifference.toLocaleString("id-ID")} lebih mahal secara bertingkat
+                  </span>
                 </div>
 
-                <div className="bg-indigo-50/50 border border-indigo-100 p-4 rounded-xl text-[10px] text-indigo-900 leading-relaxed">
-                  <span className="font-black block mb-0.5">💡 Kenapa Berbeda?</span>
-                  Sebab diskon kedua ({discount2}%) **tidak dihitung dari harga awal Rp {subtotal.toLocaleString("id-ID")}**, melainkan dihitung dari harga sisa setelah dipotong diskon pertama yaitu **Rp {priceAfterDisc1.toLocaleString("id-ID")}**. Ini berarti nilai rupiah dari potongan kedua menyusut!
+                <div className="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl text-[10px] text-indigo-900 leading-relaxed">
+                  <span className="font-black block mb-0.5">💡 Mengapa Berbeda?</span>
+                  Sebab diskon kedua ({discount2}%) **tidak dihitung dari harga awal**, melainkan dihitung dari sisa setelah dipotong diskon pertama yaitu **Rp {priceAfterDisc1.toLocaleString("id-ID")}**. Ini berarti nilai rupiah dari potongan kedua menyusut!
                 </div>
               </div>
             )}

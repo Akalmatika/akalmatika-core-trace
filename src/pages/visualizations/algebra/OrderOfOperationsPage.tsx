@@ -437,23 +437,49 @@ export default function OrderOfOperationsPage() {
             )}
 
             {/* Tree Canvas */}
-            <div className="relative z-10 w-full max-w-lg min-h-[300px] border border-slate-150 bg-slate-50/50 rounded-2xl p-4 flex items-center justify-center shadow-inner">
+            <div className="relative z-10 w-full max-w-lg min-h-[300px] border border-slate-200/60 bg-linear-to-b from-slate-50/50 to-slate-100/50 rounded-2xl p-6 flex items-center justify-center shadow-inner overflow-hidden">
               {rootNode ? (
                 <svg width="100%" height="260" viewBox="0 0 500 260" className="overflow-visible select-none">
+                  <defs>
+                    <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#818cf8" />
+                      <stop offset="100%" stopColor="#4f46e5" />
+                    </linearGradient>
+                    <linearGradient id="activeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#4338ca" />
+                    </linearGradient>
+                  </defs>
+                  
                   {/* Draw connection lines */}
                   {renderNodes.map((r) => {
                     if (!r.parentId || r.parentX === undefined || r.parentY === undefined) return null;
+                    const dy = r.y - r.parentY;
+                    const pathData = `M ${r.parentX} ${r.parentY} C ${r.parentX} ${r.parentY + dy * 0.55}, ${r.x} ${r.y - dy * 0.55}, ${r.x} ${r.y}`;
+                    
+                    const isLinkedToClickable = r.node.id === clickableId || r.parentId === clickableId;
+
                     return (
-                      <line
-                        key={`line-${r.node.id}`}
-                        x1={r.parentX}
-                        y1={r.parentY}
-                        x2={r.x}
-                        y2={r.y}
-                        stroke="#cbd5e1"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                      />
+                      <g key={`link-${r.node.id}`}>
+                        {/* Glow underlay */}
+                        <path
+                          d={pathData}
+                          fill="none"
+                          stroke={isLinkedToClickable ? "#c7d2fe" : "#f1f5f9"}
+                          strokeWidth="7"
+                          strokeLinecap="round"
+                          className="opacity-60 transition-all duration-500 ease-out"
+                        />
+                        {/* Main connection curve */}
+                        <path
+                          d={pathData}
+                          fill="none"
+                          stroke={isLinkedToClickable ? "#6366f1" : "#cbd5e1"}
+                          strokeWidth="3.5"
+                          strokeLinecap="round"
+                          className="transition-all duration-500 ease-out"
+                        />
+                      </g>
                     );
                   })}
 
@@ -466,31 +492,46 @@ export default function OrderOfOperationsPage() {
                       <g
                         key={`node-g-${r.node.id}`}
                         onClick={() => !isNumber && handleNodeClick(r.node.id)}
-                        className={`cursor-pointer ${isClickable ? "animate-pulse" : ""}`}
+                        className="cursor-pointer group transition-all duration-500 ease-out"
                         style={{ pointerEvents: isNumber ? "none" : "auto" }}
                       >
-                        {/* Glow effect for clickable active node */}
+                        {/* Shield of Precedence - Pulsing Neon Glow */}
                         {isClickable && (
-                          <circle
-                            cx={r.x}
-                            cy={r.y}
-                            r="22"
-                            fill="none"
-                            stroke="#818cf8"
-                            strokeWidth="4"
-                            className="opacity-75"
-                          />
+                          <g className="transition-all duration-500 ease-out">
+                            {/* Outer shockwave ring */}
+                            <circle
+                              cx={r.x}
+                              cy={r.y}
+                              r="26"
+                              fill="none"
+                              stroke="#a5b4fc"
+                              strokeWidth="1.5"
+                              strokeDasharray="4 4"
+                              className="animate-spin opacity-75"
+                              style={{ animationDuration: "12s" }}
+                            />
+                            {/* Neon glow */}
+                            <circle
+                              cx={r.x}
+                              cy={r.y}
+                              r="22"
+                              fill="none"
+                              stroke="#6366f1"
+                              strokeWidth="4"
+                              className="opacity-25 animate-pulse"
+                            />
+                          </g>
                         )}
 
                         {/* Node circle */}
                         <circle
                           cx={r.x}
                           cy={r.y}
-                          r="17"
-                          fill={isNumber ? "#ffffff" : isClickable ? "#4f46e5" : "#64748b"}
-                          stroke={isNumber ? "#cbd5e1" : isClickable ? "#4338ca" : "#475569"}
+                          r="18"
+                          fill={isNumber ? "#ffffff" : isClickable ? "url(#activeGlow)" : "#475569"}
+                          stroke={isNumber ? "#e2e8f0" : isClickable ? "#312e81" : "#1e293b"}
                           strokeWidth="2.5"
-                          className="transition-all duration-300 shadow-xs hover:scale-105"
+                          className="transition-all duration-500 ease-out shadow-lg drop-shadow-md group-hover:scale-110"
                         />
 
                         {/* Node Text value */}
@@ -498,8 +539,8 @@ export default function OrderOfOperationsPage() {
                           x={r.x}
                           y={r.y + 4.5}
                           textAnchor="middle"
-                          fill={isNumber ? "#334155" : "#ffffff"}
-                          className="font-mono text-sm font-black select-none"
+                          fill={isNumber ? "#1e293b" : "#ffffff"}
+                          className="font-sans text-xs font-black select-none transition-all duration-500 ease-out group-hover:font-extrabold"
                         >
                           {r.node.value === "*" ? "×" : r.node.value === "/" ? "÷" : r.node.value}
                         </text>

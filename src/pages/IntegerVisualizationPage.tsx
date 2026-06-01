@@ -31,28 +31,28 @@ function IntegerCard({ item }: { item: VisualizationItem }) {
       {isExpanded && (
         <div className="animate-fadeIn border-t border-slate-100 flex flex-col flex-1">
           {/* Visual Preview Area (Mock) */}
-          <div className="h-40 bg-slate-50 border-b border-slate-100 relative overflow-hidden flex items-center justify-center p-4 shrink-0">
+          <div className="h-24 md:h-40 bg-slate-50 border-b border-slate-100 relative overflow-hidden flex items-center justify-center p-3 md:p-4 shrink-0">
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-sky-50/50" />
             
             {/* Dynamic Preview Graphic based on ID */}
             {item.id === "int-zero-pair" ? (
-              <div className="relative z-10 flex gap-2 items-center">
-                <div className="w-12 h-12 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center text-orange-600 font-black shadow-sm">+1</div>
-                <span className="text-slate-400 font-bold">+</span>
-                <div className="w-12 h-12 rounded-full bg-cyan-100 border-2 border-cyan-400 flex items-center justify-center text-cyan-600 font-black shadow-sm">-1</div>
-                <span className="text-slate-400 font-bold">=</span>
-                <div className="w-12 h-12 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold">0</div>
+              <div className="relative z-10 flex gap-1.5 md:gap-2 items-center">
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-orange-100 border-2 border-orange-400 flex items-center justify-center text-orange-600 font-black shadow-sm text-xs md:text-base">+1</div>
+                <span className="text-slate-400 font-bold text-xs md:text-base">+</span>
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-cyan-100 border-2 border-cyan-400 flex items-center justify-center text-cyan-600 font-black shadow-sm text-xs md:text-base">-1</div>
+                <span className="text-slate-400 font-bold text-xs md:text-base">=</span>
+                <div className="w-8 h-8 md:w-12 md:h-12 rounded-full border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-bold text-xs md:text-base">0</div>
               </div>
             ) : (
-              <div className="relative z-10 w-full max-w-[250px]">
+              <div className="relative z-10 w-full max-w-[200px] md:max-w-[250px]">
                 <div className="h-1 w-full bg-slate-300 relative rounded-full">
                   {[-3,-2,-1,0,1,2,3].map((num) => (
                     <div key={num} className="absolute top-1/2 -translate-y-1/2 flex flex-col items-center" style={{ left: `${((num + 3) / 6) * 100}%` }}>
-                      <div className="w-1 h-3 bg-slate-400 rounded-full mb-1"></div>
-                      <span className="text-[10px] font-bold text-slate-500">{num}</span>
+                      <div className="w-0.5 h-2 md:h-3 bg-slate-400 rounded-full mb-0.5 md:mb-1"></div>
+                      <span className="text-[8px] md:text-[10px] font-bold text-slate-500">{num}</span>
                     </div>
                   ))}
-                  <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-3 h-3 bg-indigo-500 rounded-full shadow-md z-20"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 left-1/2 w-2 h-2 md:w-3 md:h-3 bg-indigo-500 rounded-full shadow-md z-20"></div>
                 </div>
               </div>
             )}

@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 const newRoutes = [
-  { name: 'fractions', url: '/student/visualizations/fractions' },
-  { name: 'percent', url: '/student/visualizations/percent' },
-  { name: 'algebra', url: '/student/visualizations/algebra' },
-  { name: 'placeholder_frac', url: '/student/visualizations/fractions/area-model' },
+  { name: 'fractions-catalog', url: '/student/visualizations/fractions' },
+  { name: 'integer-catalog', url: '/student/visualizations/integer' },
+  { name: 'percent-catalog', url: '/student/visualizations/percent' },
+  { name: 'algebra-catalog', url: '/student/visualizations/algebra' },
+  { name: 'area-model', url: '/student/visualizations/fractions/area-model' },
 ];
 
 test.describe('Audit Mobile New Pages', () => {

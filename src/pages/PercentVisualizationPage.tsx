@@ -31,13 +31,33 @@ function PercentCard({ item }: { item: VisualizationItem }) {
       {isExpanded && (
         <div className="animate-fadeIn border-t border-slate-100 flex flex-col flex-1">
           {/* Visual Preview Area (Mock) */}
-          <div className="h-40 bg-slate-50 border-b border-slate-100 relative overflow-hidden flex items-center justify-center p-4 shrink-0">
+          <div className="h-24 md:h-40 bg-slate-50 border-b border-slate-100 relative overflow-hidden flex items-center justify-center p-3 md:p-4 shrink-0">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-teal-50/50" />
-            <div className="relative z-10 w-24 h-24 grid grid-cols-5 grid-rows-5 gap-0.5 p-1 bg-white border border-slate-200 rounded-md shadow-sm">
-              {Array.from({ length: 25 }).map((_, i) => (
-                <div key={i} className={`w-full h-full rounded-[1px] ${i < 12 ? 'bg-emerald-400' : 'bg-slate-100'}`}></div>
-              ))}
-            </div>
+            
+            {/* Dynamic Preview Graphic based on ID */}
+            {item.id === "perc-grid-100" ? (
+              <div className="relative z-10 w-16 h-16 md:w-20 md:h-20 grid grid-cols-5 grid-rows-5 gap-0.5 p-1 bg-white border border-slate-200 rounded-md shadow-sm">
+                {Array.from({ length: 25 }).map((_, i) => (
+                  <div key={i} className={`w-full h-full rounded-[1px] ${i < 10 ? 'bg-emerald-400' : 'bg-slate-100'}`}></div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 md:gap-2 relative z-10">
+                <div className="flex flex-col items-center text-[10px] md:text-xs font-black font-mono text-slate-400">
+                  <div>1</div>
+                  <div className="w-3 md:w-4 h-0.5 bg-slate-300 my-0.5"></div>
+                  <div>2</div>
+                </div>
+                <span className="text-[8px] md:text-[10px] font-black text-slate-400">→</span>
+                <div className="flex flex-col items-center text-[10px] md:text-xs font-black font-mono text-slate-500">
+                  <div>50</div>
+                  <div className="w-4 md:w-6 h-0.5 bg-slate-400 my-0.5"></div>
+                  <div>100</div>
+                </div>
+                <span className="text-[8px] md:text-[10px] font-black text-slate-400">=</span>
+                <span className="text-[10px] md:text-xs font-black font-mono text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">50%</span>
+              </div>
+            )}
           </div>
 
           {/* Content Area */}

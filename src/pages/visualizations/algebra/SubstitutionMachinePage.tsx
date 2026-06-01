@@ -36,7 +36,9 @@ const GrowingArrow = ({ active, delay = "0ms" }: { active: boolean; delay?: stri
 export default function SubstitutionMachinePage() {
   const [mode, setMode] = useState<'explore' | 'evaluate'>('explore');
   
-  // y = 2x + 5
+  // f(x) = ax + b
+  const [coeff, setCoeff] = useState<number>(2);
+  const [constVal, setConstVal] = useState<number>(5);
   const [xVal, setXVal] = useState<number>(3);
   const [step, setStep] = useState(0); 
   // 0: Initial
@@ -45,10 +47,10 @@ export default function SubstitutionMachinePage() {
   // 3: Drop constant
   // 4: Add
   
-  // Re-run steps animation on x change
+  // Re-run steps animation on any input change
   useEffect(() => {
     setStep(0);
-  }, [xVal]);
+  }, [xVal, coeff, constVal]);
 
   // Evaluate Mode State
   const [evalResult, setEvalResult] = useState<'none' | 'correct' | 'wrong'>('none');
@@ -139,12 +141,20 @@ export default function SubstitutionMachinePage() {
                        ) =
                     </div>
                     
-                    {/* ROW 1: 2(x) Cell */}
+                    {/* ROW 1: coeff(x) Cell */}
                     <div className={`relative flex items-center justify-center p-1.5 lg:p-3 rounded-xl h-9 sm:h-14 lg:h-16 transition-all duration-500 ${step === 2 ? 'bg-indigo-900/60 shadow-[0_0_20px_rgba(99,102,241,0.4)]' : 'bg-transparent'}`}>
                        <SnakeBorder active={step === 2} color="#818cf8" />
                        
                        <div className="text-white relative flex items-center z-10">
-                          2
+                          <span 
+                            className={`px-1.5 py-0.5 rounded border-b border-dashed border-indigo-400 hover:bg-slate-700/80 cursor-pointer transition-colors ${step > 0 ? 'pointer-events-none border-b-0' : ''}`}
+                            onClick={() => {
+                              if (step === 0) setCoeff(c => c === 10 ? -10 : c + 1);
+                            }}
+                            title="Klik untuk mengubah koefisien"
+                          >
+                            {coeff}
+                          </span>
                           <span className="relative inline-flex justify-center items-center ml-0.5 lg:ml-1 min-w-[1.2rem] lg:min-w-[2.5rem]">
                              {step === 1 && <SnakeBorder active={true} color="#818cf8" />}
                              <span className="invisible">{step >= 1 ? `(${xVal})` : 'x'}</span>
@@ -157,10 +167,10 @@ export default function SubstitutionMachinePage() {
                        <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 2 ? 'translate-y-[64px] sm:translate-y-[96px] lg:translate-y-[112px]' : 'translate-y-0'} ${step === 2 ? 'opacity-100' : 'opacity-0'}`}>
                           <div className="relative w-full h-full flex justify-center items-center">
                              <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
-                                <span className="text-white">2</span><span className="text-emerald-400">({xVal})</span>
+                                <span className="text-white">{coeff}</span><span className="text-emerald-400">({xVal})</span>
                              </div>
                              <div className={`absolute transition-opacity duration-500 ${step >= 2 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'}`}>
-                                <span className="text-white">{2 * xVal}</span>
+                                <span className="text-white">{coeff * xVal}</span>
                              </div>
                           </div>
                        </div>
@@ -168,16 +178,26 @@ export default function SubstitutionMachinePage() {
                     
                     <div className="text-slate-400 flex items-center h-9 sm:h-14 lg:h-16">+</div>
                     
-                    {/* ROW 1: 5 Cell */}
+                    {/* ROW 1: constVal Cell */}
                     <div className={`relative flex items-center justify-center p-1.5 lg:p-3 rounded-xl h-9 sm:h-14 lg:h-16 transition-all duration-500 ${step === 3 ? 'bg-amber-900/30 shadow-[0_0_20px_rgba(251,191,36,0.3)]' : 'bg-transparent'}`}>
                        <SnakeBorder active={step === 3} color="#fbbf24" />
                        
-                       <div className="text-amber-400 z-10">5</div>
+                       <div className="text-amber-400 z-10">
+                          <span 
+                            className={`px-1.5 py-0.5 rounded border-b border-dashed border-amber-400 hover:bg-slate-700/80 cursor-pointer transition-colors ${step > 0 ? 'pointer-events-none border-b-0' : ''}`}
+                            onClick={() => {
+                              if (step === 0) setConstVal(c => c === 10 ? -10 : c + 1);
+                            }}
+                            title="Klik untuk mengubah konstanta"
+                          >
+                            {constVal}
+                          </span>
+                       </div>
 
                        {/* Flying Clone for step 3 */}
                        <div className={`absolute inset-0 z-30 transition-transform duration-[1500ms] ease-in-out pointer-events-none ${step >= 3 ? 'translate-y-[64px] sm:translate-y-[96px] lg:translate-y-[112px]' : 'translate-y-0'} ${step === 3 ? 'opacity-100' : 'opacity-0'}`}>
                           <div className="w-full h-full flex items-center justify-center">
-                             <span className="text-amber-400">5</span>
+                             <span className="text-amber-400">{constVal}</span>
                           </div>
                        </div>
                     </div>
@@ -197,20 +217,20 @@ export default function SubstitutionMachinePage() {
                        <span className="text-slate-400 py-1 lg:py-2">=</span>
                     </div>
                     
-                    {/* ROW 3: 2*xVal Cell */}
+                    {/* ROW 3: coeff*xVal Cell */}
                     <div className={`flex items-center transition-all duration-[500ms] ${step >= 2 ? 'h-9 sm:h-14 lg:h-16' : 'h-0 overflow-hidden'}`}>
                        <div className={`relative flex items-center justify-center p-1.5 lg:p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
                           <SnakeBorder active={step === 4} color="#10b981" />
                           
                           {/* Static element ONLY appears at step >= 3 to avoid overlapping with clone at step 2 */}
                           <div className={`${step >= 3 ? 'opacity-100' : 'opacity-0'}`}>
-                             <span className="text-white">{2 * xVal}</span>
+                             <span className="text-white">{coeff * xVal}</span>
                           </div>
 
                           {/* Flying Clone for step 4 (Left operand) */}
                           <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step >= 4 ? 'translate-y-[64px] sm:translate-y-[100px] lg:translate-y-[128px] translate-x-[40px] sm:translate-x-[70px] lg:translate-x-[90px]' : 'translate-y-0 translate-x-0'} ${step === 4 ? 'opacity-100' : 'opacity-0'}`}>
                              <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
-                                <span className="text-white">{2 * xVal}</span>
+                                <span className="text-white">{coeff * xVal}</span>
                              </div>
                           </div>
                        </div>
@@ -220,20 +240,20 @@ export default function SubstitutionMachinePage() {
                        <div className="p-1.5 lg:p-3 text-slate-300">+</div>
                     </div>
                     
-                    {/* ROW 3: 5 Cell */}
+                    {/* ROW 3: constVal Cell */}
                     <div className={`flex items-center transition-all duration-[500ms] ${step >= 3 ? 'h-9 sm:h-14 lg:h-16' : 'h-0 overflow-hidden'}`}>
                        <div className={`relative flex items-center justify-center p-1.5 lg:p-3 rounded-xl transition-all duration-500 ${step === 4 ? 'bg-emerald-900/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-transparent'}`}>
                           <SnakeBorder active={step === 4} color="#10b981" />
                           
                           {/* Static element ONLY appears at step >= 4 to avoid overlapping with clone at step 3 */}
                           <div className={`${step >= 4 ? 'opacity-100' : 'opacity-0'}`}>
-                             <span className="text-amber-400">5</span>
+                             <span className="text-amber-400">{constVal}</span>
                           </div>
 
                           {/* Flying Clone for step 4 (Right operand) */}
                           <div className={`absolute inset-0 z-30 transition-all duration-[1500ms] ease-in-out pointer-events-none ${step >= 4 ? 'translate-y-[64px] sm:translate-y-[100px] lg:translate-y-[128px] -translate-x-[40px] sm:-translate-x-[70px] lg:-translate-x-[90px]' : 'translate-y-0 translate-x-0'} ${step === 4 ? 'opacity-100' : 'opacity-0'}`}>
                              <div className={`w-full h-full flex items-center justify-center transition-opacity duration-500 ${step >= 4 ? 'opacity-0 delay-[1000ms]' : 'opacity-100'}`}>
-                                <span className="text-amber-400">5</span>
+                                <span className="text-amber-400">{constVal}</span>
                              </div>
                           </div>
                        </div>
@@ -253,7 +273,7 @@ export default function SubstitutionMachinePage() {
                        <div className="relative">
                           {/* Final morphed result fades in just as the step 4 clones fade out */}
                           <span className={`block transition-all duration-500 ${step >= 4 ? 'opacity-100 delay-[1000ms]' : 'opacity-0'} text-xl sm:text-4xl lg:text-6xl text-emerald-400 bg-emerald-900/50 px-3 py-1 sm:px-6 sm:py-2 rounded-xl lg:rounded-2xl border-2 lg:border-4 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)]`}>
-                             {2 * xVal + 5}
+                             {coeff * xVal + constVal}
                           </span>
                        </div>
                     </div>
@@ -266,8 +286,8 @@ export default function SubstitutionMachinePage() {
                 <p className="text-slate-350 text-xs lg:text-sm leading-relaxed transition-opacity duration-500">
                   {step === 0 && "Fungsi awal sebelum substitusi. Variabel x siap diganti."}
                   {step === 1 && `Substitusi: Ganti variabel x di ruas kiri dan kanan menjadi angka ${xVal}.`}
-                  {step === 2 && `Kalikan 2 dengan ${xVal} menghasilkan ${2*xVal}.`}
-                  {step === 3 && `Konstanta 5 diturunkan ke bawah karena tidak ada operasi lain di sekitarnya.`}
+                  {step === 2 && `Kalikan ${coeff} dengan ${xVal} menghasilkan ${coeff * xVal}.`}
+                  {step === 3 && `Konstanta ${constVal} diturunkan ke bawah karena tidak ada operasi lain di sekitarnya.`}
                   {step === 4 && `Jumlahkan hasil perkalian dengan konstanta untuk mendapatkan hasil akhir dari f(${xVal}).`}
                 </p>
               </div>
@@ -379,9 +399,35 @@ export default function SubstitutionMachinePage() {
         <div className={`lg:col-span-4 flex flex-col gap-3 lg:gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
           
           <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm mb-1 lg:mb-4">
-            <h3 className="text-slate-800 font-bold mb-2 lg:mb-4 text-xs lg:text-sm">Input Nilai x</h3>
+            <h3 className="text-slate-800 font-bold mb-2 lg:mb-4 text-xs lg:text-sm">Pengaturan Fungsi & Nilai x</h3>
             
             <div className="space-y-4 lg:space-y-6">
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-[10px] lg:text-xs font-bold text-indigo-500">Koefisien (a)</span>
+                     <span className="text-[10px] lg:text-xs font-bold text-slate-500">{coeff}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={coeff} disabled={step > 0}
+                     onChange={(e) => setCoeff(parseInt(e.target.value) || 0)}
+                     className="w-full accent-indigo-500 cursor-pointer disabled:opacity-50"
+                  />
+               </div>
+
+               <div>
+                  <div className="flex justify-between mb-1">
+                     <span className="text-[10px] lg:text-xs font-bold text-indigo-500">Konstanta (b)</span>
+                     <span className="text-[10px] lg:text-xs font-bold text-slate-500">{constVal}</span>
+                  </div>
+                  <input 
+                     type="range" min="-10" max="10" 
+                     value={constVal} disabled={step > 0}
+                     onChange={(e) => setConstVal(parseInt(e.target.value) || 0)}
+                     className="w-full accent-indigo-500 cursor-pointer disabled:opacity-50"
+                  />
+               </div>
+
                <div>
                   <div className="flex justify-between mb-1">
                      <span className="text-[10px] lg:text-xs font-bold text-indigo-500">Nilai x</span>
@@ -389,7 +435,7 @@ export default function SubstitutionMachinePage() {
                   </div>
                   <input 
                      type="range" min="-10" max="10" 
-                     value={xVal} onChange={(e) => setXVal(parseInt(e.target.value))}
+                     value={xVal} onChange={(e) => setXVal(parseInt(e.target.value) || 0)}
                      className="w-full accent-indigo-500 cursor-pointer"
                   />
                </div>
@@ -407,7 +453,7 @@ export default function SubstitutionMachinePage() {
               <Info className="text-indigo-400 shrink-0 mt-0.5" size={14} />
               <p className="text-[10px] lg:text-xs font-bold text-slate-400">
                 Gunakan kurung ( ) saat mengganti huruf menjadi angka agar perkaliannya tidak keliru dibaca.
-                Contoh: 2x dengan x = {xVal} menjadi 2({xVal}), bukan 2{Math.abs(xVal)}.
+                Contoh: {coeff}x dengan x = {xVal} menjadi {coeff}({xVal}), bukan {coeff}{Math.abs(xVal)}.
               </p>
             </div>
           </div>

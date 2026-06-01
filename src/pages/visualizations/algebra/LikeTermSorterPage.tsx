@@ -233,7 +233,7 @@ export default function LikeTermSorterPage() {
                               (quizStep === 0 && ans !== 'Tidak') || 
                               (quizStep === 1 && ans !== 'Ya') || 
                               (quizStep === 2 && ans !== 'Ya')
-                           ) && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'
+                           )  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'
                         }`}
                       >
                         {ans}

@@ -1,4 +1,4 @@
-import { LucideIcon, Hash, PieChart, Percent, Calculator, Grip, Scale } from "lucide-react";
+import { LucideIcon, Hash, PieChart, Percent, ArrowRightLeft, Equal, Variable, Grip, Scale } from "lucide-react";
 
 export interface DiagnosticItem {
   id: string;
@@ -40,7 +40,7 @@ export const diagnosticCatalog: DiagnosticItem[] = [
     description: "Uji pemahaman tentang suku, variabel, koefisien, tanda suku, dan suku sejenis.",
     targetConcept: "Suku dan operasi aljabar dasar",
     href: "/student/diagnostic/algebra",
-    icon: Calculator
+    icon: Variable
   },
   {
     id: "operasi-campuran",

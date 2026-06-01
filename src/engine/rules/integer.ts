@@ -1,12 +1,12 @@
 import { DiagnosticQuestion, MisconceptionRule } from "./types";
 
 export const integerCluster: DiagnosticQuestion[] = [
-  { expression: "-2 + 3", correctAnswer: 1, meta: { a: -2, b: 3, op: '+' } },
-  { expression: "-3 + 5", correctAnswer: 2, meta: { a: -3, b: 5, op: '+' } },
-  { expression: "-1 + 4", correctAnswer: 3, meta: { a: -1, b: 4, op: '+' } },
-  { expression: "-2 + (-3)", correctAnswer: -5, meta: { a: -2, b: -3, op: '+' } },
-  { expression: "4 - (-2)", correctAnswer: 6, meta: { a: 4, b: -2, op: '-' } },
-  { expression: "-3 - (-1)", correctAnswer: -2, meta: { a: -3, b: -1, op: '-' } }
+  { expression: "-2 + 3", questionText: "Berapakah hasil dari:", correctAnswer: 1, meta: { a: -2, b: 3, op: '+' } },
+  { expression: "-3 + 5", questionText: "Hitunglah hasil operasi berikut:", correctAnswer: 2, meta: { a: -3, b: 5, op: '+' } },
+  { expression: "-1 + 4", questionText: "Berapakah nilainya?", correctAnswer: 3, meta: { a: -1, b: 4, op: '+' } },
+  { expression: "-2 + (-3)", questionText: "Tentukan hasil perhitungan ini:", correctAnswer: -5, meta: { a: -2, b: -3, op: '+' } },
+  { expression: "4 - (-2)", questionText: "Berapakah hasil dari:", correctAnswer: 6, meta: { a: 4, b: -2, op: '-' } },
+  { expression: "-3 - (-1)", questionText: "Hitunglah hasil operasi berikut:", correctAnswer: -2, meta: { a: -3, b: -1, op: '-' } }
 ];
 
 export const integerRules: MisconceptionRule[] = [

@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type VisualizationStatus = 'ready' | 'development' | 'planned';
 
 export interface VisualizationItem {
@@ -12,4 +14,5 @@ export interface VisualizationItem {
   modes: string[];
   href: string;
   status: VisualizationStatus;
+  icon?: LucideIcon;
 }

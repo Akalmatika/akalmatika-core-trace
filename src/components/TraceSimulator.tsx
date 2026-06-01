@@ -95,7 +95,7 @@ export default function TraceSimulator({ onMisconceptionDetected }: TraceSimulat
         return;
       }
 
-      const result = triangulateAnswers(parsedAns);
+      const result = triangulateAnswers(parsedAns, DIAGNOSTIC_CLUSTER, ENGINE_RULES);
       setLiveResult(result);
 
       const hasTriggerableMisconception = 
@@ -124,7 +124,12 @@ export default function TraceSimulator({ onMisconceptionDetected }: TraceSimulat
         const failedEq = DIAGNOSTIC_CLUSTER[failedIdx];
 
         setTimeout(() => {
-          onMisconceptionDetected(result.detectedMisconceptionCode!, failedEq);
+          onMisconceptionDetected(result.detectedMisconceptionCode!, {
+            expression: failedEq.expression,
+            a: failedEq.meta?.a || 0,
+            b: failedEq.meta?.b || 0,
+            op: failedEq.meta?.op || '+'
+          });
         }, 2200);
       }
     }, 1200);

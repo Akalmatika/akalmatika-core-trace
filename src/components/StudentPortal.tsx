@@ -164,9 +164,9 @@ export default function StudentPortal() {
 
         const equationData = {
           expression: failedEq.expression,
-          a: failedEq.a,
-          b: failedEq.b,
-          op: failedEq.op,
+          a: failedEq.meta?.a || 0,
+          b: failedEq.meta?.b || 0,
+          op: failedEq.meta?.op || '+',
           detectedMisconceptionCode: result.detectedMisconceptionCode
         };
 
@@ -912,7 +912,7 @@ export default function StudentPortal() {
       {currentStep === "result" && failedEquation && (
         <AITutorChat 
           expression={failedEquation.expression}
-          studentAns={diagnosticResult?.submittedAnswers[DIAGNOSTIC_CLUSTER.findIndex(q => q.expression === failedEquation.expression)] || 0}
+          studentAns={Number(diagnosticResult?.submittedAnswers[DIAGNOSTIC_CLUSTER.findIndex(q => q.expression === failedEquation.expression)] || 0)}
           correctAns={failedEquation.op === '-' ? failedEquation.a - failedEquation.b : failedEquation.a + failedEquation.b}
           bugCode={failedEquation.detectedMisconceptionCode || null}
         />

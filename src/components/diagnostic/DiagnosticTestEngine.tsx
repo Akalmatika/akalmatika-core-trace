@@ -13,6 +13,8 @@ import {
 import { triangulateAnswers } from "../../engine/parser";
 import { DiagnosticQuestion, MisconceptionRule, TriangulationResult } from "../../engine/rules";
 import { getVisualizationRoute } from "../../engine/rules/mapper";
+import { BlockMath, InlineMath } from "react-katex";
+import "katex/dist/katex.min.css";
 
 interface Props {
   topicId: string;
@@ -40,21 +42,38 @@ export default function DiagnosticTestEngine({ topicId, topicTitle, topicDescrip
     setCurrentStep("quiz");
   };
 
-  const handleNextQuestion = () => {
-    const currentVal = answers[currentQuestionIdx].trim();
+  const handleBackQuestion = () => {
+    if (currentQuestionIdx > 0) {
+      setCurrentQuestionIdx(prev => prev - 1);
+    }
+  };
+
+  const handleNextQuestion = (autoSubmitAnswer?: string | number) => {
+    const answerToEvaluate = autoSubmitAnswer !== undefined ? String(autoSubmitAnswer) : answers[currentQuestionIdx];
+    const currentVal = answerToEvaluate.trim();
     if (!currentVal) {
       setInputError("Harap isi jawabanmu terlebih dahulu ya!");
       return;
     }
     
+    // Update state just in case if it's auto-submitted
+    if (autoSubmitAnswer !== undefined) {
+      handleAnswerChange(String(autoSubmitAnswer));
+    }
+
     setInputError("");
+    
     if (currentQuestionIdx < cluster.length - 1) {
-      setCurrentQuestionIdx(prev => prev + 1);
+      // Small timeout to allow UI to show button selection for a split second before navigating
+      setTimeout(() => setCurrentQuestionIdx(prev => prev + 1), 50);
     } else {
-      const parsedAns = answers.map(ans => {
-        // If it's purely numeric, convert to Number to align with legacy int check, 
-        // else keep string for algebra/fractions. Let's just keep as string if it has letters/slashes, 
-        // but try to parse if it's purely numbers.
+      // Need to use the latest answers including the current one if it was just submitted
+      const newAnswers = [...answers];
+      if (autoSubmitAnswer !== undefined) {
+        newAnswers[currentQuestionIdx] = String(autoSubmitAnswer);
+      }
+      
+      const parsedAns = newAnswers.map(ans => {
         if (/^-?\d+$/.test(ans)) return Number(ans);
         return ans;
       });
@@ -139,46 +158,82 @@ export default function DiagnosticTestEngine({ topicId, topicTitle, topicDescrip
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-900 to-slate-950 p-8 rounded-2xl text-center border border-indigo-950 relative overflow-hidden shadow-inner">
+          <div className="bg-gradient-to-br from-indigo-900 to-slate-950 p-6 md:p-8 rounded-2xl text-center border border-indigo-950 relative overflow-hidden shadow-inner">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:16px_16px] opacity-10" />
-            <span className="text-[10px] tracking-widest font-mono text-indigo-400 uppercase font-bold block mb-1">Misi Kognitif</span>
-            <h3 className="font-mono text-3xl sm:text-4xl md:text-5xl font-black text-white select-none">
-              {activeQuestion.expression}
-            </h3>
+            <span className="text-[10px] tracking-widest font-mono text-indigo-400 uppercase font-bold block mb-2">Misi Kognitif</span>
+            <div className="font-mono text-2xl md:text-3xl text-white select-none py-2">
+              <BlockMath math={activeQuestion.expression} />
+            </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-xs font-semibold text-slate-700 block">
-              Berapakah hasil akhir perhitungan di atas?
+          <div className="space-y-4">
+            <label className="text-xs font-semibold text-slate-700 block text-center md:text-left">
+              {activeQuestion.questionText || "Berapakah hasil akhir perhitungan di atas?"}
             </label>
-            <div className="relative">
-              <input
-                type="text"
-                value={answers[currentQuestionIdx]}
-                onChange={(e) => handleAnswerChange(e.target.value)}
-                placeholder="Ketik jawabanmu..."
-                className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-2xl px-4 py-3.5 text-base font-mono font-bold text-slate-800 transition-all shadow-2xs"
-                autoFocus
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleNextQuestion();
-                }}
-              />
-            </div>
+            
+            {activeQuestion.options && activeQuestion.options.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {activeQuestion.options.map((opt, idx) => {
+                  const isSelected = answers[currentQuestionIdx] === String(opt);
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => handleNextQuestion(opt)}
+                      className={`relative flex items-center justify-center p-4 rounded-xl border-2 font-mono text-lg transition-all active:scale-[0.98] cursor-pointer ${
+                        isSelected 
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-900 shadow-sm"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:bg-slate-50"
+                      }`}
+                    >
+                      <InlineMath math={String(opt)} />
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="relative">
+                <input
+                  type="text"
+                  value={answers[currentQuestionIdx]}
+                  onChange={(e) => handleAnswerChange(e.target.value)}
+                  placeholder="Ketik jawabanmu..."
+                  className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-2xl px-4 py-3.5 text-base font-mono font-bold text-slate-800 transition-all shadow-2xs"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleNextQuestion();
+                  }}
+                />
+              </div>
+            )}
+            
             {inputError && (
-              <div className="flex items-center gap-1.5 text-rose-650 text-xs font-semibold animate-fadeIn">
+              <div className="flex items-center gap-1.5 text-rose-650 text-xs font-semibold animate-fadeIn justify-center md:justify-start">
                 <AlertCircle size={14} className="shrink-0" />
                 <span>{inputError}</span>
               </div>
             )}
           </div>
 
-          <button
-            onClick={handleNextQuestion}
-            className="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-600 active:translate-y-0.5 text-white font-sans font-bold px-5 py-3.5 rounded-2xl text-sm transition-all shadow-xs cursor-pointer"
-          >
-            <span>{currentQuestionIdx === cluster.length - 1 ? "Kirim Hasil Analisis" : "Soal Berikutnya"}</span>
-            <ArrowRight size={16} />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            {currentQuestionIdx > 0 && (
+              <button
+                onClick={handleBackQuestion}
+                className="w-full sm:w-1/3 inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 font-sans font-bold px-5 py-3.5 rounded-2xl text-sm transition-all shadow-2xs cursor-pointer"
+              >
+                <span>Kembali</span>
+              </button>
+            )}
+            
+            {(!activeQuestion.options || activeQuestion.options.length === 0) && (
+              <button
+                onClick={() => handleNextQuestion()}
+                className={`w-full ${currentQuestionIdx > 0 ? 'sm:w-2/3' : 'sm:w-full'} inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-600 active:translate-y-0.5 text-white font-sans font-bold px-5 py-3.5 rounded-2xl text-sm transition-all shadow-xs cursor-pointer`}
+              >
+                <span>{currentQuestionIdx === cluster.length - 1 ? "Kirim Hasil Analisis" : "Soal Berikutnya"}</span>
+                <ArrowRight size={16} />
+              </button>
+            )}
+          </div>
         </div>
       )}
 

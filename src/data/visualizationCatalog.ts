@@ -1,4 +1,10 @@
 import { VisualizationItem } from "../types/visualization";
+import { 
+  ThermometerSnowflake, MoveHorizontal, 
+  LayoutGrid, Combine, Minimize2, ArrowUpDown, PlusSquare, PlusCircle, 
+  Grid3x3, Percent, 
+  Tags, Tag, Layers, Boxes, Settings2, Parentheses, Replace, Languages 
+} from "lucide-react";
 
 export const integerVisualizations: VisualizationItem[] = [
   {
@@ -12,7 +18,8 @@ export const integerVisualizations: VisualizationItem[] = [
     representation: "Manipulatif Koin (Es-Api)",
     modes: ["Netralisasi", "Tambah", "Kurang"],
     href: "/student/visualizations/integer/zero-pair",
-    status: "ready"
+    status: "ready",
+    icon: ThermometerSnowflake
   },
   {
     id: "int-number-line",
@@ -25,7 +32,8 @@ export const integerVisualizations: VisualizationItem[] = [
     representation: "Garis Bilangan Vektor",
     modes: ["Gerak Positif", "Gerak Negatif"],
     href: "/student/visualizations/integer/number-line",
-    status: "ready"
+    status: "ready",
+    icon: MoveHorizontal
   }
 ];
 
@@ -41,7 +49,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Area model / bar model.",
     modes: ["Bagi keseluruhan", "Arsir bagian", "Baca pecahan", "Cek pembilang dan penyebut"],
     href: "/student/visualizations/fractions/area-model",
-    status: "ready"
+    status: "ready",
+    icon: LayoutGrid
   },
   {
     id: "frac-equivalent",
@@ -54,7 +63,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Area model transformasional.",
     modes: ["Split bagian", "Merge bagian", "Bandingkan nilai", "Tampilkan bentuk senilai"],
     href: "/student/visualizations/fractions/equivalent-fractions",
-    status: "ready"
+    status: "ready",
+    icon: Combine
   },
   {
     id: "frac-simplify",
@@ -67,7 +77,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Transformasi simbolik + area model.",
     modes: ["Cari faktor sama", "Bagi pembilang dan penyebut", "Cek nilai tetap", "Bandingkan sebelum dan sesudah"],
     href: "/student/visualizations/fractions/simplify",
-    status: "ready"
+    status: "ready",
+    icon: Minimize2
   },
   {
     id: "frac-compare",
@@ -80,7 +91,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Bar model / area model.",
     modes: ["Bandingkan penyebut sama", "Bandingkan pembilang sama", "Bandingkan penyebut berbeda", "Urutkan pecahan"],
     href: "/student/visualizations/fractions/compare-order",
-    status: "ready"
+    status: "ready",
+    icon: ArrowUpDown
   },
   {
     id: "frac-add-same",
@@ -93,7 +105,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Bar model + simbolik.",
     modes: ["Tambah penyebut sama", "Kurang penyebut sama", "Hasil nol", "Sederhanakan jika perlu"],
     href: "/student/visualizations/fractions/same-denominator",
-    status: "ready"
+    status: "ready",
+    icon: PlusSquare
   },
   {
     id: "frac-add-diff",
@@ -106,7 +119,8 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Transformasi pecahan senilai + bar model.",
     modes: ["Samakan penyebut", "Tambah setelah setara", "Kurang setelah setara", "Bandingkan sebelum dan sesudah"],
     href: "/student/visualizations/fractions/different-denominator",
-    status: "ready"
+    status: "ready",
+    icon: PlusCircle
   }
 ];
 
@@ -122,7 +136,8 @@ export const percentVisualizations: VisualizationItem[] = [
     representation: "Grid 10x10.",
     modes: ["Arsir persen", "Baca sebagai x/100", "Baca sebagai x%", "Bandingkan 25%, 50%, 75%, 100%"],
     href: "/student/visualizations/percent/grid-100",
-    status: "ready"
+    status: "ready",
+    icon: Grid3x3
   },
   {
     id: "perc-fraction-to-percent",
@@ -135,7 +150,8 @@ export const percentVisualizations: VisualizationItem[] = [
     representation: "Transformasi pecahan → /100 → persen.",
     modes: ["Ubah penyebut ke 100", "Baca persen", "Bandingkan pecahan & persen", "Quick presets"],
     href: "/student/visualizations/percent/fraction-to-percent",
-    status: "ready"
+    status: "ready",
+    icon: Percent
   }
 ];
 
@@ -151,7 +167,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Kartu/label visual.",
     modes: ["Tandai suku", "Tandai variabel", "Tandai koefisien", "Tandai konstanta"],
     href: "/student/visualizations/algebra/term-cards",
-    status: "ready"
+    status: "ready",
+    icon: Tags
   },
   {
     id: "alg-term-sign",
@@ -164,7 +181,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Chip/kartu bertanda.",
     modes: ["Pisahkan suku", "Bawa tanda", "Cek tanda positif implisit", "Kelompokkan dengan tanda"],
     href: "/student/visualizations/algebra/sign-belongs-to-term",
-    status: "ready"
+    status: "ready",
+    icon: Tag
   },
   {
     id: "alg-like-term-sorter",
@@ -177,7 +195,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Sorting bins.",
     modes: ["Sortir suku x", "Sortir suku x²", "Sortir konstanta", "Sortir campuran", "Cek tidak sejenis"],
     href: "/student/visualizations/algebra/like-term-sorter",
-    status: "ready"
+    status: "ready",
+    icon: Layers
   },
   {
     id: "alg-group-like-terms",
@@ -190,7 +209,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Grouping bins + highlight pairing.",
     modes: ["Kelompok x", "Kelompok konstanta", "Kelompok multi variabel", "Cek tanda"],
     href: "/student/visualizations/algebra/group-like-terms",
-    status: "ready"
+    status: "ready",
+    icon: Boxes
   },
   {
     id: "alg-like-term-operations",
@@ -203,7 +223,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Langkah simbolik + grouping visual.",
     modes: ["Tambah koefisien positif", "Tambah koefisien negatif", "Pengurangan", "Hasil nol", "Suku tunggal"],
     href: "/student/visualizations/algebra/like-term-operations",
-    status: "ready"
+    status: "ready",
+    icon: Settings2
   },
   {
     id: "alg-expand-brackets",
@@ -216,7 +237,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Distribusi visual.",
     modes: ["Kurung positif", "Kurung negatif", "Dua blok kurung", "Cek tanda tiap suku"],
     href: "/student/visualizations/algebra/expand-brackets",
-    status: "ready"
+    status: "ready",
+    icon: Parentheses
   },
   {
     id: "alg-substitution",
@@ -229,7 +251,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Slot input → ekspresi → hasil.",
     modes: ["Substitusi positif", "Substitusi negatif", "Operasi campuran", "Dua variabel"],
     href: "/student/visualizations/algebra/substitution-machine",
-    status: "ready"
+    status: "ready",
+    icon: Replace
   },
   {
     id: "alg-word-to-expression",
@@ -242,7 +265,8 @@ export const algebraVisualizations: VisualizationItem[] = [
     representation: "Word blocks → symbolic expression.",
     modes: ["Jumlah", "Selisih", "Dua kali", "Lebih dari", "Kurang dari", "Campuran"],
     href: "/student/visualizations/algebra/word-to-expression",
-    status: "ready"
+    status: "ready",
+    icon: Languages
   }
 ];
 

@@ -1,10 +1,34 @@
 import { DiagnosticQuestion, MisconceptionRule } from "./types";
 
 export const mixedOperationsCluster: DiagnosticQuestion[] = [
-  { expression: "2 + 3 × 4", correctAnswer: 14, meta: { type: "precedence", a: 2, op1: '+', b: 3, op2: '*', c: 4 } },
-  { expression: "10 - 4 ÷ 2", correctAnswer: 8, meta: { type: "precedence", a: 10, op1: '-', b: 4, op2: '/', c: 2 } },
-  { expression: "(2 + 3) × 4", correctAnswer: 20, meta: { type: "parentheses", a: 2, op1: '+', b: 3, op2: '*', c: 4 } },
-  { expression: "5 × 2 + 3", correctAnswer: 13, meta: { type: "precedence_right", a: 5, op1: '*', b: 2, op2: '+', c: 3 } }
+  { 
+    expression: "2 + 3 \\times 4", 
+    questionText: "Berapakah hasil dari operasi campuran berikut?",
+    correctAnswer: 14, 
+    options: [14, 20, 10, 24],
+    meta: { type: "precedence", a: 2, op1: '+', b: 3, op2: '*', c: 4 } 
+  },
+  { 
+    expression: "10 - 4 \\div 2", 
+    questionText: "Hitunglah hasil dari:",
+    correctAnswer: 8, 
+    options: [8, 3, 12, 6],
+    meta: { type: "precedence", a: 10, op1: '-', b: 4, op2: '/', c: 2 } 
+  },
+  { 
+    expression: "(2 + 3) \\times 4", 
+    questionText: "Perhatikan tanda kurung, berapakah nilainya?",
+    correctAnswer: 20, 
+    options: [20, 14, 9, 24],
+    meta: { type: "parentheses", a: 2, op1: '+', b: 3, op2: '*', c: 4 } 
+  },
+  { 
+    expression: "5 \\times 2 + 3", 
+    questionText: "Tentukan hasil akhir dari:",
+    correctAnswer: 13, 
+    options: [13, 25, 10, 15],
+    meta: { type: "precedence_right", a: 5, op1: '*', b: 2, op2: '+', c: 3 } 
+  }
 ];
 
 export const mixedOperationsRules: MisconceptionRule[] = [

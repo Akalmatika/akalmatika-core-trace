@@ -17,7 +17,7 @@ function FractionCard({ item }: { item: VisualizationItem }) {
       >
         <div>
           <div className="flex items-center gap-1.5 mb-1.5">
-            <Box size={14} className="text-indigo-500" />
+            {item.icon ? <item.icon size={14} className="text-indigo-500" /> : <Box size={14} className="text-indigo-500" />}
             <span className="text-[10px] font-bold text-indigo-600 tracking-wide uppercase">{item.materialTopic}</span>
           </div>
           <h3 className="font-black text-slate-900 text-lg md:text-xl leading-tight pr-4">{item.title}</h3>

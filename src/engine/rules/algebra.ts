@@ -1,10 +1,34 @@
 import { DiagnosticQuestion, MisconceptionRule } from "./types";
 
 export const algebraCluster: DiagnosticQuestion[] = [
-  { expression: "2x + 3x", correctAnswer: "5x", meta: { type: "simplify", coeff1: 2, var1: 'x', coeff2: 3, var2: 'x' } },
-  { expression: "4y - y", correctAnswer: "3y", meta: { type: "simplify", coeff1: 4, var1: 'y', coeff2: -1, var2: 'y' } },
-  { expression: "2x + 3y", correctAnswer: "2x+3y", meta: { type: "simplify", coeff1: 2, var1: 'x', coeff2: 3, var2: 'y' } },
-  { expression: "5x - 2x", correctAnswer: "3x", meta: { type: "simplify", coeff1: 5, var1: 'x', coeff2: -2, var2: 'x' } }
+  { 
+    expression: "2x + 3x", 
+    questionText: "Berapakah hasil penjumlahan suku sejenis berikut?",
+    correctAnswer: "5x", 
+    options: ["5x", "6x^2", "5", "5x^2"],
+    meta: { type: "simplify", coeff1: 2, var1: 'x', coeff2: 3, var2: 'x' } 
+  },
+  { 
+    expression: "4y - y", 
+    questionText: "Sederhanakan bentuk aljabar di bawah ini:",
+    correctAnswer: "3y", 
+    options: ["3y", "4", "4y", "3"],
+    meta: { type: "simplify", coeff1: 4, var1: 'y', coeff2: -1, var2: 'y' } 
+  },
+  { 
+    expression: "2x + 3y", 
+    questionText: "Manakah bentuk yang paling sederhana dari ekspresi ini?",
+    correctAnswer: "2x+3y", 
+    options: ["2x+3y", "5xy", "5x", "5y"],
+    meta: { type: "simplify", coeff1: 2, var1: 'x', coeff2: 3, var2: 'y' } 
+  },
+  { 
+    expression: "5x - 2x", 
+    questionText: "Sederhanakan ekspresi berikut:",
+    correctAnswer: "3x", 
+    options: ["3x", "3", "7x", "10x^2"],
+    meta: { type: "simplify", coeff1: 5, var1: 'x', coeff2: -2, var2: 'x' } 
+  }
 ];
 
 export const algebraRules: MisconceptionRule[] = [

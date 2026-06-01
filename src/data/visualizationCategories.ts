@@ -1,4 +1,4 @@
-import { LucideIcon, Hash, PieChart, Percent, Calculator } from "lucide-react";
+import { LucideIcon, Hash, PieChart, Percent, ArrowRightLeft, Equal, Variable } from "lucide-react";
 
 export interface VisualizationCategory {
   id: string;
@@ -45,6 +45,6 @@ export const visualizationCategories: VisualizationCategory[] = [
     visualCount: 8,
     previewTags: ["Suku Aljabar", "Suku Sejenis", "Substitusi"],
     href: "/student/visualizations/algebra",
-    icon: Calculator
+    icon: Variable
   }
 ];

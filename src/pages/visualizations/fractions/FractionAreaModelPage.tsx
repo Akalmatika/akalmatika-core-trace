@@ -325,7 +325,7 @@ export default function FractionAreaModelPage() {
                   <button 
                     key={idx}
                     onClick={() => handleEvaluate(n === 3 && d === 4)} 
-                    className={`w-24 h-24 rounded-2xl border-2 font-bold text-2xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && n === 3 ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && n !== 3 && evalResult !== 'none' ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                    className={`w-24 h-24 rounded-2xl border-2 font-bold text-2xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && n === 3 ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && n !== 3  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
                   >
                     <InlineMath math={`\\frac{${n}}{${d}}`} />
                   </button>
@@ -362,7 +362,7 @@ export default function FractionAreaModelPage() {
             </div>
           )}
 
-          {quizStep === 0 && evalResult !== 'none' && (
+          {quizStep === 0  && (
             <div className="mt-12 bg-slate-50 border border-slate-200 p-4 rounded-2xl max-w-2xl w-full flex items-start gap-4">
               <Info className="text-slate-400 shrink-0 mt-0.5" />
               <p className="text-xs text-slate-500 leading-relaxed">

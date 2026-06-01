@@ -5,8 +5,10 @@
 
 export interface DiagnosticQuestion {
   id?: string;
+  questionText?: string;
   expression: string;
   correctAnswer: number | string;
+  options?: (number | string)[]; // Multiple choice options (LaTeX strings or numbers)
   // Allow for arbitrary metadata (like a, b, op) to assist prediction logic
   meta?: Record<string, any>;
 }

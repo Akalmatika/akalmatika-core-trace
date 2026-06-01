@@ -27,6 +27,9 @@ import WordToExpressionPage from "./pages/visualizations/algebra/WordToExpressio
 import ZeroPairVisualizationPage from "./pages/ZeroPairVisualizationPage";
 import NumberLineVisualizationPage from "./pages/NumberLineVisualizationPage";
 import PlaceholderVisualizationPage from "./pages/PlaceholderVisualizationPage";
+import MixedOperationsVisualizationPage from "./pages/MixedOperationsVisualizationPage";
+import PlsvVisualizationPage from "./pages/PlsvVisualizationPage";
+
 
 export default function App() {
   return (
@@ -69,7 +72,10 @@ export default function App() {
           <Route path="student/visualizations/algebra/expand-brackets" element={<ExpandBracketsPage />} />
           <Route path="student/visualizations/algebra/substitution-machine" element={<SubstitutionMachinePage />} />
           <Route path="student/visualizations/algebra/word-to-expression" element={<WordToExpressionPage />} />
+          <Route path="student/visualizations/operasi-campuran" element={<MixedOperationsVisualizationPage />} />
+          <Route path="student/visualizations/plsv" element={<PlsvVisualizationPage />} />
           <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />
+
           
           {/* Fallback route - could be a 404 page */}
           <Route path="*" element={

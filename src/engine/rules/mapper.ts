@@ -32,6 +32,24 @@ export function getVisualizationRoute(topicId: string, misconceptionCode: string
     return '/student/visualizations/algebra/term-cards'; // Shows explicit '1'
   }
 
-  // Mixed Ops / PLSV (currently using placeholders)
+  // Mixed Operations
+  if (misconceptionCode === 'MC-PEMDAS-LEFT-RIGHT') {
+    return '/student/visualizations/algebra/order-of-operations';
+  }
+
+  // PLSV
+  if (misconceptionCode === 'MC-PLSV-INV-OP-CONFUSION') {
+    return '/student/visualizations/algebra/plsv-balance';
+  }
+
+  // Fallbacks
+  if (topicId === 'mixed-operations') {
+    return '/student/visualizations/operasi-campuran';
+  }
+  if (topicId === 'plsv') {
+    return '/student/visualizations/plsv';
+  }
+
   return `/student/visualizations/${topicId}`;
 }
+

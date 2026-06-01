@@ -3,7 +3,8 @@ import {
   ThermometerSnowflake, MoveHorizontal, 
   LayoutGrid, Combine, Minimize2, ArrowUpDown, PlusSquare, PlusCircle, 
   Grid3x3, Percent, 
-  Tags, Tag, Layers, Boxes, Settings2, Parentheses, Replace, Languages 
+  Tags, Tag, Layers, Boxes, Settings2, Parentheses, Replace, Languages,
+  Scale, Grip
 } from "lucide-react";
 
 export const integerVisualizations: VisualizationItem[] = [
@@ -121,6 +122,20 @@ export const fractionVisualizations: VisualizationItem[] = [
     href: "/student/visualizations/fractions/different-denominator",
     status: "ready",
     icon: PlusCircle
+  },
+  {
+    id: "frac-multiplier",
+    categoryId: "fractions",
+    title: "Arsir Silang Perkalian & Pembagian",
+    materialTopic: "Perkalian dan pembagian pecahan",
+    description: "Visualisasikan perkalian pecahan sebagai perpotongan arsiran dua area (arsir silang) dan pembagian pecahan sebagai pembagian area yang setara.",
+    strengthens: "Perkalian pembilang dengan pembilang, penyebut dengan penyebut, konsep pembagian pecahan sebagai perkalian dengan kebalikan.",
+    misconceptionTarget: "Siswa mengira perkalian pecahan menghasilkan nilai yang selalu lebih besar, bingung mengapa pembagian pecahan diubah menjadi perkalian terbalik.",
+    representation: "Grid Arsir Dua Dimensi Transparan",
+    modes: ["Arsir Silang Perkalian", "Bagi Luas Area", "Langkah Penyederhanaan"],
+    href: "/student/visualizations/fractions/cross-grid-multiplier",
+    status: "planned",
+    icon: Grid3x3
   }
 ];
 
@@ -152,6 +167,20 @@ export const percentVisualizations: VisualizationItem[] = [
     href: "/student/visualizations/percent/fraction-to-percent",
     status: "ready",
     icon: Percent
+  },
+  {
+    id: "perc-discount",
+    categoryId: "percent",
+    title: "Simulasi Diskon & Pajak (Keranjang Belanja)",
+    materialTopic: "Aplikasi persen dalam kehidupan sehari-hari",
+    description: "Simulasikan keranjang belanja interaktif untuk melihat bagaimana diskon mengurangi harga barang dan pajak menambahkannya.",
+    strengthens: "Hubungan persen dengan nilai nyata, perhitungan diskon bertingkat, penambahan pajak, persentase perubahan harga.",
+    misconceptionTarget: "Siswa mengira diskon bertingkat (misal 50% + 20%) sama dengan diskon langsung 70%, salah menempatkan basis harga saat menghitung pajak.",
+    representation: "Struk & Keranjang Belanja Dinamis",
+    modes: ["Diskon Tunggal", "Diskon Bertingkat", "Pajak Pertambahan Nilai", "Cek Selisih Harga"],
+    href: "/student/visualizations/percent/discount-simulator",
+    status: "planned",
+    icon: Tags
   }
 ];
 
@@ -270,9 +299,45 @@ export const algebraVisualizations: VisualizationItem[] = [
   }
 ];
 
+export const mixedOperationsVisualizations: VisualizationItem[] = [
+  {
+    id: "alg-mixed-operations",
+    categoryId: "operasi-campuran",
+    title: "Visualizer Urutan Operasi (PEMDAS)",
+    materialTopic: "Urutan kekuatan operasi matematika",
+    description: "Lihat visualisasi ekspresi matematika sebagai pohon hierarki untuk memahami operasi mana yang memiliki kekuatan lebih tinggi dan harus dieksekusi lebih dulu.",
+    strengthens: "Prioritas operasi (Kurung, Kali/Bagi, Tambah/Kurang), pembacaan ekspresi non-linear, peran tanda kurung.",
+    misconceptionTarget: "Siswa melakukan perhitungan strictly dari kiri ke kanan (menjawab 2 + 3 x 4 = 20), bingung kapan tanda kurung wajib didahulukan.",
+    representation: "Pohon Ekspresi Interaktif & Blok Kekuatan",
+    modes: ["Hierarki Ekspresi", "Langkah Penyusutan", "Peran Tanda Kurung", "Game Urutan Cepat"],
+    href: "/student/visualizations/algebra/order-of-operations",
+    status: "planned",
+    icon: Grip
+  }
+];
+
+export const plsvVisualizations: VisualizationItem[] = [
+  {
+    id: "alg-plsv-balance",
+    categoryId: "plsv",
+    title: "Neraca Timbangan Persamaan (PLSV)",
+    materialTopic: "Keseimbangan persamaan linear satu variabel",
+    description: "Selesaikan persamaan dengan menjaga keseimbangan timbangan kiri dan kanan menggunakan operasi invers.",
+    strengthens: "Makna tanda sama dengan (=) sebagai keseimbangan, operasi yang sama di kedua ruas, isolasi variabel x.",
+    misconceptionTarget: "Siswa bingung arah pemindahan tanda, mengira tanda sama dengan hanya berarti hasil akhir, salah melakukan operasi invers (misal x + 3 = 8 diselesaikan dengan x = 8 + 3).",
+    representation: "Neraca Timbangan Fisika 2D",
+    modes: ["Setarakan Timbangan", "Operasi Dua Ruas", "Isolasi x", "Langkah Invers Visual"],
+    href: "/student/visualizations/algebra/plsv-balance",
+    status: "planned",
+    icon: Scale
+  }
+];
+
 export const allVisualizations: VisualizationItem[] = [
   ...integerVisualizations,
   ...fractionVisualizations,
   ...percentVisualizations,
-  ...algebraVisualizations
+  ...algebraVisualizations,
+  ...mixedOperationsVisualizations,
+  ...plsvVisualizations
 ];

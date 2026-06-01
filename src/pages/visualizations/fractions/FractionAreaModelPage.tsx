@@ -72,10 +72,10 @@ export default function FractionAreaModelPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-3 lg:py-6 animate-fadeIn pb-12 lg:pb-6 px-4">
+    <div className="max-w-4xl mx-auto py-2.5 lg:py-6 animate-fadeIn pb-4 lg:pb-6 px-4">
       
       {/* Header & Navigation */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 lg:mb-8 gap-3 lg:gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 lg:mb-8 gap-2 lg:gap-4">
         <div>
           <Link to="/student/visualizations/fractions" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 font-bold text-xs lg:text-sm mb-1 lg:mb-3 transition-colors">
             <ArrowLeft size={14} className="lg:hidden" />
@@ -109,11 +109,11 @@ export default function FractionAreaModelPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-8">
           
           {/* Main Visualizer Area */}
-          <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-4 lg:p-12 shadow-sm min-h-[160px] lg:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-2.5 lg:p-12 shadow-sm min-h-[120px] lg:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-50/50 to-transparent pointer-events-none" />
             
-            <div className="flex flex-row sm:flex-col items-center justify-center gap-6 lg:gap-12 w-full max-w-lg relative z-10">
+            <div className="flex flex-row sm:flex-col items-center justify-center gap-3 lg:gap-12 w-full max-w-lg relative z-10">
               {/* Real-time Fraction Display */}
               <div className="shrink-0">
                 <div className="flex flex-col items-center justify-center text-4xl lg:text-7xl font-black font-mono text-slate-800 w-16 lg:w-24">
@@ -126,9 +126,9 @@ export default function FractionAreaModelPage() {
                   </div>
                 </div>
               </div>
-
+ 
               {/* The Area Model Canvas */}
-              <div className="flex-1 h-20 lg:h-40 flex overflow-hidden border-2 border-slate-300 shadow-inner bg-slate-50 rounded-lg">
+              <div className="flex-1 h-12 lg:h-40 flex overflow-hidden border-2 border-slate-300 shadow-inner bg-slate-50 rounded-lg">
                 {selectedPieces.map((isSelected, idx) => (
                   <div 
                     key={idx}
@@ -153,71 +153,73 @@ export default function FractionAreaModelPage() {
           {/* Controls Area */}
           <div className="lg:col-span-4 flex flex-col gap-3 lg:gap-4">
 
-            <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+            <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
               <h3 className="text-sm font-bold text-slate-700 mb-2 lg:mb-4 flex items-center gap-2">
                 Tentukan Pecahan
               </h3>
               
-              <div className="mb-2.5 lg:mb-4">
-                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
-                <div className="flex gap-1.5 lg:gap-2 flex-wrap">
-                  {[[1,2], [3,4], [2,5], [5,8], [7,10]].map(([n, d]) => (
-                    <button
-                      key={`${n}-${d}`}
-                      onClick={() => {
-                        setDenominator(d);
-                        setTimeout(() => {
-                          setSelectedPieces(Array(d).fill(false).map((_, i) => i < n));
-                        }, 50);
-                      }}
-                      className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
-                    >
-                      <InlineMath math={`\\frac{${n}}{${d}}`} />
-                    </button>
-                  ))}
+              <div className="grid grid-cols-1 min-[350px]:grid-cols-2 gap-3 items-start lg:block">
+                <div className="mb-0 lg:mb-4">
+                  <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
+                  <div className="flex gap-1.5 lg:gap-2 flex-wrap">
+                    {[[1,2], [3,4], [2,5], [5,8], [7,10]].map(([n, d]) => (
+                      <button
+                        key={`${n}-${d}`}
+                        onClick={() => {
+                          setDenominator(d);
+                          setTimeout(() => {
+                            setSelectedPieces(Array(d).fill(false).map((_, i) => i < n));
+                          }, 50);
+                        }}
+                        className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
+                      >
+                        <InlineMath math={`\\frac{${n}}{${d}}`} />
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-
-              <div>
-                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Buat Soal Sendiri (Otomatis Arsir):</p>
-                <div className="flex items-center gap-2 bg-slate-50 p-2 lg:p-3 rounded-xl border border-slate-100 w-max">
-                   <div className="flex flex-col items-center gap-1">
-                     <input 
-                       type="number" min="1" max={denominator} 
-                       value={numerator}
-                       onChange={(e) => {
-                         const val = parseInt(e.target.value) || 1;
-                         const n = Math.min(val, denominator);
-                         setSelectedPieces(Array(denominator).fill(false).map((_, i) => i < n));
-                       }}
-                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                     />
-                     <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
-                     <input 
-                       type="number" min="1" max="10" 
-                       value={denominator}
-                       onChange={(e) => {
-                         const val = parseInt(e.target.value) || 1;
-                         const d = Math.max(val, 1);
-                         setDenominator(d);
-                         setTimeout(() => {
-                           setSelectedPieces(Array(d).fill(false).map((_, i) => i < numerator));
-                         }, 50);
-                       }}
-                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                     />
-                   </div>
+ 
+                <div>
+                  <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Buat Soal Sendiri:</p>
+                  <div className="flex items-center gap-2 bg-slate-50 p-1.5 lg:p-3 rounded-xl border border-slate-100 w-max">
+                     <div className="flex flex-col items-center gap-1">
+                       <input 
+                         type="number" min="1" max={denominator} 
+                         value={numerator}
+                         onChange={(e) => {
+                           const val = parseInt(e.target.value) || 1;
+                           const n = Math.min(val, denominator);
+                           setSelectedPieces(Array(denominator).fill(false).map((_, i) => i < n));
+                         }}
+                         className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                       />
+                       <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                       <input 
+                         type="number" min="1" max="10" 
+                         value={denominator}
+                         onChange={(e) => {
+                           const val = parseInt(e.target.value) || 1;
+                           const d = Math.max(val, 1);
+                           setDenominator(d);
+                           setTimeout(() => {
+                             setSelectedPieces(Array(d).fill(false).map((_, i) => i < numerator));
+                           }, 50);
+                         }}
+                         className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                       />
+                     </div>
+                  </div>
                 </div>
               </div>
             </div>
             
             {/* Denominator Control */}
-            <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+            <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
               <h3 className="text-sm font-bold text-slate-700 mb-2 lg:mb-4 flex items-center gap-2">
                 Bagi Keseluruhan (Penyebut)
               </h3>
               
-              <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl lg:rounded-2xl p-1.5 lg:p-2 mb-2 lg:mb-4">
+              <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl lg:rounded-2xl p-1 lg:p-2 mb-1.5 lg:mb-4">
                 <button 
                   onClick={decreaseDenominator}
                   disabled={denominator <= 1}
@@ -242,9 +244,9 @@ export default function FractionAreaModelPage() {
                 Penyebut menentukan ke dalam berapa bagian <strong>SAMA BESAR</strong> satu balok keseluruhan dipotong.
               </p>
             </div>
-
+ 
             {/* Numerator Instruction */}
-            <div className="bg-indigo-50 border border-indigo-100 p-3 lg:p-6 rounded-2xl lg:rounded-3xl">
+            <div className="bg-indigo-50 border border-indigo-100 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl">
               <h3 className="text-sm font-bold text-indigo-800 mb-1 lg:mb-2 flex items-center gap-2">
                 Arsir Bagian (Pembilang)
               </h3>

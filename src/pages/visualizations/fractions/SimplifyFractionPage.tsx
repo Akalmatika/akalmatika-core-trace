@@ -56,8 +56,8 @@ export default function SimplifyFractionPage() {
   }, [baseNumerator, baseDenominator]);
 
   return (
-    <div className="max-w-4xl mx-auto py-3 lg:py-6 animate-fadeIn pb-12 lg:pb-6 px-4">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 lg:mb-8 gap-3 lg:gap-4">
+    <div className="max-w-4xl mx-auto py-2.5 lg:py-6 animate-fadeIn pb-4 lg:pb-6 px-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 lg:mb-8 gap-2 lg:gap-4">
         <div>
           <Link to="/student/visualizations/fractions" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 font-bold text-xs lg:text-sm mb-1 lg:mb-3 transition-colors">
             <ArrowLeft size={14} className="lg:hidden" />
@@ -92,10 +92,10 @@ export default function SimplifyFractionPage() {
         {/* Main Canvas */}
         <div className="lg:col-span-8">
           {mode === 'explore' && (
-            <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-4 lg:p-12 shadow-sm min-h-[160px] lg:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-2.5 lg:p-12 shadow-sm min-h-[120px] lg:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-indigo-50/50 to-transparent pointer-events-none" />
           
-          <div className="flex items-center gap-4 lg:gap-12 mb-4 lg:mb-12 relative z-10 w-full justify-center">
+          <div className="flex items-center gap-2 lg:gap-12 mb-3 lg:mb-12 relative z-10 w-full justify-center">
             {/* Original Fraction */}
             <div className="flex flex-col items-center text-2xl lg:text-4xl font-black font-mono text-slate-400 w-12 lg:w-16">
               <div>{baseNumerator}</div>
@@ -118,7 +118,7 @@ export default function SimplifyFractionPage() {
           </div>
 
           {/* Area Model */}
-          <div className="w-full max-w-lg h-20 lg:h-40 relative z-10 bg-slate-50 border-2 border-slate-300 overflow-hidden shadow-inner rounded-lg">
+          <div className="w-full max-w-lg h-12 lg:h-40 relative z-10 bg-slate-50 border-2 border-slate-300 overflow-hidden shadow-inner rounded-lg">
              
              {/* The Colored Area */}
              <div className="absolute top-0 left-0 w-full h-full flex">
@@ -146,7 +146,7 @@ export default function SimplifyFractionPage() {
 
           </div>
 
-          <div className="mt-4 lg:mt-8 text-center text-slate-500 font-medium bg-white/80 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl border border-slate-100 shadow-sm relative z-10 text-[10px] lg:text-sm">
+          <div className="mt-2.5 lg:mt-8 text-center text-slate-500 font-medium bg-white/80 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl border border-slate-100 shadow-sm relative z-10 text-[10px] lg:text-sm">
             Menyederhanakan = <strong>Menggabungkan (Merge)</strong> potongan kecil menjadi potongan besar.
           </div>
         </div>
@@ -226,62 +226,64 @@ export default function SimplifyFractionPage() {
 
         {/* Controls */}
         <div className={`lg:col-span-4 flex flex-col gap-3 lg:gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
-          <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+          <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-2 lg:mb-4 flex items-center gap-2">
               Tentukan Pecahan Dasar
             </h3>
             
-            <div className="mb-2.5 lg:mb-4">
-              <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
-              <div className="flex gap-1.5 lg:gap-2 flex-wrap">
-                {[[6,12], [4,8], [9,12], [10,15], [8,16]].map(([n, d]) => (
-                  <button
-                    key={`${n}-${d}`}
-                    onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setDivisor(1); }}
-                    className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
-                  >
-                    <InlineMath math={`\\frac{${n}}{${d}}`} />
-                  </button>
-                ))}
+            <div className="grid grid-cols-1 min-[350px]:grid-cols-2 gap-3 items-start lg:block">
+              <div className="mb-0 lg:mb-4">
+                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
+                <div className="flex gap-1.5 lg:gap-2 flex-wrap">
+                  {[[6,12], [4,8], [9,12], [10,15], [8,16]].map(([n, d]) => (
+                    <button
+                      key={`${n}-${d}`}
+                      onClick={() => { setBaseNumerator(n); setBaseDenominator(d); setDivisor(1); }}
+                      className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
+                    >
+                      <InlineMath math={`\\frac{${n}}{${d}}`} />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div>
-              <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Buat Soal Sendiri:</p>
-              <div className="flex items-center gap-2 bg-slate-50 p-2 lg:p-3 rounded-xl border border-slate-100 w-max">
-                 <div className="flex flex-col items-center gap-1">
-                   <input 
-                     type="number" min="1" max={baseDenominator} 
-                     value={baseNumerator}
-                     onChange={(e) => {
-                       const val = parseInt(e.target.value) || 1;
-                       setBaseNumerator(Math.min(val, baseDenominator));
-                       setDivisor(1);
-                     }}
-                     className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                   />
-                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
-                   <input 
-                     type="number" min="1" max="24" 
-                     value={baseDenominator}
-                     onChange={(e) => {
-                       const val = parseInt(e.target.value) || 1;
-                       setBaseDenominator(Math.max(val, baseNumerator));
-                       setDivisor(1);
-                     }}
-                     className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                   />
-                 </div>
+ 
+              <div>
+                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Buat Soal Sendiri:</p>
+                <div className="flex items-center gap-2 bg-slate-50 p-1.5 lg:p-3 rounded-xl border border-slate-100 w-max">
+                   <div className="flex flex-col items-center gap-1">
+                     <input 
+                       type="number" min="1" max={baseDenominator} 
+                       value={baseNumerator}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         setBaseNumerator(Math.min(val, baseDenominator));
+                         setDivisor(1);
+                       }}
+                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                     <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                     <input 
+                       type="number" min="1" max="24" 
+                       value={baseDenominator}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         setBaseDenominator(Math.max(val, baseNumerator));
+                         setDivisor(1);
+                       }}
+                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                   </div>
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+ 
+          <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-2 lg:mb-4 flex items-center gap-2">
               Pilih Faktor Pembagi Sama
             </h3>
             
-            <div className="grid grid-cols-2 gap-2 lg:gap-3 mb-2 lg:mb-4">
+            <div className="grid grid-cols-4 lg:grid-cols-2 gap-2 lg:gap-3 mb-2 lg:mb-4">
               {validDivisors.map(num => (
                 <button
                   key={num}
@@ -300,10 +302,10 @@ export default function SimplifyFractionPage() {
               Membagi pembilang dan penyebut dengan faktor yang sama tidak mengubah nilai pecahan. <InlineMath math={`\\frac{${baseNumerator}}{${baseDenominator}}`} /> senilai dengan <InlineMath math={`\\frac{${currentNumerator}}{${currentDenominator}}`} />.
             </p>
           </div>
-
-          <div className="bg-emerald-50 border border-emerald-100 p-3 lg:p-6 rounded-2xl lg:rounded-3xl mt-1 lg:mt-4">
+ 
+          <div className="bg-emerald-50 border border-emerald-100 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl mt-1 lg:mt-4">
             <div className="flex items-start gap-2.5">
-              <Info className="text-emerald-600 shrink-0 mt-0.5" size={14} className="lg:hidden" />
+              <Info className="text-emerald-600 shrink-0 mt-0.5 lg:hidden" size={14} />
               <Info className="text-emerald-600 shrink-0 mt-0.5 hidden lg:block" size={16} />
               <p className="text-[10px] lg:text-xs text-emerald-800 leading-relaxed">
                 <strong>Bentuk Paling Sederhana</strong> tercapai jika pembilang dan penyebut tidak memiliki faktor pembagi persekutuan lagi selain 1 (Membagi dengan faktor terbesar: <strong>6</strong>).

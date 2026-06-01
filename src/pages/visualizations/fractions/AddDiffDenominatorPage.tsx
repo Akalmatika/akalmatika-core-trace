@@ -60,8 +60,8 @@ export default function AddDiffDenominatorPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-3 lg:py-6 animate-fadeIn pb-12 lg:pb-6 px-4">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 lg:mb-8 gap-3 lg:gap-4">
+    <div className="max-w-4xl mx-auto py-2.5 lg:py-6 animate-fadeIn pb-4 lg:pb-6 px-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 lg:mb-8 gap-2 lg:gap-4">
         <div>
           <Link to="/student/visualizations/fractions" className="inline-flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 font-bold text-xs lg:text-sm mb-1 lg:mb-3 transition-colors">
             <ArrowLeft size={14} className="lg:hidden" />
@@ -96,7 +96,7 @@ export default function AddDiffDenominatorPage() {
         {/* Main Canvas */}
         <div className="lg:col-span-8">
           {mode === 'explore' && (
-            <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-4 lg:p-12 shadow-sm min-h-[160px] lg:min-h-[450px] flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-2.5 lg:p-12 shadow-sm min-h-[120px] lg:min-h-[450px] flex flex-col items-center justify-center relative overflow-hidden">
           
           {errorMsg && (
             <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-20 bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 lg:gap-2 animate-shake text-xs lg:text-sm">
@@ -113,7 +113,7 @@ export default function AddDiffDenominatorPage() {
             </div>
           )}
 
-          <div className="flex items-center gap-4 mb-4 lg:mb-8">
+          <div className="flex items-center gap-2 mb-3 lg:mb-8">
             <div className="flex flex-col items-center text-2xl lg:text-3xl font-black font-mono text-indigo-600 transition-all w-12 lg:w-16">
               <div>{step === 0 ? n1 : eqN1}</div>
               <div className="w-full h-0.5 lg:h-1 bg-slate-800 my-0.5 lg:my-1 rounded-full"></div>
@@ -136,10 +136,10 @@ export default function AddDiffDenominatorPage() {
           </div>
 
           {/* Visualization Area */}
-          <div className="w-full flex flex-col items-center gap-3 lg:gap-6 relative z-10 max-w-lg mt-2 lg:mt-4">
+          <div className="w-full flex flex-col items-center gap-1.5 lg:gap-6 relative z-10 max-w-lg mt-2 lg:mt-4">
              
              {/* Box 1: 1/2 or 2/4 */}
-             <div className="w-full h-12 lg:h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner rounded-lg">
+             <div className="w-full h-8 lg:h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner rounded-lg">
                 {Array.from({ length: step === 0 ? den1 : den2 }).map((_, idx) => {
                   let bgColor = 'bg-transparent';
                   if (step === 0 && idx < n1) bgColor = 'bg-indigo-400';
@@ -158,7 +158,7 @@ export default function AddDiffDenominatorPage() {
              </div>
 
              {/* Box 2: 1/4 (Only visible in step 0 or 1) */}
-             <div className={`w-full h-12 lg:h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner transition-all duration-500 transform origin-top rounded-lg ${step === 2 ? 'opacity-0 scale-y-0 h-0 border-0' : 'opacity-100 scale-y-100'}`}>
+             <div className={`w-full h-8 lg:h-16 flex border-2 border-slate-300 relative bg-slate-50 overflow-hidden shadow-inner transition-all duration-500 transform origin-top rounded-lg ${step === 2 ? 'opacity-0 scale-y-0 h-0 border-0' : 'opacity-100 scale-y-100'}`}>
                 {Array.from({ length: den2 }).map((_, idx) => (
                   <div 
                     key={idx}
@@ -245,80 +245,82 @@ export default function AddDiffDenominatorPage() {
 
         {/* Controls */}
         <div className={`lg:col-span-4 flex flex-col gap-3 lg:gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
-          <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+          <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
             <h3 className="text-sm font-bold text-slate-700 mb-2 lg:mb-4 flex items-center gap-2">
               Tentukan Pecahan
             </h3>
             
-            <div className="mb-2.5 lg:mb-4">
-              <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
-              <div className="flex gap-1.5 lg:gap-2 flex-wrap">
-                {[[1,2,1,4], [1,3,2,6], [1,2,3,8], [2,3,1,9], [1,5,3,10]].map(([a, b, c, d]) => (
-                  <button
-                    key={`${a}-${b}-${c}-${d}`}
-                    onClick={() => { setN1(a); setDen1(b); setN2(c); setDen2(d); setStep(0); }}
-                    className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
-                  >
-                    <InlineMath math={`\\frac{${a}}{${b}}`} /> + <InlineMath math={`\\frac{${c}}{${d}}`} />
-                  </button>
-                ))}
+            <div className="grid grid-cols-1 min-[350px]:grid-cols-2 gap-3 items-start lg:block">
+              <div className="mb-0 lg:mb-4">
+                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pilihan Cepat:</p>
+                <div className="flex gap-1.5 lg:gap-2 flex-wrap">
+                  {[[1,2,1,4], [1,3,2,6], [1,2,3,8], [2,3,1,9], [1,5,3,10]].map(([a, b, c, d]) => (
+                    <button
+                      key={`${a}-${b}-${c}-${d}`}
+                      onClick={() => { setN1(a); setDen1(b); setN2(c); setDen2(d); setStep(0); }}
+                      className="px-2 py-1 lg:px-3 lg:py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-[10px] lg:text-xs font-bold font-mono transition-colors"
+                    >
+                      <InlineMath math={`\\frac{${a}}{${b}}`} /> + <InlineMath math={`\\frac{${c}}{${d}}`} />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div>
-              <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pecahan Beda Penyebut (Kelipatan):</p>
-              <div className="flex items-center gap-2 bg-slate-50 p-2 lg:p-3 rounded-xl border border-slate-100 w-max">
-                 <div className="flex flex-col items-center gap-1">
-                   <input 
-                     type="number" min="1" max={den1} 
-                     value={n1}
-                     onChange={(e) => {
-                       const val = parseInt(e.target.value) || 1;
-                       setN1(Math.min(val, den1));
-                       setStep(0);
-                     }}
-                     className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                   />
-                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
-                   <input 
-                     type="number" min="2" max="10" 
-                     value={den1}
-                     onChange={(e) => {
-                       const val = parseInt(e.target.value) || 2;
-                       setDen1(Math.max(val, 2));
-                       setDen2(val * 2); // Auto scale den2 for simple visualization
-                       setN1(Math.min(n1, Math.max(val, 2)));
-                       setStep(0);
-                     }}
-                     className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                   />
-                 </div>
-                 
-                 <div className="font-bold text-slate-400 text-xs">+</div>
-
-                 <div className="flex flex-col items-center gap-1">
-                   <input 
-                     type="number" min="1" max={den2} 
-                     value={n2}
-                     onChange={(e) => {
-                       const val = parseInt(e.target.value) || 1;
-                       setN2(Math.min(val, den2));
-                       setStep(0);
-                     }}
-                     className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
-                   />
-                   <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
-                   <input 
-                     type="number" disabled
-                     value={den2}
-                     className="w-12 lg:w-16 text-center border border-slate-200 bg-slate-100 text-slate-400 rounded-md py-0.5 lg:py-1 font-mono text-xs cursor-not-allowed"
-                   />
-                 </div>
+ 
+              <div>
+                <p className="text-[10px] lg:text-xs font-bold text-slate-400 mb-1 lg:mb-2">Pecahan Beda Penyebut (Kelipatan):</p>
+                <div className="flex items-center gap-2 bg-slate-50 p-1.5 lg:p-3 rounded-xl border border-slate-100 w-max">
+                   <div className="flex flex-col items-center gap-1">
+                     <input 
+                       type="number" min="1" max={den1} 
+                       value={n1}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         setN1(Math.min(val, den1));
+                         setStep(0);
+                       }}
+                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                     <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                     <input 
+                       type="number" min="2" max="10" 
+                       value={den1}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 2;
+                         setDen1(Math.max(val, 2));
+                         setDen2(val * 2); // Auto scale den2 for simple visualization
+                         setN1(Math.min(n1, Math.max(val, 2)));
+                         setStep(0);
+                       }}
+                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                   </div>
+                   
+                   <div className="font-bold text-slate-400 text-xs">+</div>
+ 
+                   <div className="flex flex-col items-center gap-1">
+                     <input 
+                       type="number" min="1" max={den2} 
+                       value={n2}
+                       onChange={(e) => {
+                         const val = parseInt(e.target.value) || 1;
+                         setN2(Math.min(val, den2));
+                         setStep(0);
+                       }}
+                       className="w-12 lg:w-16 text-center border border-slate-200 rounded-md py-0.5 lg:py-1 font-mono text-xs lg:text-sm focus:outline-none focus:border-indigo-400"
+                     />
+                     <div className="w-8 h-0.5 bg-slate-300 rounded-full"></div>
+                     <input 
+                       type="number" disabled
+                       value={den2}
+                       className="w-12 lg:w-16 text-center border border-slate-200 bg-slate-100 text-slate-400 rounded-md py-0.5 lg:py-1 font-mono text-xs cursor-not-allowed"
+                     />
+                   </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 p-3 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
+          <div className="bg-white border border-slate-200 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl shadow-sm">
             
             <div className="flex flex-col gap-2">
               <button
@@ -346,7 +348,7 @@ export default function AddDiffDenominatorPage() {
             
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-100 p-3 lg:p-6 rounded-2xl lg:rounded-3xl mt-1 lg:mt-4">
+          <div className="bg-indigo-50 border border-indigo-100 p-2.5 lg:p-6 rounded-2xl lg:rounded-3xl mt-1 lg:mt-4">
             <div className="flex items-start gap-2.5">
               <Info className="text-indigo-600 shrink-0 mt-0.5 lg:hidden" size={14} />
               <Info className="text-indigo-600 shrink-0 mt-0.5 hidden lg:block" size={16} />

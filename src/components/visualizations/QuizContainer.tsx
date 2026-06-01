@@ -73,13 +73,13 @@ export function QuizContainer({
       </div>
 
       {evalResult === 'correct' && (
-        <div className="absolute top-6 right-6 md:top-8 md:right-8 z-20 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 animate-bounce shadow-sm border border-emerald-200">
+        <div className="relative md:absolute md:top-8 md:right-8 mx-auto md:mx-0 mt-1 md:mt-0 mb-4 md:mb-0 w-fit z-20 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 animate-bounce shadow-sm border border-emerald-200">
           <CheckCircle2 size={20} /> Tepat Sekali!
         </div>
       )}
 
       {evalResult === 'wrong' && (
-        <div className="absolute top-6 right-6 md:top-8 md:right-8 z-20 bg-rose-100 text-rose-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 animate-shake shadow-sm border border-rose-200">
+        <div className="relative md:absolute md:top-8 md:right-8 mx-auto md:mx-0 mt-1 md:mt-0 mb-4 md:mb-0 w-fit z-20 bg-rose-100 text-rose-700 px-4 py-2 rounded-xl font-bold flex items-center gap-2 animate-shake shadow-sm border border-rose-200">
           <XCircle size={20} /> Coba perhatikan lagi!
         </div>
       )}

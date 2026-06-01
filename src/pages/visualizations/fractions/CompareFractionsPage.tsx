@@ -162,7 +162,7 @@ export default function CompareFractionsPage() {
             <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-2.5 lg:p-12 shadow-sm min-h-[120px] lg:min-h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
           
           {evalResult === 'correct' && (
-            <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-20 bg-emerald-100 text-emerald-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 lg:gap-3 animate-bounce shadow-sm border border-emerald-200 text-xs lg:text-sm">
+            <div className="relative lg:absolute lg:top-6 lg:right-6 mx-auto lg:mx-0 mt-1 lg:mt-0 mb-3 lg:mb-0 w-fit z-20 bg-emerald-100 text-emerald-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl flex items-center gap-2 lg:gap-3 animate-bounce shadow-sm border border-emerald-200 text-xs lg:text-sm">
               <div className="flex items-center gap-1 lg:gap-1.5 font-bold">
                 <CheckCircle2 size={16} className="lg:hidden" />
                 <CheckCircle2 size={20} className="hidden lg:block" />
@@ -177,7 +177,7 @@ export default function CompareFractionsPage() {
             </div>
           )}
           {evalResult === 'wrong' && (
-            <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-20 bg-rose-100 text-rose-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl font-bold flex items-center gap-2 animate-shake text-xs lg:text-sm">
+            <div className="relative lg:absolute lg:top-6 lg:right-6 mx-auto lg:mx-0 mt-1 lg:mt-0 mb-3 lg:mb-0 w-fit z-20 bg-rose-100 text-rose-700 px-3 py-1.5 lg:px-4 lg:py-2 rounded-xl font-bold flex items-center gap-2 animate-shake text-xs lg:text-sm">
               <XCircle size={16} className="lg:hidden" />
               <XCircle size={20} className="hidden lg:block" />
               Coba perhatikan lagi!

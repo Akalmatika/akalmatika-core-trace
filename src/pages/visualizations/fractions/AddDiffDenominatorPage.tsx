@@ -99,14 +99,14 @@ export default function AddDiffDenominatorPage() {
             <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-2.5 lg:p-12 shadow-sm min-h-[120px] lg:min-h-[450px] flex flex-col items-center justify-center relative overflow-hidden">
           
           {errorMsg && (
-            <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-20 bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 lg:gap-2 animate-shake text-xs lg:text-sm">
+            <div className="relative lg:absolute lg:top-6 lg:right-6 mx-auto lg:mx-0 mt-1 lg:mt-0 mb-3 lg:mb-0 w-fit z-20 bg-rose-100 text-rose-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 lg:gap-2 animate-shake text-xs lg:text-sm">
               <XCircle size={16} className="lg:hidden" />
               <XCircle size={20} className="hidden lg:block" />
               Tidak bisa! Ukuran potongannya masih berbeda.
             </div>
           )}
           {step === 2 && (
-            <div className="absolute top-3 right-3 lg:top-6 lg:right-6 z-20 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 lg:gap-2 animate-bounce text-xs lg:text-sm">
+            <div className="relative lg:absolute lg:top-6 lg:right-6 mx-auto lg:mx-0 mt-1 lg:mt-0 mb-3 lg:mb-0 w-fit z-20 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 lg:gap-2 animate-bounce text-xs lg:text-sm">
               <CheckCircle2 size={16} className="lg:hidden" />
               <CheckCircle2 size={20} className="hidden lg:block" />
               Berhasil digabungkan!

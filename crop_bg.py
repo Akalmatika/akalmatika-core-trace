@@ -25,6 +25,6 @@ def remove_fake_transparency_and_crop(img_path, out_path):
     print(f"Saved cleaned and cropped image to {out_path}")
 
 remove_fake_transparency_and_crop(
-    "c:/Projects/Akalmatika/akalmatika-core-trace/public/Akalmatika_LogoSekunder_Terang.png",
-    "c:/Projects/Akalmatika/akalmatika-core-trace/public/Akalmatika_LogoSekunder_Terang_clean.png"
+    "c:/Projects/Akalmatika/akalmatika-core-trace/public/Akalmatika_LogoSekunder_Gelap.png",
+    "c:/Projects/Akalmatika/akalmatika-core-trace/public/Akalmatika_LogoSekunder_Gelap_clean.png"
 )

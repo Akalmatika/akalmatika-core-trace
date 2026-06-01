@@ -92,7 +92,7 @@ export default function StudentLayout() {
       <footer className="bg-slate-900 border-t border-slate-800 py-6 px-6 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
           <div className="flex items-center gap-4">
-            <img src="/Akalmatika_LogoSekunder_Terang_clean.png" alt="Akalmatika Logo Sekunder" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
+            <img src="/Akalmatika_LogoSekunder_Gelap_clean.png" alt="Akalmatika Logo Sekunder" className="h-8 object-contain opacity-80 hover:opacity-100 transition-opacity" />
             <span className="hidden md:inline-block border-l border-slate-700 pl-4">AKALMATIKA INTERACTIVE LEARNING</span>
           </div>
           <div className="flex gap-4 text-center md:text-left">

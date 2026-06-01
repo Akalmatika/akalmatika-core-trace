@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { InlineMath } from "react-katex";
-import { 
-  ArrowLeft, Info, HelpCircle, AlertTriangle, RotateCcw, 
-  ArrowRight, Undo, Play, ShieldAlert, Award, CheckCircle2
+import {
+  ArrowLeft, Info, AlertTriangle, RotateCcw,
+  ArrowRight, Undo, ShieldAlert, Award, ChevronDown, ChevronUp
 } from "lucide-react";
 import { QuizContainer } from "../../../components/visualizations/QuizContainer";
 
+/* ─── AST Types ──────────────────────────────────────────────── */
 interface TreeNode {
   id: string;
   type: "operator" | "number";
@@ -24,21 +25,20 @@ interface RenderNode {
   parentY?: number;
 }
 
-// Precedence levels
+/* ─── Precedence ─────────────────────────────────────────────── */
 function getOperatorPrecedence(op: string): number {
   if (op === "+" || op === "-") return 1;
   if (op === "*" || op === "/") return 2;
   return 0;
 }
 
-// Basic Tokenizer
+/* ─── Tokenizer ──────────────────────────────────────────────── */
 function tokenize(str: string): string[] {
   const clean = str.replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/");
-  const regex = /\d+|\+|-|\*|\/|\(|\)/g;
-  return clean.match(regex) || [];
+  return clean.match(/\d+|\+|-|\*|\/|\(|\)/g) || [];
 }
 
-// AST Builder using Shunting-yard
+/* ─── AST Builder (Shunting-yard) ────────────────────────────── */
 function buildAST(expression: string): TreeNode | null {
   const tokens = tokenize(expression);
   const nodeStack: TreeNode[] = [];
@@ -51,178 +51,99 @@ function buildAST(expression: string): TreeNode | null {
     if (!left || !right) return;
     nodeStack.push({
       id: `op-${op}-${idCounter++}-${Date.now()}`,
-      type: "operator",
-      value: op,
-      left,
-      right
+      type: "operator", value: op, left, right,
     });
   };
 
   for (const token of tokens) {
     if (/\d+/.test(token)) {
-      nodeStack.push({
-        id: `num-${token}-${idCounter++}-${Date.now()}`,
-        type: "number",
-        value: token
-      });
+      nodeStack.push({ id: `num-${token}-${idCounter++}-${Date.now()}`, type: "number", value: token });
     } else if (token === "(") {
       opStack.push(token);
     } else if (token === ")") {
-      while (opStack.length > 0 && opStack[opStack.length - 1] !== "(") {
-        createNode(opStack.pop()!);
-      }
-      opStack.pop(); // Remove '('
+      while (opStack.length > 0 && opStack[opStack.length - 1] !== "(") createNode(opStack.pop()!);
+      opStack.pop();
     } else {
-      // Operator
       const prec = getOperatorPrecedence(token);
-      while (
-        opStack.length > 0 &&
-        opStack[opStack.length - 1] !== "(" &&
-        getOperatorPrecedence(opStack[opStack.length - 1]) >= prec
-      ) {
+      while (opStack.length > 0 && opStack[opStack.length - 1] !== "(" && getOperatorPrecedence(opStack[opStack.length - 1]) >= prec) {
         createNode(opStack.pop()!);
       }
       opStack.push(token);
     }
   }
-
-  while (opStack.length > 0) {
-    createNode(opStack.pop()!);
-  }
-
+  while (opStack.length > 0) createNode(opStack.pop()!);
   return nodeStack.length === 1 ? nodeStack[0] : null;
 }
 
-// Recursive function to find the next active clickable node based on PEMDAS
-// 1. Collect all operator nodes that are "ready" (both left and right are numbers)
-// 2. Find the maximum precedence among ready nodes
-// 3. Keep only nodes with max precedence
-// 4. Resolve tie by choosing the leftmost node (determined by in-order traversal index)
+/* ─── Get next clickable node (PEMDAS order) ─────────────────── */
 function getClickableNode(root: TreeNode | null): string | null {
   if (!root) return null;
-
   const readyNodes: { node: TreeNode; order: number }[] = [];
   let traversalOrder = 0;
 
   function traverse(node: TreeNode) {
     if (node.left) traverse(node.left);
-    
-    // Check if operator node is ready
     if (node.type === "operator") {
-      const isLeftNum = node.left?.type === "number";
-      const isRightNum = node.right?.type === "number";
-      if (isLeftNum && isRightNum) {
+      if (node.left?.type === "number" && node.right?.type === "number") {
         readyNodes.push({ node, order: traversalOrder });
       }
       traversalOrder++;
     }
-
     if (node.right) traverse(node.right);
   }
-
   traverse(root);
-
   if (readyNodes.length === 0) return null;
 
-  // Find max precedence
   let maxPrec = 0;
   for (const item of readyNodes) {
     const prec = getOperatorPrecedence(item.node.value);
     if (prec > maxPrec) maxPrec = prec;
   }
-
-  // Filter by max precedence
   const candidates = readyNodes.filter(item => getOperatorPrecedence(item.node.value) === maxPrec);
-
-  // Pick leftmost (smallest traversal order)
   candidates.sort((a, b) => a.order - b.order);
-
   return candidates[0].node.id;
 }
 
-// Convert Tree to Infix formula string
+/* ─── Tree → Infix string ────────────────────────────────────── */
 function treeToInfix(node: TreeNode, parentPrecedence: number = 0): string {
-  if (node.type === "number") {
-    return node.value;
-  }
-
+  if (node.type === "number") return node.value;
   const currentPrecedence = getOperatorPrecedence(node.value);
   let opDisplay = node.value;
   if (node.value === "*") opDisplay = " × ";
   else if (node.value === "/") opDisplay = " ÷ ";
   else opDisplay = ` ${node.value} `;
-
-  // Recursively format children
-  // For same precedence, right side of subtraction or division might need parens to be safe,
-  // but standard PEMDAS parentheses are mostly for lower precedence under higher.
   const leftStr = node.left ? treeToInfix(node.left, currentPrecedence) : "";
   const rightStr = node.right ? treeToInfix(node.right, currentPrecedence) : "";
-
   const infix = leftStr + opDisplay + rightStr;
-
-  if (currentPrecedence < parentPrecedence) {
-    return `(${infix})`;
-  }
-
-  return infix;
+  return currentPrecedence < parentPrecedence ? `(${infix})` : infix;
 }
 
-// Build render coordinates for nodes in SVG
+/* ─── Build render coords ────────────────────────────────────── */
 function buildRenderTree(
-  node: TreeNode,
-  x: number,
-  y: number,
-  level: number,
-  hSpacing: number,
-  vSpacing: number,
-  parentId?: string,
-  parentX?: number,
-  parentY?: number,
+  node: TreeNode, x: number, y: number, level: number,
+  hSpacing: number, vSpacing: number,
+  parentId?: string, parentX?: number, parentY?: number,
   acc: RenderNode[] = []
 ): RenderNode[] {
   acc.push({ node, x, y, parentId, parentX, parentY });
-
-  if (node.left) {
-    buildRenderTree(
-      node.left,
-      x - hSpacing / Math.pow(1.7, level + 1),
-      y + vSpacing,
-      level + 1,
-      hSpacing,
-      vSpacing,
-      node.id,
-      x,
-      y,
-      acc
-    );
-  }
-  if (node.right) {
-    buildRenderTree(
-      node.right,
-      x + hSpacing / Math.pow(1.7, level + 1),
-      y + vSpacing,
-      level + 1,
-      hSpacing,
-      vSpacing,
-      node.id,
-      x,
-      y,
-      acc
-    );
-  }
+  if (node.left)
+    buildRenderTree(node.left, x - hSpacing / Math.pow(1.7, level + 1), y + vSpacing, level + 1, hSpacing, vSpacing, node.id, x, y, acc);
+  if (node.right)
+    buildRenderTree(node.right, x + hSpacing / Math.pow(1.7, level + 1), y + vSpacing, level + 1, hSpacing, vSpacing, node.id, x, y, acc);
   return acc;
 }
 
+/* ═══════════════════════════════════════════════════════════════ */
+/*  Page Component                                                 */
+/* ═══════════════════════════════════════════════════════════════ */
 export default function OrderOfOperationsPage() {
   const presets = [
-    { label: "Prioritas Kali", expr: "2 + 3 * 4", correct: "14", wrong: "20" },
-    { label: "Kekuatan Kurung", expr: "(5 - 2) * 4", correct: "12", wrong: "13" },
-    { label: "Bagi & Kurung Kompleks", expr: "12 / (2 * 3) - 1", correct: "1", wrong: "1" }
+    { label: "Prioritas ×", expr: "2 + 3 * 4", correct: "14", wrong: "20" },
+    { label: "Kurung ()", expr: "(5 - 2) * 4", correct: "12", wrong: "13" },
+    { label: "÷ & Kurung", expr: "12 / (2 * 3) - 1", correct: "1", wrong: "1" },
   ];
 
   const [activePresetIdx, setActivePresetIdx] = useState<number>(0);
-  
-  // Local Quiz State
   const [quizEval, setQuizEval] = useState<'none' | 'correct' | 'wrong'>('none');
   const [quizScore, setQuizScore] = useState<number>(0);
   const [quizFinished, setQuizFinished] = useState<boolean>(false);
@@ -230,520 +151,356 @@ export default function OrderOfOperationsPage() {
   function handleEvaluateQuiz(isCorrect: boolean) {
     if (quizEval !== 'none') return;
     setQuizEval(isCorrect ? 'correct' : 'wrong');
-    if (isCorrect) {
-      setQuizScore(1);
-    }
+    if (isCorrect) setQuizScore(1);
   }
 
-  function handleNextQuiz() {
-    setQuizFinished(true);
-  }
-
-  function handleRetryQuiz() {
-    setQuizEval('none');
-    setQuizScore(0);
-    setQuizFinished(false);
-  }
-
-  const [customExpr, setCustomExpr] = useState<string>("");
-  const [customError, setCustomError] = useState<string>("");
-
+  const [customExpr, setCustomExpr] = useState("");
+  const [customError, setCustomError] = useState("");
   const [rootNode, setRootNode] = useState<TreeNode | null>(null);
   const [history, setHistory] = useState<TreeNode[]>([]);
   const [stepsLog, setStepsLog] = useState<string[]>([]);
   const [clickableId, setClickableId] = useState<string | null>(null);
-  const [isFinished, setIsFinished] = useState<boolean>(false);
-  const [showMisconceptionPanel, setShowMisconceptionPanel] = useState<boolean>(false);
+  const [isFinished, setIsFinished] = useState(false);
+  const [showMisconception, setShowMisconception] = useState(false);
+  const [showHierarchy, setShowHierarchy] = useState(false);
 
-  // Initialize preset
-  useEffect(() => {
-    loadExpression(presets[activePresetIdx].expr);
-  }, [activePresetIdx]);
+  useEffect(() => { loadExpression(presets[activePresetIdx].expr); }, [activePresetIdx]);
 
   function loadExpression(expr: string) {
     const ast = buildAST(expr);
     if (ast) {
-      setRootNode(ast);
-      setHistory([]);
-      setStepsLog([expr]);
-      setIsFinished(false);
-      setCustomError("");
+      setRootNode(ast); setHistory([]); setStepsLog([expr]); setIsFinished(false); setCustomError("");
     }
   }
 
-  // Set next clickable active node when tree updates
   useEffect(() => {
     if (rootNode) {
       const activeId = getClickableNode(rootNode);
       setClickableId(activeId);
-      if (!activeId && rootNode.type === "number") {
-        setIsFinished(true);
-      }
+      if (!activeId && rootNode.type === "number") setIsFinished(true);
     }
   }, [rootNode]);
 
-  // Handle clicking a node to collapse it
   function handleNodeClick(nodeId: string) {
     if (nodeId !== clickableId || !rootNode) return;
-
-    // Save current tree for undo
     setHistory(prev => [...prev, JSON.parse(JSON.stringify(rootNode))]);
 
-    // Collapse target operator
     function collapse(node: TreeNode): TreeNode {
-      if (node.id === nodeId) {
-        if (node.type === "operator" && node.left && node.right) {
-          const leftVal = parseFloat(node.left.value);
-          const rightVal = parseFloat(node.right.value);
-          let res = 0;
-          if (node.value === "+") res = leftVal + rightVal;
-          else if (node.value === "-") res = leftVal - rightVal;
-          else if (node.value === "*") res = leftVal * rightVal;
-          else if (node.value === "/") res = leftVal / rightVal;
-
-          return {
-            id: `num-${res}-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-            type: "number",
-            value: String(res)
-          };
-        }
+      if (node.id === nodeId && node.type === "operator" && node.left && node.right) {
+        const l = parseFloat(node.left.value), r = parseFloat(node.right.value);
+        let res = 0;
+        if (node.value === "+") res = l + r;
+        else if (node.value === "-") res = l - r;
+        else if (node.value === "*") res = l * r;
+        else if (node.value === "/") res = l / r;
+        return { id: `num-${res}-${Date.now()}-${Math.floor(Math.random() * 1000)}`, type: "number", value: String(res) };
       }
-
       if (node.type === "operator") {
-        return {
-          ...node,
-          left: node.left ? collapse(node.left) : undefined,
-          right: node.right ? collapse(node.right) : undefined
-        };
+        return { ...node, left: node.left ? collapse(node.left) : undefined, right: node.right ? collapse(node.right) : undefined };
       }
       return node;
     }
 
     const nextTree = collapse(rootNode);
     setRootNode(nextTree);
-
-    // Append to expression steps log
-    const updatedExpr = treeToInfix(nextTree);
-    setStepsLog(prev => [...prev, updatedExpr]);
+    setStepsLog(prev => [...prev, treeToInfix(nextTree)]);
   }
 
   function handleUndo() {
     if (history.length === 0) return;
-    const previous = history[history.length - 1];
-    setRootNode(previous);
+    setRootNode(history[history.length - 1]);
     setHistory(prev => prev.slice(0, -1));
     setStepsLog(prev => prev.slice(0, -1));
     setIsFinished(false);
   }
 
-  function handleReset() {
-    loadExpression(customExpr || presets[activePresetIdx].expr);
-  }
+  function handleReset() { loadExpression(customExpr || presets[activePresetIdx].expr); }
 
   function handleCustomSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!customExpr.trim()) return;
-
-    // Basic validation of characters
-    if (/[^0-9\s+\-*/()×÷]/.test(customExpr)) {
-      setCustomError("Gunakan angka, tanda kurung (), dan tanda operasi (+, -, x, /) saja.");
-      return;
-    }
-
+    if (/[^0-9\s+\-*/()×÷]/.test(customExpr)) { setCustomError("Gunakan angka, kurung, dan operasi saja."); return; }
     const ast = buildAST(customExpr);
-    if (!ast) {
-      setCustomError("Format persamaan tidak valid. Periksa tanda kurung atau operasi beruntun.");
-      return;
-    }
-
-    setRootNode(ast);
-    setHistory([]);
-    setStepsLog([customExpr]);
-    setIsFinished(false);
-    setCustomError("");
+    if (!ast) { setCustomError("Format tidak valid."); return; }
+    setRootNode(ast); setHistory([]); setStepsLog([customExpr]); setIsFinished(false); setCustomError("");
   }
 
-  // Dynamic layout calculation for root
-  const renderNodes = rootNode ? buildRenderTree(rootNode, 250, 40, 0, 160, 60) : [];
+  const renderNodes = rootNode ? buildRenderTree(rootNode, 200, 30, 0, 130, 50) : [];
+
+  /* ─── Compact tree height calc ─────────────────────────────── */
+  const maxY = renderNodes.reduce((m, r) => Math.max(m, r.y), 0);
+  const svgHeight = Math.max(100, maxY + 40);
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4 space-y-8 animate-fadeIn">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
-        <div>
-          <Link to="/student/visualizations/operasi-campuran" className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 font-bold text-xs mb-3 transition-colors">
-            <ArrowLeft size={14} /> Kembali ke Galeri
+    <div className="max-w-6xl mx-auto py-4 px-4 space-y-4 animate-fadeIn">
+      {/* ─── Compact Header ─────────────────────────────────── */}
+      <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-3">
+        <div className="min-w-0">
+          <Link to="/student/visualizations/operasi-campuran" className="inline-flex items-center gap-1 text-slate-400 hover:text-slate-900 font-bold text-[10px] transition-colors">
+            <ArrowLeft size={12} /> Galeri
           </Link>
-          <h2 className="font-sans font-black text-slate-900 text-2xl md:text-3xl tracking-tight">
-            Visualizer Urutan Operasi (PEMDAS)
+          <h2 className="font-sans font-black text-slate-900 text-lg md:text-xl tracking-tight leading-tight">
+            Urutan Operasi (PEMDAS)
           </h2>
-          <p className="text-xs text-slate-500 mt-1 max-w-2xl">
-            Selesaikan perhitungan dengan mengklik operasi yang paling kuat terlebih dahulu. Perhatikan bagaimana tanda kurung dan perkalian/pembagian mendominasi alur pohon ekspresi!
-          </p>
         </div>
+        <p className="text-[10px] text-slate-400 max-w-xs text-right hidden md:block leading-tight">
+          Klik operasi terkuat terlebih dahulu untuk menyusutkan pohon ekspresi langkah demi langkah.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Panel Kiri & Tengah: Visualisasi Utama */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col items-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(#f1f5f9_1px,transparent_1px)] [background-size:16px_16px] opacity-75" />
+      {/* ─── Main content: Tree + Side panels in one row ────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-4">
 
-            {/* Presets and Custom Inputs */}
-            <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-6 mb-6">
-              <div className="flex gap-2 flex-wrap">
-                {presets.map((p, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      setCustomExpr("");
-                      setActivePresetIdx(idx);
-                    }}
-                    className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
-                      activePresetIdx === idx && !customExpr
-                        ? "bg-indigo-650 text-white shadow-sm"
-                        : "bg-slate-100 text-slate-650 hover:bg-slate-200 border border-slate-200/50"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
+        {/* ── Left: Visualizer Card ──────────────────────────── */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden flex flex-col">
+          <div className="absolute inset-0 bg-[radial-gradient(#f1f5f9_1px,transparent_1px)] [background-size:16px_16px] opacity-75" />
 
-              {/* Custom Input Builder */}
-              <form onSubmit={handleCustomSubmit} className="flex gap-2 w-full md:w-auto max-w-sm">
-                <input
-                  type="text"
-                  placeholder="Ketik rumus sendiri (misal: 2 * (3 + 4))"
-                  value={customExpr}
-                  onChange={(e) => setCustomExpr(e.target.value)}
-                  className="bg-slate-50 focus:bg-white text-xs border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-xl px-3 py-2 w-full md:w-56 font-mono text-slate-800 transition-all shadow-2xs"
-                />
-                <button
-                  type="submit"
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors shrink-0 shadow-sm cursor-pointer"
-                >
-                  Buat
-                </button>
-              </form>
-            </div>
-
-            {customError && (
-              <div className="w-full relative z-10 bg-rose-50 border border-rose-100 text-rose-700 text-xs px-4 py-3 rounded-2xl mb-4 flex items-center gap-2">
-                <AlertTriangle size={14} className="shrink-0" />
-                <span>{customError}</span>
-              </div>
-            )}
-
-            {/* Tree Canvas */}
-            <div className="relative z-10 w-full max-w-lg min-h-[300px] border border-slate-200/60 bg-linear-to-b from-slate-50/50 to-slate-100/50 rounded-2xl p-6 flex items-center justify-center shadow-inner overflow-hidden">
-              {rootNode ? (
-                <svg width="100%" height="260" viewBox="0 0 500 260" className="overflow-visible select-none">
-                  <defs>
-                    <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#818cf8" />
-                      <stop offset="100%" stopColor="#4f46e5" />
-                    </linearGradient>
-                    <linearGradient id="activeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#6366f1" />
-                      <stop offset="100%" stopColor="#4338ca" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Draw connection lines */}
-                  {renderNodes.map((r) => {
-                    if (!r.parentId || r.parentX === undefined || r.parentY === undefined) return null;
-                    const dy = r.y - r.parentY;
-                    const pathData = `M ${r.parentX} ${r.parentY} C ${r.parentX} ${r.parentY + dy * 0.55}, ${r.x} ${r.y - dy * 0.55}, ${r.x} ${r.y}`;
-                    
-                    const isLinkedToClickable = r.node.id === clickableId || r.parentId === clickableId;
-
-                    return (
-                      <g key={`link-${r.node.id}`}>
-                        {/* Glow underlay */}
-                        <path
-                          d={pathData}
-                          fill="none"
-                          stroke={isLinkedToClickable ? "#c7d2fe" : "#f1f5f9"}
-                          strokeWidth="7"
-                          strokeLinecap="round"
-                          className="opacity-60 transition-all duration-500 ease-out"
-                        />
-                        {/* Main connection curve */}
-                        <path
-                          d={pathData}
-                          fill="none"
-                          stroke={isLinkedToClickable ? "#6366f1" : "#cbd5e1"}
-                          strokeWidth="3.5"
-                          strokeLinecap="round"
-                          className="transition-all duration-500 ease-out"
-                        />
-                      </g>
-                    );
-                  })}
-
-                  {/* Draw nodes */}
-                  {renderNodes.map((r) => {
-                    const isClickable = r.node.id === clickableId;
-                    const isNumber = r.node.type === "number";
-
-                    return (
-                      <g
-                        key={`node-g-${r.node.id}`}
-                        onClick={() => !isNumber && handleNodeClick(r.node.id)}
-                        className="cursor-pointer group transition-all duration-500 ease-out"
-                        style={{ pointerEvents: isNumber ? "none" : "auto" }}
-                      >
-                        {/* Shield of Precedence - Pulsing Neon Glow */}
-                        {isClickable && (
-                          <g className="transition-all duration-500 ease-out">
-                            {/* Outer shockwave ring */}
-                            <circle
-                              cx={r.x}
-                              cy={r.y}
-                              r="26"
-                              fill="none"
-                              stroke="#a5b4fc"
-                              strokeWidth="1.5"
-                              strokeDasharray="4 4"
-                              className="animate-spin opacity-75"
-                              style={{ animationDuration: "12s" }}
-                            />
-                            {/* Neon glow */}
-                            <circle
-                              cx={r.x}
-                              cy={r.y}
-                              r="22"
-                              fill="none"
-                              stroke="#6366f1"
-                              strokeWidth="4"
-                              className="opacity-25 animate-pulse"
-                            />
-                          </g>
-                        )}
-
-                        {/* Node circle */}
-                        <circle
-                          cx={r.x}
-                          cy={r.y}
-                          r="18"
-                          fill={isNumber ? "#ffffff" : isClickable ? "url(#activeGlow)" : "#475569"}
-                          stroke={isNumber ? "#e2e8f0" : isClickable ? "#312e81" : "#1e293b"}
-                          strokeWidth="2.5"
-                          className="transition-all duration-500 ease-out shadow-lg drop-shadow-md group-hover:scale-110"
-                        />
-
-                        {/* Node Text value */}
-                        <text
-                          x={r.x}
-                          y={r.y + 4.5}
-                          textAnchor="middle"
-                          fill={isNumber ? "#1e293b" : "#ffffff"}
-                          className="font-sans text-xs font-black select-none transition-all duration-500 ease-out group-hover:font-extrabold"
-                        >
-                          {r.node.value === "*" ? "×" : r.node.value === "/" ? "÷" : r.node.value}
-                        </text>
-                      </g>
-                    );
-                  })}
-                </svg>
-              ) : (
-                <div className="text-slate-400 text-xs">Pohon ekspresi kosong.</div>
-              )}
-            </div>
-
-            {/* Steps log below the tree */}
-            <div className="relative z-10 w-full mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Alur Penyusutan Kalimat:</span>
-              <div className="flex flex-wrap items-center gap-2 font-mono text-sm font-bold text-slate-700">
-                {stepsLog.map((step, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    {idx > 0 && <ArrowRight size={14} className="text-slate-400" />}
-                    <span
-                      className={`px-2 py-0.5 rounded-lg border ${
-                        idx === stepsLog.length - 1
-                          ? "bg-indigo-50 border-indigo-200 text-indigo-700"
-                          : "bg-white border-slate-200 text-slate-500 font-normal"
-                      }`}
-                    >
-                      {step.replace(/\*/g, " × ").replace(/\//g, " ÷ ")}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Actions toolbar */}
-            <div className="relative z-10 w-full flex items-center justify-between gap-4 mt-6 border-t border-slate-100 pt-5">
+          {/* Presets row + custom input */}
+          <div className="relative z-10 flex flex-wrap items-center gap-2 pb-3 mb-3 border-b border-slate-100">
+            {presets.map((p, idx) => (
               <button
-                onClick={handleUndo}
-                disabled={history.length === 0}
-                className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs transition-colors border ${
-                  history.length > 0
-                    ? "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer"
-                    : "bg-slate-50 border-slate-100 text-slate-350 cursor-not-allowed"
+                key={idx}
+                onClick={() => { setCustomExpr(""); setActivePresetIdx(idx); }}
+                className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors cursor-pointer ${
+                  activePresetIdx === idx && !customExpr
+                    ? "bg-indigo-600 text-white shadow-sm"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200/50"
                 }`}
               >
-                <Undo size={14} />
-                <span>Undo Langkah</span>
+                {p.label}
               </button>
-
-              <button
-                onClick={handleReset}
-                className="inline-flex items-center gap-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs px-4 py-2.5 rounded-xl transition-colors cursor-pointer"
-              >
-                <RotateCcw size={14} />
-                <span>Mulai Ulang</span>
+            ))}
+            <div className="h-4 w-px bg-slate-200 mx-1 hidden sm:block" />
+            <form onSubmit={handleCustomSubmit} className="flex gap-1.5 items-center">
+              <input
+                type="text"
+                placeholder="Rumus kustom…"
+                value={customExpr}
+                onChange={(e) => setCustomExpr(e.target.value)}
+                className="bg-slate-50 focus:bg-white text-[11px] border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 rounded-lg px-2.5 py-1 w-36 font-mono text-slate-800 transition-all"
+              />
+              <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-[10px] px-3 py-1 rounded-lg transition-colors cursor-pointer">
+                Buat
               </button>
-            </div>
+            </form>
           </div>
 
-          {/* Selesai / Success State Card */}
-          {isFinished && rootNode && (
-            <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex flex-col md:flex-row items-center gap-4 animate-scaleUp">
-              <div className="w-12 h-12 bg-emerald-100 border border-emerald-200 text-emerald-600 rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
-                <Award size={24} />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h4 className="font-bold text-slate-900 text-base">Perhitungan Selesai! 🎉</h4>
-                <p className="text-xs text-slate-650 mt-1">
-                  Kamu berhasil menyusutkan ekspresi hingga tersisa nilai akhir tunggal yaitu <span className="font-mono font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded border border-emerald-250">{rootNode.value}</span>.
-                </p>
-              </div>
-              <button
-                onClick={handleReset}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-xs cursor-pointer w-full md:w-auto"
-              >
-                Coba Preset Lain
-              </button>
+          {customError && (
+            <div className="relative z-10 bg-rose-50 border border-rose-100 text-rose-700 text-[10px] px-3 py-1.5 rounded-xl mb-2 flex items-center gap-1.5">
+              <AlertTriangle size={12} className="shrink-0" /> {customError}
             </div>
           )}
-        </div>
 
-        {/* Panel Kanan: Miskonsepsi Panel & Scaffold */}
-        <div className="space-y-6">
-          {/* PEMDAS Hierarchy Guide */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5 border-b border-slate-100 pb-2">
-              <Info size={14} className="text-indigo-500" />
-              HIERARKI OPERASI
-            </h3>
-            
-            <div className="space-y-3">
-              {/* Parentheses */}
-              <div className="flex items-start gap-3 bg-slate-50 border border-slate-100 p-3 rounded-2xl">
-                <div className="w-6 h-6 bg-slate-200 rounded-md flex items-center justify-center font-black text-xs text-slate-700 shrink-0 shadow-2xs font-mono">()</div>
-                <div>
-                  <h4 className="font-bold text-xs text-slate-800">1. Tanda Kurung</h4>
-                  <p className="text-[10px] text-slate-500 mt-0.5">Memiliki prioritas mutlak di atas segalanya.</p>
-                </div>
-              </div>
+          {/* ── SVG Tree Canvas (compact) ─────────────────────── */}
+          <div className="relative z-10 w-full border border-slate-200/60 bg-linear-to-b from-slate-50/50 to-slate-100/50 rounded-xl p-3 flex items-center justify-center shadow-inner overflow-hidden">
+            {rootNode ? (
+              <svg width="100%" height={svgHeight} viewBox={`0 0 400 ${svgHeight}`} className="overflow-visible select-none">
+                <defs>
+                  <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#818cf8" />
+                    <stop offset="100%" stopColor="#4f46e5" />
+                  </linearGradient>
+                  <linearGradient id="activeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#4338ca" />
+                  </linearGradient>
+                </defs>
 
-              {/* Multiplication / Division */}
-              <div className="flex items-start gap-3 bg-indigo-50/50 border border-indigo-100 p-3 rounded-2xl">
-                <div className="w-6 h-6 bg-indigo-100 text-indigo-700 rounded-md flex items-center justify-center font-black text-xs shrink-0 shadow-2xs font-mono">×/÷</div>
-                <div>
-                  <h4 className="font-bold text-xs text-indigo-905">2. Perkalian & Pembagian</h4>
-                  <p className="text-[10px] text-slate-550 mt-0.5">Sama kuat, dikerjakan dari kiri ke kanan sebelum penjumlahan/pengurangan.</p>
-                </div>
-              </div>
+                {/* Connection curves */}
+                {renderNodes.map((r) => {
+                  if (!r.parentId || r.parentX === undefined || r.parentY === undefined) return null;
+                  const dy = r.y - r.parentY;
+                  const pathData = `M ${r.parentX} ${r.parentY} C ${r.parentX} ${r.parentY + dy * 0.55}, ${r.x} ${r.y - dy * 0.55}, ${r.x} ${r.y}`;
+                  const isLinked = r.node.id === clickableId || r.parentId === clickableId;
+                  return (
+                    <g key={`link-${r.node.id}`}>
+                      <path d={pathData} fill="none" stroke={isLinked ? "#c7d2fe" : "#f1f5f9"} strokeWidth="6" strokeLinecap="round" className="opacity-60 transition-all duration-500" />
+                      <path d={pathData} fill="none" stroke={isLinked ? "#6366f1" : "#cbd5e1"} strokeWidth="3" strokeLinecap="round" className="transition-all duration-500" />
+                    </g>
+                  );
+                })}
 
-              {/* Addition / Subtraction */}
-              <div className="flex items-start gap-3 bg-slate-50 border border-slate-100 p-3 rounded-2xl">
-                <div className="w-6 h-6 bg-slate-200 rounded-md flex items-center justify-center font-black text-xs text-slate-700 shrink-0 shadow-2xs font-mono">+/-</div>
-                <div>
-                  <h4 className="font-bold text-xs text-slate-800">3. Penjumlahan & Pengurangan</h4>
-                  <p className="text-[10px] text-slate-500 mt-0.5">Prioritas terlemah, dieksekusi paling akhir dari kiri ke kanan.</p>
-                </div>
-              </div>
-            </div>
+                {/* Nodes */}
+                {renderNodes.map((r) => {
+                  const isClickable = r.node.id === clickableId;
+                  const isNumber = r.node.type === "number";
+                  return (
+                    <g
+                      key={`node-g-${r.node.id}`}
+                      onClick={() => !isNumber && handleNodeClick(r.node.id)}
+                      className="cursor-pointer group transition-all duration-500"
+                      style={{ pointerEvents: isNumber ? "none" : "auto" }}
+                    >
+                      {isClickable && (
+                        <>
+                          <circle cx={r.x} cy={r.y} r="22" fill="none" stroke="#a5b4fc" strokeWidth="1.5" strokeDasharray="4 4" className="animate-spin opacity-75" style={{ animationDuration: "12s" }} />
+                          <circle cx={r.x} cy={r.y} r="19" fill="none" stroke="#6366f1" strokeWidth="3" className="opacity-25 animate-pulse" />
+                        </>
+                      )}
+                      <circle
+                        cx={r.x} cy={r.y} r="15"
+                        fill={isNumber ? "#ffffff" : isClickable ? "url(#activeGlow)" : "#475569"}
+                        stroke={isNumber ? "#e2e8f0" : isClickable ? "#312e81" : "#1e293b"}
+                        strokeWidth="2"
+                        className="transition-all duration-500 drop-shadow-sm group-hover:scale-110"
+                      />
+                      <text x={r.x} y={r.y + 4} textAnchor="middle" fill={isNumber ? "#1e293b" : "#ffffff"} className="font-sans text-[11px] font-black select-none">
+                        {r.node.value === "*" ? "×" : r.node.value === "/" ? "÷" : r.node.value}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            ) : (
+              <div className="text-slate-400 text-xs py-6">Pohon ekspresi kosong.</div>
+            )}
           </div>
 
-          {/* Miskonsepsi Simulation Section */}
-          <div className="bg-rose-50/50 border border-rose-100 rounded-3xl p-6 shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-black text-rose-600 uppercase tracking-widest flex items-center gap-1.5">
-                <ShieldAlert size={14} className="text-rose-500" />
-                SIMULASI MISKONSEPSI
+          {/* ── Steps log (inline compact) ─────────────────────── */}
+          <div className="relative z-10 mt-3 flex flex-wrap items-center gap-1.5 text-[11px] font-mono font-bold text-slate-700">
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mr-1 select-none">Langkah:</span>
+            {stepsLog.map((step, idx) => (
+              <span key={idx} className="flex items-center gap-1">
+                {idx > 0 && <ArrowRight size={10} className="text-slate-300" />}
+                <span className={`px-1.5 py-0.5 rounded-md border ${
+                  idx === stepsLog.length - 1
+                    ? "bg-indigo-50 border-indigo-200 text-indigo-700"
+                    : "bg-white border-slate-150 text-slate-450 font-normal"
+                }`}>
+                  {step.replace(/\*/g, "×").replace(/\//g, "÷")}
+                </span>
+              </span>
+            ))}
+          </div>
+
+          {/* ── Action buttons ─────────────────────────────────── */}
+          <div className="relative z-10 flex items-center justify-between gap-2 mt-3 pt-3 border-t border-slate-100">
+            <button
+              onClick={handleUndo}
+              disabled={history.length === 0}
+              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-bold text-[11px] transition-colors border ${
+                history.length > 0
+                  ? "bg-white border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer"
+                  : "bg-slate-50 border-slate-100 text-slate-300 cursor-not-allowed"
+              }`}
+            >
+              <Undo size={12} /> Undo
+            </button>
+
+            {isFinished && rootNode && (
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg animate-fadeIn">
+                <Award size={12} /> Hasil: <span className="font-mono">{rootNode.value}</span> 🎉
+              </span>
+            )}
+
+            <button
+              onClick={handleReset}
+              className="inline-flex items-center gap-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-[11px] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            >
+              <RotateCcw size={12} /> Reset
+            </button>
+          </div>
+        </div>
+
+        {/* ── Right: Stacked compact panels ──────────────────── */}
+        <div className="space-y-3">
+          {/* PEMDAS Hierarchy (collapsible) */}
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+            <button
+              onClick={() => setShowHierarchy(!showHierarchy)}
+              className="w-full flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-slate-50 transition-colors"
+            >
+              <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                <Info size={12} className="text-indigo-500" /> HIERARKI OPERASI
               </h3>
-              <button
-                onClick={() => setShowMisconceptionPanel(!showMisconceptionPanel)}
-                className="text-[10px] font-bold text-rose-600 hover:text-rose-800 underline cursor-pointer"
-              >
-                {showMisconceptionPanel ? "Sembunyikan" : "Tampilkan Analisis"}
-              </button>
-            </div>
+              {showHierarchy ? <ChevronUp size={14} className="text-slate-400" /> : <ChevronDown size={14} className="text-slate-400" />}
+            </button>
 
-            <p className="text-xs text-slate-650 leading-relaxed">
-              Miskonsepsi umum siswa adalah membaca operasi matematika layaknya membaca buku: **strictly dari kiri ke kanan** (mengabaikan prioritas operator).
-            </p>
-
-            {showMisconceptionPanel && (
-              <div className="space-y-4 pt-2 border-t border-rose-100 animate-fadeIn">
-                <div className="bg-white border border-rose-150 p-4 rounded-2xl space-y-3 font-mono text-xs">
-                  <span className="font-bold text-rose-600 block text-[10px] uppercase">🚨 ALUR SALAH (Strict Left-to-Right):</span>
-                  <div className="space-y-1 text-slate-600">
-                    <div>1. Hitung penjumlahan dulu:</div>
-                    <div className="font-bold text-rose-700 bg-rose-50 border border-rose-100 px-2 py-1 rounded inline-block">2 + 3 = 5</div>
-                    <div className="text-[10px] text-slate-400 mt-1">2. Lalu kalikan hasilnya:</div>
-                    <div className="font-bold text-rose-700 bg-rose-50 border border-rose-100 px-2 py-1 rounded inline-block">5 × 4 = 20 (SALAH)</div>
+            {showHierarchy && (
+              <div className="px-4 pb-3 space-y-2 animate-fadeIn">
+                {[
+                  { icon: "()", label: "Tanda Kurung", desc: "Prioritas mutlak.", bg: "bg-slate-50 border-slate-100", iconBg: "bg-slate-200 text-slate-700" },
+                  { icon: "×÷", label: "Kali & Bagi", desc: "Kiri ke kanan, sebelum +/-.", bg: "bg-indigo-50/60 border-indigo-100", iconBg: "bg-indigo-100 text-indigo-700" },
+                  { icon: "+−", label: "Tambah & Kurang", desc: "Prioritas terendah.", bg: "bg-slate-50 border-slate-100", iconBg: "bg-slate-200 text-slate-700" },
+                ].map((item) => (
+                  <div key={item.icon} className={`flex items-center gap-2 ${item.bg} border p-2 rounded-xl`}>
+                    <div className={`w-5 h-5 ${item.iconBg} rounded flex items-center justify-center font-black text-[9px] shrink-0 font-mono`}>{item.icon}</div>
+                    <div className="min-w-0">
+                      <span className="font-bold text-[10px] text-slate-800">{item.label}</span>
+                      <span className="text-[9px] text-slate-500 ml-1">{item.desc}</span>
+                    </div>
                   </div>
-                </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-                <div className="bg-white border border-emerald-150 p-4 rounded-2xl space-y-3 font-mono text-xs">
-                  <span className="font-bold text-emerald-600 block text-[10px] uppercase">✅ ALUR BENAR (Aturan PEMDAS):</span>
-                  <div className="space-y-1 text-slate-600">
-                    <div>1. Dahulukan perkalian:</div>
-                    <div className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded inline-block">3 × 4 = 12</div>
-                    <div className="text-[10px] text-slate-400 mt-1">2. Terakhir hitung penjumlahannya:</div>
-                    <div className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded inline-block">2 + 12 = 14 (BENAR)</div>
-                  </div>
-                </div>
+          {/* Misconception Panel (collapsible) */}
+          <div className="bg-rose-50/50 border border-rose-100 rounded-2xl shadow-sm overflow-hidden">
+            <button
+              onClick={() => setShowMisconception(!showMisconception)}
+              className="w-full flex items-center justify-between px-4 py-2.5 cursor-pointer hover:bg-rose-50 transition-colors"
+            >
+              <h3 className="text-[10px] font-black text-rose-600 uppercase tracking-widest flex items-center gap-1.5">
+                <ShieldAlert size={12} className="text-rose-500" /> MISKONSEPSI
+              </h3>
+              {showMisconception ? <ChevronUp size={14} className="text-rose-400" /> : <ChevronDown size={14} className="text-rose-400" />}
+            </button>
 
-                <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl text-[10px] text-indigo-900 leading-relaxed space-y-1">
-                  <span className="font-bold block">💡 Mengapa Aturan Ini Ada?</span>
-                  <p>
-                    Perkalian mewakili pengelompokan berulang (3 kelompok isi 4). Menjumlahkan 2 terlebih dahulu sebelum membentuk kelompok isi 4 adalah kesalahan logika yang mengubah arti asli dari ekspresi tersebut.
-                  </p>
+            {showMisconception && (
+              <div className="px-4 pb-3 space-y-2 animate-fadeIn">
+                <p className="text-[10px] text-slate-600 leading-snug">
+                  Banyak siswa membaca operasi dari kiri ke kanan tanpa memprioritaskan × atau ÷.
+                </p>
+                <div className="bg-white border border-rose-150 p-2.5 rounded-xl font-mono text-[10px] space-y-1">
+                  <span className="font-bold text-rose-600 text-[9px] uppercase block">🚨 Salah (Kiri→Kanan):</span>
+                  <div className="text-slate-600"><InlineMath math="2 + 3 = 5" /> → <InlineMath math="5 \times 4 = 20" /> ✗</div>
+                </div>
+                <div className="bg-white border border-emerald-150 p-2.5 rounded-xl font-mono text-[10px] space-y-1">
+                  <span className="font-bold text-emerald-600 text-[9px] uppercase block">✅ Benar (PEMDAS):</span>
+                  <div className="text-slate-600"><InlineMath math="3 \times 4 = 12" /> → <InlineMath math="2 + 12 = 14" /> ✓</div>
                 </div>
               </div>
             )}
           </div>
+
+          {/* Quick tip box */}
+          <div className="bg-indigo-50/60 border border-indigo-100 rounded-2xl px-4 py-3 text-[10px] text-indigo-800 leading-snug">
+            <span className="font-bold">💡 Tip:</span> Node yang berpendar ungu adalah operasi yang <strong>harus diklik terlebih dahulu</strong> sesuai aturan PEMDAS.
+          </div>
         </div>
       </div>
-      
-      {/* Quiz Section to lock in understanding */}
-      <QuizContainer 
+
+      {/* ─── Quiz (compact) ─────────────────────────────────── */}
+      <QuizContainer
         title="Evaluasi Konsep"
         questionText={
           <span>
-            Manakah urutan pengerjaan yang benar untuk ekspresi di bawah ini? <br />
-            <span className="font-bold text-indigo-650 bg-indigo-50 px-1.5 py-0.5 rounded"><InlineMath math="5 + 10 \div 2" /></span>
+            Urutan pengerjaan yang benar untuk <InlineMath math="5 + 10 \div 2" /> ?
           </span>
         }
         evalResult={quizEval}
-        onNext={handleNextQuiz}
+        onNext={() => setQuizFinished(true)}
         isLastQuestion={true}
         nextPath="/student/visualizations"
-        nextLabel="Selesai: Kembali ke Galeri"
+        nextLabel="Kembali ke Galeri"
         isFinished={quizFinished}
         score={quizScore}
         totalQuestions={1}
-        onRetry={handleRetryQuiz}
+        onRetry={() => { setQuizEval('none'); setQuizScore(0); setQuizFinished(false); }}
       >
-        <div className="flex flex-col gap-3 w-full max-w-xl">
+        <div className="flex flex-col gap-2 w-full max-w-xl">
           {[
-            { text: "Hitung dari kiri ke kanan (5 + 10 = 15, lalu 15 ÷ 2 = 7.5)", correct: false },
-            { text: "Dahulukan pembagian (10 ÷ 2 = 5, kemudian jumlahkan 5 + 5 = 10)", correct: true },
-            { text: "Kedua operasi sama kuat sehingga bebas dikerjakan yang mana saja", correct: false },
-            { text: "Dahulukan penjumlahan karena posisinya di depan pembagian", correct: false }
+            { text: "Kiri ke kanan: (5 + 10 = 15, lalu 15 ÷ 2 = 7.5)", correct: false },
+            { text: "Dahulukan ÷: (10 ÷ 2 = 5, lalu 5 + 5 = 10)", correct: true },
+            { text: "Keduanya sama kuat, bebas urutannya", correct: false },
+            { text: "Dahulukan + karena posisinya di depan ÷", correct: false },
           ].map((opt, idx) => (
             <button
               key={idx}
               disabled={quizEval !== 'none'}
               onClick={() => handleEvaluateQuiz(opt.correct)}
-              className={`w-full py-3 px-4 rounded-xl border-2 text-left text-xs transition-all hover:scale-[1.01] ${
+              className={`w-full py-2.5 px-3.5 rounded-xl border-2 text-left text-[11px] transition-all hover:scale-[1.01] ${
                 quizEval !== 'none' ? 'pointer-events-none' : 'cursor-pointer'
               } ${
                 quizEval === 'correct' && opt.correct

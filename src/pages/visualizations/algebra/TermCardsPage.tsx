@@ -64,14 +64,14 @@ export default function TermCardsPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-6 animate-fadeIn pb-24 md:pb-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+    <div className="max-w-4xl mx-auto py-3 lg:py-6 animate-fadeIn pb-24 md:pb-6 px-3 sm:px-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 lg:mb-8 gap-3">
         <div>
-          <Link to="/student/visualizations" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold text-sm mb-3 transition-colors">
+          <Link to="/student/visualizations" className="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold text-sm mb-2 lg:mb-3 transition-colors">
             <ArrowLeft size={16} /> Kembali ke Galeri
           </Link>
-          <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Kartu Suku Aljabar</h2>
-          <p className="text-slate-500 text-sm mt-1">
+          <h2 className="text-xl md:text-3xl font-black text-slate-900 tracking-tight">Kartu Suku Aljabar</h2>
+          <p className="text-slate-500 text-xs sm:text-sm mt-0.5 lg:mt-1">
             Kenali bagian-bagian dari bentuk aljabar: Suku, Variabel, Koefisien, dan Konstanta.
           </p>
         </div>
@@ -80,27 +80,27 @@ export default function TermCardsPage() {
         <div className="flex bg-slate-100 p-1 rounded-xl self-start">
           <button 
             onClick={() => setMode('explore')}
-            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-3 py-1.5 lg:px-4 lg:py-2 text-xs lg:text-sm font-bold rounded-lg transition-all ${mode === 'explore' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             Eksplorasi
           </button>
           <button 
             onClick={() => { setMode('evaluate'); handleRetryQuiz(); }}
-            className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-3 py-1.5 lg:px-4 lg:py-2 text-xs lg:text-sm font-bold rounded-lg transition-all ${mode === 'evaluate' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
           >
             Evaluasi
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-8">
         
         {/* Main Canvas */}
         <div className="lg:col-span-8">
           {mode === 'explore' && (
-            <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-sm min-h-[400px] flex flex-col items-center justify-center relative">
+            <div className="bg-white border border-slate-200 rounded-2xl lg:rounded-3xl p-3 lg:p-12 shadow-sm min-h-[300px] lg:min-h-[400px] flex flex-col items-center justify-center relative">
               
-              <div className="flex flex-wrap justify-center items-center gap-1 text-4xl md:text-5xl font-mono font-black mb-12">
+              <div className="flex flex-wrap justify-center items-center gap-1 text-3xl lg:text-5xl font-mono font-black mb-8 lg:mb-12">
                 {expressionParts.map((part, idx) => (
                   <span 
                     key={idx} 
@@ -111,12 +111,12 @@ export default function TermCardsPage() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-2xl">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 lg:gap-4 w-full max-w-2xl">
                 {['suku', 'variabel', 'koefisien', 'konstanta'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab as any)}
-                    className={`py-3 rounded-xl font-bold capitalize transition-all border-2 ${activeTab === tab ? 'bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm scale-105' : 'border-slate-200 text-slate-500 hover:border-indigo-300'}`}
+                    className={`py-2 lg:py-3 rounded-xl font-bold capitalize transition-all border border-slate-200 text-xs lg:text-sm ${activeTab === tab ? 'bg-indigo-50 border-indigo-500 text-indigo-700 shadow-sm scale-105' : 'border-slate-200 text-slate-500 hover:border-indigo-300'}`}
                   >
                     {tab}
                   </button>
@@ -146,7 +146,7 @@ export default function TermCardsPage() {
               onRetry={handleRetryQuiz}
             >
               {(quizStep === 0 || quizStep === 1) && (
-                <div className="flex justify-center items-center gap-1 text-3xl font-mono font-black mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                <div className="flex justify-center items-center gap-1 text-2xl lg:text-3xl font-mono font-black mb-6 lg:mb-8 p-3 lg:p-4 bg-slate-50 rounded-2xl border border-slate-200">
                   <InlineMath math="3x^2 - 5y + 7" />
                 </div>
               )}
@@ -157,7 +157,7 @@ export default function TermCardsPage() {
                     <button 
                       key={idx}
                       onClick={() => handleEvaluate(ans === '3')} 
-                      className={`w-20 h-16 rounded-xl border-2 font-bold text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '3' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '3'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                      className={`w-16 h-12 sm:w-20 sm:h-16 rounded-xl border-2 font-bold text-sm sm:text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '3' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '3'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
                     >
                       {ans}
                     </button>
@@ -171,7 +171,7 @@ export default function TermCardsPage() {
                     <button 
                       key={idx}
                       onClick={() => handleEvaluate(ans === '7')} 
-                      className={`px-6 h-16 rounded-xl border-2 font-bold text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '7' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '7'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                      className={`px-4 sm:px-6 h-12 sm:h-16 rounded-xl border-2 font-bold text-sm sm:text-lg transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === '7' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== '7'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
                     >
                       <InlineMath math={ans} />
                     </button>
@@ -180,20 +180,20 @@ export default function TermCardsPage() {
               )}
 
               {quizStep === 2 && (
-                <div className="flex flex-col items-center gap-6">
-                  <div className="flex gap-6">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="flex gap-4">
                     {['Ya', 'Tidak'].map((ans, idx) => (
                       <button 
                         key={idx}
                         onClick={() => handleEvaluate(ans === 'Tidak')} 
-                        className={`px-8 py-4 rounded-2xl border-2 font-bold text-xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === 'Tidak' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== 'Tidak'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
+                        className={`px-6 py-2.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl border-2 font-bold text-base sm:text-xl transition-all hover:scale-105 hover:shadow-md ${evalResult !== 'none' ? 'pointer-events-none' : ''} ${evalResult === 'correct' && ans === 'Tidak' ? 'bg-emerald-100 border-emerald-400 text-emerald-700' : evalResult === 'wrong' && ans !== 'Tidak'  ? 'bg-rose-50 border-rose-200 text-rose-400' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600'}`}
                       >
                         {ans}
                       </button>
                     ))}
                   </div>
                   {evalResult !== 'none' && (
-                    <p className={`text-sm font-bold max-w-md text-center ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                    <p className={`text-xs sm:text-sm font-bold max-w-md text-center ${evalResult === 'correct' ? 'text-emerald-600' : 'text-rose-600'}`}>
                       Penjelasan: Salah. Angka 2 pada <InlineMath math="x^2" /> adalah <strong>pangkat</strong>, bukan koefisien. Koefisien adalah angka yang berada di <strong>depan</strong> variabel yang mengalikan variabel tersebut (misal angka 3 pada <InlineMath math="3x^2" />).
                     </p>
                   )}
@@ -205,19 +205,19 @@ export default function TermCardsPage() {
         </div>
 
         {/* Controls */}
-        <div className={`lg:col-span-4 flex flex-col gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
+        <div className={`lg:col-span-4 flex flex-col gap-3 lg:gap-4 ${mode === 'evaluate' ? 'opacity-50 pointer-events-none' : ''}`}>
           
-          <div className="bg-indigo-50 border border-indigo-100 p-6 rounded-3xl">
-            <h3 className="text-indigo-800 font-bold mb-2 text-sm">Apa itu {activeTab}?</h3>
-            <p className="text-sm text-indigo-700 leading-relaxed mb-4">
+          <div className="bg-indigo-50 border border-indigo-100 p-3 lg:p-6 rounded-2xl lg:rounded-3xl">
+            <h3 className="text-indigo-800 font-bold mb-1.5 lg:mb-2 text-xs lg:text-sm">Apa itu {activeTab}?</h3>
+            <p className="text-xs lg:text-sm text-indigo-700 leading-relaxed mb-3 lg:mb-4">
               {activeTab === 'suku' && "Suku adalah bagian-bagian dari bentuk aljabar yang dipisahkan oleh tanda tambah (+) atau kurang (-)."}
               {activeTab === 'variabel' && "Variabel adalah huruf atau simbol (seperti x, y) yang mewakili nilai yang belum diketahui."}
               {activeTab === 'koefisien' && "Koefisien adalah angka yang berada tepat di depan variabel. Koefisien berfungsi mengalikan variabel."}
               {activeTab === 'konstanta' && "Konstanta adalah angka tunggal yang berdiri sendiri, tanpa memiliki variabel di belakangnya."}
             </p>
-            <div className="flex items-start gap-2 pt-4 border-t border-indigo-200/50">
-              <Info className="text-indigo-500 shrink-0 mt-0.5" size={16} />
-              <p className="text-xs text-indigo-600/80">
+            <div className="flex items-start gap-2 pt-3 border-t border-indigo-200/50">
+              <Info className="text-indigo-500 shrink-0 mt-0.5" size={14} />
+              <p className="text-[10px] lg:text-xs text-indigo-600/80">
                 Pilih tombol di sebelah kiri untuk melihat highlight (sorotan) bagian mana yang dimaksud.
               </p>
             </div>

@@ -220,23 +220,23 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
   const isTransformed = (passed('TRANSFORM_TO_ADDITION') || passed('MOVE_BY_B') || passed('SHOW_RESULT')) && op === '-';
 
   return (
-    <div id="interactive-number-line" className="bg-white p-4 sm:p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm space-y-4 sm:space-y-6 md:space-y-8 animate-fadeIn">
+    <div id="interactive-number-line" className="bg-white p-3 lg:p-8 rounded-2xl lg:rounded-3xl border border-slate-100 shadow-sm space-y-3 lg:space-y-8 animate-fadeIn">
       
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
         <div>
-          <h3 className="font-sans font-black text-slate-900 tracking-tight text-lg md:text-xl flex items-center gap-2">
-            <HelpCircle size={22} className="text-indigo-600 animate-pulse" />
+          <h3 className="font-sans font-black text-slate-900 tracking-tight text-base lg:text-xl flex items-center gap-2">
+            <HelpCircle size={18} className="text-indigo-600 animate-pulse lg:w-5 lg:h-5" />
             Papan Garis Bilangan Vektor
           </h3>
-          <p className="text-sm text-slate-500 font-sans mt-1">
+          <p className="text-xs lg:text-sm text-slate-500 font-sans mt-0.5">
             Membongkar makna perpindahan posisi dari setiap operasi matematis.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           {onNextQuestion && (
             <button
               onClick={onNextQuestion}
-              className="bg-slate-100 text-slate-650 hover:bg-slate-200 px-4 py-2 rounded-xl text-xs flex items-center justify-center transition-colors cursor-pointer font-sans font-bold shadow-sm"
+              className="bg-slate-100 text-slate-650 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-[10px] sm:text-xs flex items-center justify-center transition-colors cursor-pointer font-sans font-bold shadow-xs"
             >
               Soal Berikutnya
             </button>
@@ -244,7 +244,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           {onProceedToDrill && (
             <button
               onClick={onProceedToDrill}
-              className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-xl text-xs flex items-center justify-center transition-colors cursor-pointer font-sans font-bold shadow-sm"
+              className="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-1.5 rounded-lg text-[10px] sm:text-xs flex items-center justify-center transition-colors cursor-pointer font-sans font-bold shadow-xs"
             >
               Lanjut Latihan
             </button>
@@ -253,19 +253,19 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       </div>
 
       {/* Custom Equation Input */}
-      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Kustomisasi Soal:</span>
+      <div className="bg-slate-50 p-2.5 lg:p-4 rounded-xl lg:rounded-2xl border border-slate-200 space-y-2.5 lg:space-y-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[10px] lg:text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">Kustomisasi:</span>
           <input 
             type="number" 
             value={inputA} 
             onChange={(e) => setInputA(e.target.value)}
-            className="w-16 px-2 py-1 text-center font-mono font-bold text-sm border border-slate-300 rounded-lg focus:outline-hidden focus:border-indigo-500 bg-white"
+            className="w-12 lg:w-16 px-1.5 py-0.5 lg:py-1 text-center font-mono font-bold text-xs lg:text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 bg-white"
           />
           <select 
             value={inputOp} 
             onChange={(e) => setInputOp(e.target.value as '+'|'-')}
-            className="w-12 px-1 py-1 text-center font-mono font-bold text-sm border border-slate-300 rounded-lg focus:outline-hidden focus:border-indigo-500 bg-white"
+            className="w-10 lg:w-12 px-1 py-0.5 lg:py-1 text-center font-mono font-bold text-xs lg:text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 bg-white"
           >
             <option value="+">+</option>
             <option value="-">-</option>
@@ -274,18 +274,18 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
             type="number" 
             value={inputB} 
             onChange={(e) => setInputB(e.target.value)}
-            className="w-16 px-2 py-1 text-center font-mono font-bold text-sm border border-slate-300 rounded-lg focus:outline-hidden focus:border-indigo-500 bg-white"
+            className="w-12 lg:w-16 px-1.5 py-0.5 lg:py-1 text-center font-mono font-bold text-xs lg:text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 bg-white"
           />
           <button 
             onClick={handleAnimateCustom}
-            className="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-3 py-1 rounded-lg text-[10px] lg:text-xs font-bold transition-colors flex items-center gap-1 cursor-pointer"
           >
-            <PlayCircle size={14} /> Animasikan
+            <PlayCircle size={12} /> Animasikan
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-200">
-          <span className="text-[10px] font-bold text-slate-400 uppercase mr-1">Tantangan Cepat:</span>
+        <div className="flex flex-wrap items-center gap-1.5 pt-2 lg:pt-3 border-t border-slate-200">
+          <span className="text-[9px] lg:text-[10px] font-bold text-slate-400 uppercase mr-1">Tantangan Cepat:</span>
           {[
             { a: 3, op: '+', b: -5, label: "3 + (-5)" },
             { a: -4, op: '+', b: -3, label: "-4 + (-3)" },
@@ -308,7 +308,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
                  setState('IDLE');
                  setIsPaused(false);
                }}
-               className="px-3 py-2 text-xs font-mono font-bold bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 rounded-md transition-colors cursor-pointer shadow-2xs"
+               className="px-2 py-1 text-[10px] font-mono font-bold bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 rounded transition-colors cursor-pointer shadow-2xs"
              >
                {q.label}
              </button>
@@ -317,13 +317,13 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       </div>
 
       {/* Combined Container: Equation + SVG Number Line */}
-      <div ref={containerRef} className="bg-slate-900 rounded-3xl border border-slate-800 p-3 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-2 sm:mt-4">
+      <div ref={containerRef} className="bg-slate-900 rounded-2xl lg:rounded-3xl border border-slate-800 p-2 sm:p-6 relative overflow-hidden select-none shadow-2xl flex flex-col items-center justify-center mt-1 sm:mt-4">
         
         {/* The Equation */}
-        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 md:gap-4 max-w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter mt-12 sm:mt-6 mb-4 sm:mb-6 z-10">
+        <div className="flex flex-wrap items-center justify-center gap-1 lg:gap-4 max-w-full text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-mono tracking-tighter mt-8 sm:mt-6 mb-2 sm:mb-6 z-10">
           
           {/* Term A */}
-          <div className="relative h-16 flex items-center justify-center">
+          <div className="relative h-10 sm:h-16 flex items-center justify-center">
             <span className="invisible px-1">{a < 0 ? `(${a})` : a}</span>
             <span className={`transition-all duration-300 absolute ${
               state === 'HIGHLIGHT_A' || state === 'MOVE_ZERO_TO_A'
@@ -335,7 +335,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </div>
           
           {/* Operator */}
-          <div className="relative h-16 flex items-center justify-center">
+          <div className="relative h-10 sm:h-16 flex items-center justify-center">
              <span className="invisible px-2">{op}</span>
              {/* NEW Operator */}
              {op === '-' && (
@@ -356,7 +356,7 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           </div>
 
           {/* Term B */}
-          <div className="relative h-16 flex items-center justify-center">
+          <div className="relative h-10 sm:h-16 flex items-center justify-center">
              <span className="invisible px-1">{`(-${Math.abs(b)})`}</span>
              {/* NEW Term B */}
              {op === '-' && (
@@ -379,8 +379,8 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
           {/* Equals & Result */}
           {passed('SHOW_RESULT') && (
             <>
-              <span className="text-slate-300 animate-fadeIn ml-2">=</span>
-              <span tabIndex={0} className="text-emerald-600 animate-fadeIn drop-shadow-md scale-110 ml-4 flex items-center relative group outline-hidden">
+              <span className="text-slate-300 animate-fadeIn ml-1.5">=</span>
+              <span tabIndex={0} className="text-emerald-600 animate-fadeIn drop-shadow-md scale-115 ml-3 flex items-center relative group outline-none">
                 {correctAnswer > 0 ? (
                   <>
                     <span className="animate-fade-out-plus inline-block origin-right">+</span>
@@ -398,40 +398,40 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
         </div>
 
         {/* Dynamic Text Explanation (Bottom) */}
-        <div className="h-[4rem] sm:h-[3.5rem] flex items-center justify-center px-4 w-full z-10 mb-2 sm:mb-4 max-w-[95%] sm:max-w-[80%]">
-          <span className="text-xs sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1.5 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs">
+        <div className="h-[3.5rem] lg:h-[3.5rem] flex items-center justify-center px-2 lg:px-4 w-full z-10 mb-1 lg:mb-4 max-w-full lg:max-w-[80%]">
+          <span className="text-[10px] sm:text-sm md:text-base font-bold text-amber-200 tracking-wide animate-fadeIn font-sans bg-amber-900/50 px-3 sm:px-5 py-1 sm:py-2 rounded-xl border border-amber-700/50 text-center shadow-xs leading-normal">
             {renderExplanation()}
           </span>
         </div>
 
         {/* Kesimpulan Pop-up */}
-        <div className="min-h-[3rem] flex items-center justify-center mt-0 mb-2 z-10">
+        <div className="min-h-[2rem] sm:min-h-[3rem] flex items-center justify-center mt-0 mb-1 sm:mb-2 z-10">
           {passed('SHOW_RESULT') && op === '-' && (
-            <div className="bg-indigo-500/80 text-indigo-50 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm md:text-base font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-400/50 text-center mx-4">
+            <div className="bg-indigo-500/80 text-indigo-55 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-xl text-[10px] sm:text-sm font-bold shadow-lg animate-bounce font-mono tracking-wide border border-indigo-400/50 text-center mx-4">
               Kesimpulan: {a} - {b < 0 ? `(${b})` : b} = {a} + {-b < 0 ? `(${-b})` : -b} = {correctAnswer}
             </div>
           )}
         </div>
 
         {/* Animation Controls (Restart & Pause) */}
-        <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-50 flex items-center gap-2">
+        <div className="absolute top-2 right-2 z-50 flex items-center gap-1.5 scale-75 sm:scale-100 origin-top-right">
           <button 
             onClick={() => setIsPaused(!isPaused)}
-            className={`p-2 sm:p-2.5 rounded-xl shadow-md transition-colors cursor-pointer flex items-center justify-center border backdrop-blur-sm ${
+            className={`p-2 rounded-xl shadow-md transition-colors cursor-pointer flex items-center justify-center border backdrop-blur-sm ${
               isPaused 
                 ? 'bg-amber-500/90 hover:bg-amber-500 text-white border-amber-600' 
                 : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border-slate-700'
             }`}
             title={isPaused ? "Lanjutkan Animasi" : "Jeda Animasi"}
           >
-            {isPaused ? <PlayCircle size={16} className="sm:w-5 sm:h-5" /> : <PauseCircle size={16} className="sm:w-5 sm:h-5" />}
+            {isPaused ? <PlayCircle size={16} /> : <PauseCircle size={16} />}
           </button>
           
           <button
             onClick={handleRestart}
-            className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
+            className="bg-slate-800/80 hover:bg-slate-700 text-indigo-300 hover:text-indigo-200 px-3 py-2 rounded-xl text-xs flex items-center gap-2 transition-colors cursor-pointer font-sans font-bold shadow-md border border-slate-700 backdrop-blur-sm"
           >
-            <RotateCcw size={14} className="sm:w-4 sm:h-4" />
+            <RotateCcw size={14} />
             <span className="hidden sm:inline">Ulangi Animasi</span>
           </button>
         </div>
@@ -612,13 +612,13 @@ export default function InteractiveNumberLine({ initialEquation, onNextQuestion,
       </div>
 
       {/* Keterangan Arah Perpindahan */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-bold font-sans pt-2">
-        <div className="bg-sky-50 text-sky-700 px-4 py-2.5 rounded-xl border border-sky-100 flex items-center gap-2 shadow-xs w-full sm:w-auto">
-          <span className="text-sky-500 text-lg leading-none font-black">+</span>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-[10px] sm:text-xs font-bold font-sans pt-2">
+        <div className="bg-sky-50 text-sky-700 px-3 py-1.5 lg:py-2.5 rounded-xl border border-sky-100 flex items-center gap-2 shadow-xs w-full sm:w-auto">
+          <span className="text-sky-500 text-base leading-none font-black">+</span>
           <span>Menjumlahkan Positif = Bergerak ke <span className="font-black text-sky-600">KANAN</span></span>
         </div>
-        <div className="bg-rose-50 text-rose-700 px-4 py-2.5 rounded-xl border border-rose-100 flex items-center gap-2 shadow-xs w-full sm:w-auto">
-          <span className="text-rose-500 text-lg leading-none font-black">-</span>
+        <div className="bg-rose-50 text-rose-700 px-3 py-1.5 lg:py-2.5 rounded-xl border border-rose-100 flex items-center gap-2 shadow-xs w-full sm:w-auto">
+          <span className="text-rose-500 text-base leading-none font-black">-</span>
           <span>Menjumlahkan Negatif = Bergerak ke <span className="font-black text-rose-600">KIRI</span></span>
         </div>
       </div>

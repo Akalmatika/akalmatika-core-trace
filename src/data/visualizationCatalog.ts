@@ -134,7 +134,7 @@ export const fractionVisualizations: VisualizationItem[] = [
     representation: "Grid Arsir Dua Dimensi Transparan",
     modes: ["Arsir Silang Perkalian", "Bagi Luas Area", "Langkah Penyederhanaan"],
     href: "/student/visualizations/fractions/cross-grid-multiplier",
-    status: "planned",
+    status: "ready",
     icon: Grid3x3
   }
 ];
@@ -179,7 +179,7 @@ export const percentVisualizations: VisualizationItem[] = [
     representation: "Struk & Keranjang Belanja Dinamis",
     modes: ["Diskon Tunggal", "Diskon Bertingkat", "Pajak Pertambahan Nilai", "Cek Selisih Harga"],
     href: "/student/visualizations/percent/discount-simulator",
-    status: "planned",
+    status: "ready",
     icon: Tags
   }
 ];
@@ -311,7 +311,7 @@ export const mixedOperationsVisualizations: VisualizationItem[] = [
     representation: "Pohon Ekspresi Interaktif & Blok Kekuatan",
     modes: ["Hierarki Ekspresi", "Langkah Penyusutan", "Peran Tanda Kurung", "Game Urutan Cepat"],
     href: "/student/visualizations/algebra/order-of-operations",
-    status: "planned",
+    status: "ready",
     icon: Grip
   }
 ];
@@ -328,7 +328,7 @@ export const plsvVisualizations: VisualizationItem[] = [
     representation: "Neraca Timbangan Fisika 2D",
     modes: ["Setarakan Timbangan", "Operasi Dua Ruas", "Isolasi x", "Langkah Invers Visual"],
     href: "/student/visualizations/algebra/plsv-balance",
-    status: "planned",
+    status: "ready",
     icon: Scale
   }
 ];

@@ -14,6 +14,7 @@ import AddSameDenominatorPage from "./pages/visualizations/fractions/AddSameDeno
 import AddDiffDenominatorPage from "./pages/visualizations/fractions/AddDiffDenominatorPage";
 import Grid100Page from "./pages/visualizations/percent/Grid100Page";
 import FractionToPercentPage from "./pages/visualizations/percent/FractionToPercentPage";
+import DiscountSimulatorPage from "./pages/visualizations/percent/DiscountSimulatorPage";
 import PercentVisualizationPage from "./pages/PercentVisualizationPage";
 import AlgebraVisualizationPage from "./pages/AlgebraVisualizationPage";
 import TermCardsPage from "./pages/visualizations/algebra/TermCardsPage";
@@ -29,6 +30,10 @@ import NumberLineVisualizationPage from "./pages/NumberLineVisualizationPage";
 import PlaceholderVisualizationPage from "./pages/PlaceholderVisualizationPage";
 import MixedOperationsVisualizationPage from "./pages/MixedOperationsVisualizationPage";
 import PlsvVisualizationPage from "./pages/PlsvVisualizationPage";
+import CrossGridMultiplierPage from "./pages/visualizations/fractions/CrossGridMultiplierPage";
+import OrderOfOperationsPage from "./pages/visualizations/algebra/OrderOfOperationsPage";
+import PlsvBalancePage from "./pages/visualizations/algebra/PlsvBalancePage";
+
 
 
 export default function App() {
@@ -60,9 +65,11 @@ export default function App() {
           <Route path="student/visualizations/fractions/compare-order" element={<CompareFractionsPage />} />
           <Route path="student/visualizations/fractions/same-denominator" element={<AddSameDenominatorPage />} />
           <Route path="student/visualizations/fractions/different-denominator" element={<AddDiffDenominatorPage />} />
+          <Route path="student/visualizations/fractions/cross-grid-multiplier" element={<CrossGridMultiplierPage />} />
           <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
           <Route path="student/visualizations/percent/grid-100" element={<Grid100Page />} />
           <Route path="student/visualizations/percent/fraction-to-percent" element={<FractionToPercentPage />} />
+          <Route path="student/visualizations/percent/discount-simulator" element={<DiscountSimulatorPage />} />
           <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
           <Route path="student/visualizations/algebra/term-cards" element={<TermCardsPage />} />
           <Route path="student/visualizations/algebra/sign-belongs-to-term" element={<SignBelongsToTermPage />} />
@@ -72,6 +79,8 @@ export default function App() {
           <Route path="student/visualizations/algebra/expand-brackets" element={<ExpandBracketsPage />} />
           <Route path="student/visualizations/algebra/substitution-machine" element={<SubstitutionMachinePage />} />
           <Route path="student/visualizations/algebra/word-to-expression" element={<WordToExpressionPage />} />
+          <Route path="student/visualizations/algebra/order-of-operations" element={<OrderOfOperationsPage />} />
+          <Route path="student/visualizations/algebra/plsv-balance" element={<PlsvBalancePage />} />
           <Route path="student/visualizations/operasi-campuran" element={<MixedOperationsVisualizationPage />} />
           <Route path="student/visualizations/plsv" element={<PlsvVisualizationPage />} />
           <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />

@@ -19,6 +19,8 @@ import {
   Puzzle,
   Layers,
   Sparkles,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -78,6 +80,7 @@ function Section({
    ───────────────────────────────────────────── */
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeFlowStep, setActiveFlowStep] = useState<number | null>(null);
 
   const navLinks = [
     { label: "Masalah", href: "#masalah" },
@@ -253,6 +256,9 @@ export default function LandingPage() {
                       color: "bg-blue-500",
                       bgColor: "bg-blue-50",
                       borderColor: "border-blue-100",
+                      detailDesc: "Mulai dari tes singkat untuk membaca fondasi yang sudah kuat dan bagian yang masih perlu diperkuat.",
+                      linkText: "Mulai Diagnosis",
+                      linkHref: "/student/diagnostic-foundation",
                     },
                     {
                       step: "2",
@@ -261,6 +267,9 @@ export default function LandingPage() {
                       color: "bg-amber-500",
                       bgColor: "bg-amber-50",
                       borderColor: "border-amber-100",
+                      detailDesc: "Jawaban yang keliru tidak langsung dianggap gagal. Akalmatika membaca pola kesalahan sebagai sinyal miskonsepsi.",
+                      linkText: "Lihat Dashboard",
+                      linkHref: "/student/dashboard",
                     },
                     {
                       step: "3",
@@ -269,6 +278,9 @@ export default function LandingPage() {
                       color: "bg-indigo-500",
                       bgColor: "bg-indigo-50",
                       borderColor: "border-indigo-100",
+                      detailDesc: "Siswa diarahkan ke penjelasan makna konsep agar tidak langsung melompat ke rumus.",
+                      linkText: "Lihat Contoh Bridge",
+                      linkHref: "/student/bridge/fractions/MC-FRAC-ADD-NUM-DENOM",
                     },
                     {
                       step: "4",
@@ -277,6 +289,9 @@ export default function LandingPage() {
                       color: "bg-emerald-500",
                       bgColor: "bg-emerald-50",
                       borderColor: "border-emerald-100",
+                      detailDesc: "Konsep abstrak dibuat terlihat melalui model visual, manipulatif, atau simulasi sederhana.",
+                      linkText: "Lihat Visualisasi",
+                      linkHref: "/student/visualizations",
                     },
                     {
                       step: "5",
@@ -285,6 +300,9 @@ export default function LandingPage() {
                       color: "bg-purple-500",
                       bgColor: "bg-purple-50",
                       borderColor: "border-purple-100",
+                      detailDesc: "Latihan berjalan bertahap: contoh lengkap, contoh terbimbing, lalu latihan mandiri.",
+                      linkText: "Coba Drill",
+                      linkHref: "/student/drill/fractions",
                     },
                     {
                       step: "6",
@@ -293,27 +311,57 @@ export default function LandingPage() {
                       color: "bg-teal-500",
                       bgColor: "bg-teal-50",
                       borderColor: "border-teal-100",
+                      detailDesc: "Siswa baru lanjut setelah menunjukkan pemahaman yang cukup kuat, bukan hanya selesai membaca materi.",
+                      linkText: "Coba Mastery",
+                      linkHref: "/student/mastery/fractions",
                     },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className={`flex items-start gap-3 ${item.bgColor} border ${item.borderColor} rounded-xl px-4 py-3 transition-all hover:shadow-sm`}
-                    >
+                  ].map((item, i) => {
+                    const isActive = activeFlowStep === i;
+                    return (
                       <div
-                        className={`w-6 h-6 ${item.color} rounded-lg flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5`}
+                        key={i}
+                        onClick={() => setActiveFlowStep(isActive ? null : i)}
+                        role="button"
+                        aria-expanded={isActive}
+                        className={`flex flex-col gap-3 ${item.bgColor} border ${isActive ? item.borderColor : "border-transparent"} rounded-xl px-4 py-3 transition-all cursor-pointer hover:shadow-sm hover:${item.borderColor}`}
                       >
-                        {item.step}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-sm font-bold text-slate-800 leading-snug">
-                          {item.title}
+                        <div className="flex items-start gap-3 w-full">
+                          <div
+                            className={`w-6 h-6 ${item.color} rounded-lg flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5`}
+                          >
+                            {item.step}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm font-bold text-slate-800 leading-snug">
+                              {item.title}
+                            </div>
+                            <div className="text-xs text-slate-500 leading-relaxed mt-0.5">
+                              {item.desc}
+                            </div>
+                          </div>
+                          <div className="shrink-0 text-slate-400 mt-1 transition-transform">
+                            {isActive ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </div>
                         </div>
-                        <div className="text-xs text-slate-500 leading-relaxed mt-0.5">
-                          {item.desc}
+
+                        {/* Dropdown Content */}
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isActive ? "max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
+                          <div className="pl-9 pr-2 pb-1">
+                            <p className="text-[13px] text-slate-600 leading-relaxed mb-3">
+                              {item.detailDesc}
+                            </p>
+                            <Link
+                              to={item.linkHref}
+                              onClick={(e) => e.stopPropagation()}
+                              className={`inline-flex items-center gap-1.5 text-xs font-semibold ${item.color.replace('bg-', 'text-')} hover:underline`}
+                            >
+                              {item.linkText} <ArrowRight size={12} />
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

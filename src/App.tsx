@@ -33,6 +33,14 @@ import PlsvVisualizationPage from "./pages/PlsvVisualizationPage";
 import CrossGridMultiplierPage from "./pages/visualizations/fractions/CrossGridMultiplierPage";
 import OrderOfOperationsPage from "./pages/visualizations/algebra/OrderOfOperationsPage";
 import PlsvBalancePage from "./pages/visualizations/algebra/PlsvBalancePage";
+import DiagnosticFoundationPage from "./pages/DiagnosticFoundationPage";
+import LearningMapPage from "./pages/LearningMapPage";
+import BridgePage from "./pages/BridgePage";
+import DrillPage from "./pages/DrillPage";
+import MasteryCheckPage from "./pages/MasteryCheckPage";
+import StudentDashboardPage from "./pages/StudentDashboardPage";
+import TeacherLayout from "./components/layout/TeacherLayout";
+import TeacherDashboardPage from "./pages/TeacherDashboardPage";
 
 
 
@@ -40,61 +48,75 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Main Application Routes wrapped in StudentLayout */}
-        <Route path="/" element={<StudentLayout />}>
+        {/* Landing Page — rendered with its own layout (navbar + footer built-in) */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Student application routes wrapped in StudentLayout */}
+        <Route path="/student" element={<StudentLayout />}>
           
-          {/* Landing Page */}
-          <Route index element={<LandingPage />} />
+          {/* Student index redirects to dashboard */}
+          <Route index element={<Navigate to="/student/dashboard" replace />} />
           
-          {/* Redirection for /student since / is our home */}
-          <Route path="student" element={<Navigate to="/" replace />} />
+          {/* Dashboard */}
+          <Route path="dashboard" element={<StudentDashboardPage />} />
           
           {/* Diagnostic Flow */}
-          <Route path="student/diagnostic" element={<DiagnosticCatalogPage />} />
-          <Route path="student/diagnostic/:topicId" element={<DiagnosticPage />} />
+          <Route path="diagnostic" element={<DiagnosticCatalogPage />} />
+          <Route path="diagnostic/:topicId" element={<DiagnosticPage />} />
+          <Route path="diagnostic-foundation" element={<DiagnosticFoundationPage />} />
+          <Route path="learning-map" element={<LearningMapPage />} />
+          <Route path="bridge/:topicId/:misconceptionCode" element={<BridgePage />} />
+          <Route path="drill/:topicId" element={<DrillPage />} />
+          <Route path="mastery/:topicId" element={<MasteryCheckPage />} />
           
           {/* Visualizations Flow */}
-          <Route path="student/visualizations" element={<VisualizationCatalogPage />} />
-          <Route path="student/visualizations/integer" element={<IntegerVisualizationPage />} />
-          <Route path="student/visualizations/integer/zero-pair" element={<ZeroPairVisualizationPage />} />
-          <Route path="student/visualizations/integer/number-line" element={<NumberLineVisualizationPage />} />
-          <Route path="student/visualizations/fractions" element={<FractionVisualizationPage />} />
-          <Route path="student/visualizations/fractions/area-model" element={<FractionAreaModelPage />} />
-          <Route path="student/visualizations/fractions/equivalent-fractions" element={<EquivalentFractionsPage />} />
-          <Route path="student/visualizations/fractions/simplify" element={<SimplifyFractionPage />} />
-          <Route path="student/visualizations/fractions/compare-order" element={<CompareFractionsPage />} />
-          <Route path="student/visualizations/fractions/same-denominator" element={<AddSameDenominatorPage />} />
-          <Route path="student/visualizations/fractions/different-denominator" element={<AddDiffDenominatorPage />} />
-          <Route path="student/visualizations/fractions/cross-grid-multiplier" element={<CrossGridMultiplierPage />} />
-          <Route path="student/visualizations/percent" element={<PercentVisualizationPage />} />
-          <Route path="student/visualizations/percent/grid-100" element={<Grid100Page />} />
-          <Route path="student/visualizations/percent/fraction-to-percent" element={<FractionToPercentPage />} />
-          <Route path="student/visualizations/percent/discount-simulator" element={<DiscountSimulatorPage />} />
-          <Route path="student/visualizations/algebra" element={<AlgebraVisualizationPage />} />
-          <Route path="student/visualizations/algebra/term-cards" element={<TermCardsPage />} />
-          <Route path="student/visualizations/algebra/sign-belongs-to-term" element={<SignBelongsToTermPage />} />
-          <Route path="student/visualizations/algebra/like-term-sorter" element={<LikeTermSorterPage />} />
-          <Route path="student/visualizations/algebra/group-like-terms" element={<GroupLikeTermsPage />} />
-          <Route path="student/visualizations/algebra/like-term-operations" element={<LikeTermOperationsPage />} />
-          <Route path="student/visualizations/algebra/expand-brackets" element={<ExpandBracketsPage />} />
-          <Route path="student/visualizations/algebra/substitution-machine" element={<SubstitutionMachinePage />} />
-          <Route path="student/visualizations/algebra/word-to-expression" element={<WordToExpressionPage />} />
-          <Route path="student/visualizations/algebra/order-of-operations" element={<OrderOfOperationsPage />} />
-          <Route path="student/visualizations/algebra/plsv-balance" element={<PlsvBalancePage />} />
-          <Route path="student/visualizations/operasi-campuran" element={<MixedOperationsVisualizationPage />} />
-          <Route path="student/visualizations/plsv" element={<PlsvVisualizationPage />} />
-          <Route path="student/visualizations/*" element={<PlaceholderVisualizationPage />} />
-
-          
-          {/* Fallback route - could be a 404 page */}
-          <Route path="*" element={
-            <div className="flex flex-col items-center justify-center p-12 text-center">
-              <h2 className="text-2xl font-bold text-slate-800 mb-2">Halaman Tidak Ditemukan</h2>
-              <p className="text-slate-500 mb-6">Modul yang Anda cari mungkin belum tersedia.</p>
-            </div>
-          } />
+          <Route path="visualizations" element={<VisualizationCatalogPage />} />
+          <Route path="visualizations/integer" element={<IntegerVisualizationPage />} />
+          <Route path="visualizations/integer/zero-pair" element={<ZeroPairVisualizationPage />} />
+          <Route path="visualizations/integer/number-line" element={<NumberLineVisualizationPage />} />
+          <Route path="visualizations/fractions" element={<FractionVisualizationPage />} />
+          <Route path="visualizations/fractions/area-model" element={<FractionAreaModelPage />} />
+          <Route path="visualizations/fractions/equivalent-fractions" element={<EquivalentFractionsPage />} />
+          <Route path="visualizations/fractions/simplify" element={<SimplifyFractionPage />} />
+          <Route path="visualizations/fractions/compare-order" element={<CompareFractionsPage />} />
+          <Route path="visualizations/fractions/same-denominator" element={<AddSameDenominatorPage />} />
+          <Route path="visualizations/fractions/different-denominator" element={<AddDiffDenominatorPage />} />
+          <Route path="visualizations/fractions/cross-grid-multiplier" element={<CrossGridMultiplierPage />} />
+          <Route path="visualizations/percent" element={<PercentVisualizationPage />} />
+          <Route path="visualizations/percent/grid-100" element={<Grid100Page />} />
+          <Route path="visualizations/percent/fraction-to-percent" element={<FractionToPercentPage />} />
+          <Route path="visualizations/percent/discount-simulator" element={<DiscountSimulatorPage />} />
+          <Route path="visualizations/algebra" element={<AlgebraVisualizationPage />} />
+          <Route path="visualizations/algebra/term-cards" element={<TermCardsPage />} />
+          <Route path="visualizations/algebra/sign-belongs-to-term" element={<SignBelongsToTermPage />} />
+          <Route path="visualizations/algebra/like-term-sorter" element={<LikeTermSorterPage />} />
+          <Route path="visualizations/algebra/group-like-terms" element={<GroupLikeTermsPage />} />
+          <Route path="visualizations/algebra/like-term-operations" element={<LikeTermOperationsPage />} />
+          <Route path="visualizations/algebra/expand-brackets" element={<ExpandBracketsPage />} />
+          <Route path="visualizations/algebra/substitution-machine" element={<SubstitutionMachinePage />} />
+          <Route path="visualizations/algebra/word-to-expression" element={<WordToExpressionPage />} />
+          <Route path="visualizations/algebra/order-of-operations" element={<OrderOfOperationsPage />} />
+          <Route path="visualizations/algebra/plsv-balance" element={<PlsvBalancePage />} />
+          <Route path="visualizations/operasi-campuran" element={<MixedOperationsVisualizationPage />} />
+          <Route path="visualizations/plsv" element={<PlsvVisualizationPage />} />
+          <Route path="visualizations/*" element={<PlaceholderVisualizationPage />} />
 
         </Route>
+
+        {/* Teacher application routes wrapped in TeacherLayout */}
+        <Route path="/teacher" element={<TeacherLayout />}>
+          <Route index element={<Navigate to="/teacher/dashboard" replace />} />
+          <Route path="dashboard" element={<TeacherDashboardPage />} />
+        </Route>
+
+        {/* Fallback route - could be a 404 page */}
+        <Route path="*" element={
+          <div className="flex flex-col items-center justify-center p-12 text-center min-h-screen bg-slate-50">
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">Halaman Tidak Ditemukan</h2>
+            <p className="text-slate-500 mb-6">Modul yang Anda cari mungkin belum tersedia.</p>
+          </div>
+        } />
+
       </Routes>
     </BrowserRouter>
   );

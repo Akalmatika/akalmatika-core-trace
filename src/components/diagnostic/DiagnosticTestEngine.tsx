@@ -12,9 +12,10 @@ import {
 } from "lucide-react";
 import { triangulateAnswers } from "../../engine/parser";
 import { DiagnosticQuestion, MisconceptionRule, TriangulationResult } from "../../engine/rules";
-import { getVisualizationRoute } from "../../engine/rules/mapper";
+import { getVisualizationRoute, getBridgeRoute } from "../../engine/rules/mapper";
 import { BlockMath, InlineMath } from "react-katex";
 import "katex/dist/katex.min.css";
+import { progressStorage } from "../../services/progressStorage";
 
 interface Props {
   topicId: string;
@@ -78,6 +79,18 @@ export default function DiagnosticTestEngine({ topicId, topicTitle, topicDescrip
         return ans;
       });
       const result = triangulateAnswers(parsedAns, cluster, rules);
+      
+      // Simpan hasil diagnosis ke progressStorage
+      progressStorage.saveDiagnosticResult({
+        topicId,
+        date: new Date().toISOString(),
+        isPerfectTrack: result.isPerfectTrack,
+        detectedMisconceptionCode: result.detectedMisconceptionCode,
+        confidence: result.confidence,
+        matchRatio: result.matchRatio,
+        answers: parsedAns,
+      });
+
       setDiagnosticResult(result);
       setCurrentStep("result");
     }
@@ -310,10 +323,10 @@ export default function DiagnosticTestEngine({ topicId, topicTitle, topicDescrip
                   <span>Ulangi Misi</span>
                 </button>
                 <button
-                  onClick={() => navigate(getVisualizationRoute(topicId, diagnosticResult.detectedMisconceptionCode))}
+                  onClick={() => navigate(getBridgeRoute(topicId, diagnosticResult.detectedMisconceptionCode))}
                   className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 active:translate-y-0.5 text-white font-sans font-bold px-5 py-2.5 rounded-xl text-xs transition-all shadow-xs cursor-pointer"
                 >
-                  <span>Ke Media Visualisasi</span>
+                  <span>Ke Jembatan Konsep</span>
                   <ArrowRight size={14} />
                 </button>
               </div>

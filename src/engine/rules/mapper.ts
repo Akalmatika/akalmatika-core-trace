@@ -53,3 +53,10 @@ export function getVisualizationRoute(topicId: string, misconceptionCode: string
   return `/student/visualizations/${topicId}`;
 }
 
+export function getBridgeRoute(topicId: string, misconceptionCode: string | null): string {
+  if (!misconceptionCode) {
+    return `/student/visualizations/${topicId}`; // Fallback ke visualisasi jika tidak ada miskonsepsi (nilai sempurna)
+  }
+  return `/student/bridge/${topicId}/${misconceptionCode}`;
+}
+

@@ -29,7 +29,9 @@ export interface TriangulationResult {
   ruleName: string | null;
   description: string | null;
   remedialScaffold: string | null;
+  /** Tingkat keyakinan/kepercayaan mesin bahwa pola jawaban cocok dengan miskonsepsi ini (0-100%). BUKAN nilai ujian siswa. */
   confidence: number; // Percentage score (e.g. 100, 67, 33, 0)
+  /** Rasio kecocokan jawaban siswa dengan signature jawaban salah dari aturan miskonsepsi (misal: "3/3", "2/3"). BUKAN nilai ujian siswa. */
   matchRatio: string; // e.g. "3/3", "2/3"
   predictedForBug: (number | string | null)[];
   submittedAnswers: (number | string)[];

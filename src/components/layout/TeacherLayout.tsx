@@ -1,35 +1,22 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
-import { ChevronRight, LogOut } from "lucide-react";
+// src/components/layout/TeacherLayout.tsx
 
-export default function StudentLayout() {
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { ChevronRight, LogOut, Users } from "lucide-react";
+
+export default function TeacherLayout() {
   const location = useLocation();
 
-  // Basic Breadcrumb Logic
+  // Basic Breadcrumb Logic for Teacher
   const getBreadcrumbs = () => {
     const paths = location.pathname.split('/').filter(p => p);
-    // e.g. ["student", "visualizations", "integer"]
     const crumbs = [];
     let currentPath = "";
     
     for (let i = 0; i < paths.length; i++) {
       currentPath += `/${paths[i]}`;
-      // formatting the name
       let label = paths[i];
-      if (label === "student" && i === 0) continue; // Skip first 'student'
-      if (label === "dashboard") label = "Dashboard";
-      if (label === "diagnostic") label = "Diagnosis";
-      if (label === "diagnostic-foundation") label = "Diagnosis Fondasi";
-      if (label === "learning-map") label = "Peta Belajar";
-      if (label === "bridge") label = "Jembatan Konsep";
-      if (label === "drill") label = "Latihan";
-      if (label === "mastery") label = "Mastery Check";
-      if (label === "visualizations") label = "Visualisasi";
-      if (label === "integer") label = "Bilangan Bulat";
-      if (label === "fractions") label = "Pecahan";
-      if (label === "percent") label = "Persen";
-      if (label === "algebra") label = "Aljabar Dasar";
-      if (label === "plsv") label = "Persamaan Linear (PLSV)";
-      
+      if (label === "teacher" && i === 0) continue; // Skip first 'teacher'
+      if (label === "dashboard") label = "Dashboard Guru";
       crumbs.push({ label, path: currentPath });
     }
     return crumbs;
@@ -38,17 +25,20 @@ export default function StudentLayout() {
   const breadcrumbs = getBreadcrumbs();
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col justify-between selection:bg-indigo-100 selection:text-indigo-900 font-sans antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-855 flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900 font-sans antialiased">
       
       {/* Top Navigation Bar */}
-      <header className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-3 py-2 md:px-6 md:py-4">
+      <header className="bg-white border-b border-slate-150 relative sm:sticky top-0 z-50 px-4 py-3 md:px-6 md:py-4">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 md:gap-4">
           <Link 
             to="/"
             className="flex items-center cursor-pointer group" 
             title="Kembali ke Halaman Utama"
           >
-            <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-7 sm:h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-105" />
+            <img src="/Akalmatika_LogoUtama_Horizontal_Terang_fix_clean.png" alt="Akalmatika Logo Utama" className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-105" />
+            <span className="ml-3 font-sans font-black text-emerald-700 text-sm md:text-lg border-l border-slate-200 pl-3 uppercase tracking-wider">
+              Portal Guru
+            </span>
           </Link>
 
           <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
@@ -62,8 +52,8 @@ export default function StudentLayout() {
               </Link>
             )}
             <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full flex items-center gap-1.5 font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-              Akalmatika Interactive
+              <Users size={12} className="text-emerald-500" />
+              Akalmatika Guru
             </span>
           </div>
         </div>
@@ -75,13 +65,13 @@ export default function StudentLayout() {
         {/* Breadcrumb Navigation */}
         {breadcrumbs.length > 0 && (
           <nav className="flex items-center gap-1 text-xs text-slate-500 font-medium mb-6 flex-wrap">
-            <Link to="/" className="hover:text-indigo-600 transition-colors">Beranda</Link>
+            <Link to="/" className="hover:text-emerald-600 transition-colors">Beranda</Link>
             {breadcrumbs.map((crumb, idx) => (
               <div key={crumb.path} className="flex items-center gap-1">
                 <ChevronRight size={14} className="text-slate-400" />
                 <Link 
                   to={crumb.path} 
-                  className={`hover:text-indigo-600 transition-colors ${idx === breadcrumbs.length - 1 ? "text-slate-900 font-bold" : ""}`}
+                  className={`hover:text-emerald-600 transition-colors ${idx === breadcrumbs.length - 1 ? "text-slate-900 font-bold" : ""}`}
                 >
                   {crumb.label}
                 </Link>
@@ -100,10 +90,10 @@ export default function StudentLayout() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
           <div className="flex items-center gap-4">
             <img src="/Akalmatika_LogoSekunder_Gelap_clean.png" alt="Akalmatika Logo Sekunder" className="h-10 md:h-12 object-contain opacity-90 hover:opacity-100 transition-opacity" />
-            <span className="hidden md:inline-block border-l border-slate-700 pl-4">AKALMATIKA INTERACTIVE LEARNING</span>
+            <span className="hidden md:inline-block border-l border-slate-700 pl-4">AKALMATIKA FOR TEACHERS</span>
           </div>
           <div className="text-center md:text-right">
-            <span>© 2026 Akalmatika • Media Belajar Matematika Interaktif</span>
+            <span>© 2026 Akalmatika • Portal Analitis Miskonsepsi Kelas</span>
           </div>
         </div>
       </footer>

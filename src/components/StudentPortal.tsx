@@ -24,6 +24,7 @@ import { integerCluster as DIAGNOSTIC_CLUSTER, integerRules as ENGINE_RULES } fr
 import CoinSandbox from "./CoinSandbox";
 import InteractiveNumberLine from "./InteractiveNumberLine";
 import AITutorChat from "./AITutorChat";
+import { progressStorage } from "../services/progressStorage";
 
 interface DrillQuestion {
   expression: string;
@@ -141,6 +142,18 @@ export default function StudentPortal() {
     } else {
       const parsedAns = answers.map(ans => Number(ans));
       const result = triangulateAnswers(parsedAns, DIAGNOSTIC_CLUSTER, ENGINE_RULES);
+      
+      // Simpan hasil diagnosis ke progressStorage
+      progressStorage.saveDiagnosticResult({
+        topicId: "integer",
+        date: new Date().toISOString(),
+        isPerfectTrack: result.isPerfectTrack,
+        detectedMisconceptionCode: result.detectedMisconceptionCode,
+        confidence: result.confidence,
+        matchRatio: result.matchRatio,
+        answers: parsedAns,
+      });
+
       setDiagnosticResult(result);
       
       if (result.isPerfectTrack) {
